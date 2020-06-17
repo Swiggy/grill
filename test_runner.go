@@ -36,9 +36,9 @@ func run(t *testing.T, testCase TestCase) {
 		for _, a := range testCase.Assertions {
 			go func(wg *sync.WaitGroup, assertion Assertion) {
 				defer wg.Done()
-				if actionError, ok := assertion.(*assertOutput); ok {
-					actionError.output = output
-					if err := actionError.Assert(); err != nil {
+				if assertion, ok := assertion.(OutputAssertion); ok {
+					assertion.SetOutput(output)
+					if err := assertion.Assert(); err != nil {
 						t.Errorf("assertion failed, error=%v", err)
 					}
 					return
