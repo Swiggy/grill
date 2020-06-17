@@ -12,11 +12,11 @@ type OutputAssertion interface {
 	SetOutput(output interface{})
 }
 
-var MultiOutput = func(output ...interface{}) interface{} {
+func MultiOutput(output ...interface{}) interface{} {
 	return output
 }
 
-var AssertOutput = func(args ...interface{}) Assertion {
+func AssertOutput(args ...interface{}) Assertion {
 	return &assertOutput{expected: args}
 }
 

@@ -1,13 +1,14 @@
 # Grill
 ---
 
-Make your applications better.
+Grill your application.
 
 ## Motivation
 * * *
 1. Reduce the overload of writing Functional Tests at the same time better their quality.
-2. Functional Tests test the behaviour of your application, and hence should be declarative in nature.
-3. An easy way to mock external dependencies and setup infra components.
+2. Functional Tests should test the behaviour of your application, without any knowledge of its internals(Behaviour Driven Testing/Black Box Testing).
+3. Functional Tests should be declarative, so its easy to read and understand them.
+4. Provide an easy way to mock external dependencies and setup infra components.
 
 
 ## How it Works
@@ -35,7 +36,7 @@ type TestCase struct {
 }
 ```
 
-2) Grill has it own test case runner which takes in an array of testcases and runs them.
+2) Grill has it own test case runner which takes in a slice of testcases and runs them.
 ```	
 tests := []grill.TestCases{}
 grill.Run(tests)
@@ -68,10 +69,12 @@ General Helpers -
 ```
 go get bitbucket.org/swigy/grill
 ```
-
+```
+TODO
+```
 
 ## Why write functional tests
 * * *
 Ans:
-![umbrella](https://i.makeagif.com/media/10-03-2015/aW9A9X.gif)
+![umbrella](https://media.tenor.com/images/74be340020f6b91b66065b51abae7a76/tenor.gif)
 

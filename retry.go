@@ -5,22 +5,22 @@ import (
 	"time"
 )
 
-var Retry = func(assertion Assertion, deadline time.Duration, success int) Assertion {
-	return &retryAssertion{
-		assertion: assertion,
-		deadline:  deadline,
-		success:   success,
+func Try(deadline time.Duration, minSuccess int, assertion Assertion) Assertion {
+	return &tryAssertion{
+		assertion:  assertion,
+		deadline:   deadline,
+		minSuccess: minSuccess,
 	}
 }
 
-type retryAssertion struct {
-	assertion Assertion
-	deadline  time.Duration
-	success   int
+type tryAssertion struct {
+	assertion  Assertion
+	deadline   time.Duration
+	minSuccess int
 }
 
-func (assert *retryAssertion) Assert() error {
-	checkC := time.Tick(assert.deadline / 11)
+func (assert *tryAssertion) Assert() error {
+	checkC := time.Tick(assert.deadline / time.Duration(assert.minSuccess*2+1))
 	quitC := time.Tick(assert.deadline)
 	var successCount = 0
 	for {
@@ -31,7 +31,7 @@ func (assert *retryAssertion) Assert() error {
 				continue
 			}
 			successCount += 1
-			if successCount >= assert.success {
+			if successCount >= assert.minSuccess {
 				return nil
 			}
 		case <-quitC:
