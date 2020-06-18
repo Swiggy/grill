@@ -5,13 +5,15 @@ import (
 	"testing"
 )
 
-func Run(t *testing.T, testCases []TestCase) {
-	for _, testCase := range testCases {
-		run(t, testCase)
-	}
+type TestCase struct {
+	Name       string
+	Stubs      []Stub
+	Action     func() interface{}
+	Assertions []Assertion
+	Cleaners   []Cleaner
 }
 
-func run(t *testing.T, testCase TestCase) {
+func (testCase *TestCase) Run(t *testing.T) {
 	t.Run(testCase.Name, func(t *testing.T) {
 		defer func() {
 			for _, cleaner := range testCase.Cleaners {
@@ -48,7 +50,6 @@ func run(t *testing.T, testCase TestCase) {
 				}
 			}(&wg, a)
 		}
-
 		wg.Wait()
 	})
 }

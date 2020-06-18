@@ -1,7 +1,7 @@
-# Grill
+![Grill](https://image.flaticon.com/icons/png/128/114/114873.png) Grill
 ---
-
-Grill your application.
+---
+Grill your application. [WIP]
 
 ## Motivation
 * * *
