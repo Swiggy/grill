@@ -48,14 +48,14 @@ Grill provides Inbuilt helpers(stubs,assertions,cleaners) and initializers for m
 
 General Helpers -
 
- - [ ] Wiremock(HTTP)
+ - [x] HTTP (wiremock)
  - [ ] GRPC
- - [ ] DynamoDB
- - [ ] Kafka
+ - [x] DynamoDB
+ - [x] Kafka
  - [ ] Redis
  - [ ] Mysql
  - [ ] Tile38
- - [ ] S3
+ - [ ] S3 (minio)
  - [ ] Consul
  - [ ] Prometheus
 
