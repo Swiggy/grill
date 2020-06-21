@@ -16,14 +16,14 @@ func (w wrapper) Clean() error {
 	return w.fn()
 }
 
-func WrapStub(fn func() error) Stub {
+func StubFunc(fn func() error) Stub {
 	return wrapper{fn: fn}
 }
 
-func WrapAssertion(fn func() error) Assertion {
+func AssertionFunc(fn func() error) Assertion {
 	return wrapper{fn: fn}
 }
 
-func WrapCleaner(fn func() error) Cleaner {
+func CleanerFunc(fn func() error) Cleaner {
 	return wrapper{fn: fn}
 }
