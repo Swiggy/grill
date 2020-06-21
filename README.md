@@ -52,9 +52,9 @@ General Helpers -
  - [ ] GRPC
  - [x] DynamoDB
  - [x] Kafka
- - [ ] Redis
- - [ ] Mysql
- - [ ] Tile38
+ - [x] Redis
+ - [x] Mysql
+ - [x] Tile38
  - [ ] S3 (minio)
  - [ ] Consul
  - [ ] Prometheus
