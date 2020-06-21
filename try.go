@@ -38,5 +38,4 @@ func (assert *tryAssertion) Assert() error {
 			return fmt.Errorf("couldn't complete in given deadline, max consecutive success=%d", successCount)
 		}
 	}
-	return nil
 }
