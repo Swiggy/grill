@@ -5,12 +5,14 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/docker/docker/client"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 )
 
 type Mysql struct {
-	Container testcontainers.Container
+	Container    testcontainers.Container
+	DockerClient *client.Client
 
 	Host     string
 	Port     string
@@ -29,6 +31,7 @@ func NewMysql(ctx context.Context) (*Mysql, error) {
 			"MYSQL_ROOT_PASSWORD": "password",
 			"MYSQL_DATABASE":      "test",
 		},
+		AutoRemove: true,
 	}
 
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
@@ -42,22 +45,29 @@ func NewMysql(ctx context.Context) (*Mysql, error) {
 	host, _ := container.Host(ctx)
 	port, _ := container.MappedPort(ctx, "3306")
 
-	client, err := sql.Open("mysql", fmt.Sprintf("root:password@tcp(%s:%s)/test", host, port.Port()))
+	dbClient, err := sql.Open("mysql", fmt.Sprintf("root:password@tcp(%s:%s)/test", host, port.Port()))
 	if err != nil {
 		return nil, err
 	}
 
-	if _, err := client.Exec("USE DATABASE test"); err != nil {
+	if _, err := dbClient.Exec("USE DATABASE test"); err != nil {
 		return nil, fmt.Errorf("error setting database test, error: %v", err)
 	}
 
+	dockerClient, err := client.NewClientWithOpts(client.FromEnv)
+	if err != nil {
+		return nil, fmt.Errorf("error creating docker client, error: %v", err)
+	}
+
 	return &Mysql{
-		Container: container,
-		Host:      host,
-		Port:      port.Port(),
-		Database:  "test",
-		Username:  "root",
-		Password:  "password",
-		Client:    client,
+		Container:    container,
+		DockerClient: dockerClient,
+
+		Host:     host,
+		Port:     port.Port(),
+		Database: "test",
+		Username: "root",
+		Password: "password",
+		Client:   dbClient,
 	}, nil
 }

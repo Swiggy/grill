@@ -4,12 +4,14 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/docker/docker/client"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 )
 
 type WireMock struct {
-	Container testcontainers.Container
+	Container    testcontainers.Container
+	DockerClient *client.Client
 
 	Host          string
 	Port          string
@@ -21,6 +23,7 @@ func NewWiremock(ctx context.Context) (*WireMock, error) {
 		Image:        "rodolpheche/wiremock",
 		ExposedPorts: []string{"8080/tcp", "8443/tcp"},
 		WaitingFor:   wait.ForListeningPort("8080"),
+		AutoRemove:   true,
 	}
 
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
@@ -35,10 +38,17 @@ func NewWiremock(ctx context.Context) (*WireMock, error) {
 	host, _ := container.Host(ctx)
 	port, _ := container.MappedPort(ctx, "8080")
 
+	dockerClient, err := client.NewClientWithOpts(client.FromEnv)
+	if err != nil {
+		return nil, fmt.Errorf("error creating docker client, error: %v", err)
+	}
+
 	return &WireMock{
+		Container:    container,
+		DockerClient: dockerClient,
+
 		Host:          host,
 		Port:          port.Port(),
-		Container:     container,
 		AdminEndpoint: fmt.Sprintf("http://%s:%s", host, port.Port()),
 	}, nil
 }

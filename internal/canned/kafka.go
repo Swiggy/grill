@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	confluent "github.com/confluentinc/confluent-kafka-go/kafka"
+	"github.com/docker/docker/client"
 	"github.com/docker/go-connections/nat"
 	"github.com/testcontainers/testcontainers-go"
 )
@@ -17,7 +18,8 @@ const (
 )
 
 type Kafka struct {
-	Container testcontainers.Container
+	Container    testcontainers.Container
+	DockerClient *client.Client
 
 	Host             string
 	Port             string
@@ -44,6 +46,7 @@ func NewKafka(ctx context.Context) (*Kafka, error) {
 		ExposedPorts: []string{brokerPort.Port(), kafkaPort.Port(), zookeeperPort},
 		Cmd:          []string{"sleep", "infinity"},
 		Env:          env,
+		AutoRemove:   true,
 	}
 
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
@@ -78,8 +81,15 @@ func NewKafka(ctx context.Context) (*Kafka, error) {
 		return nil, fmt.Errorf("error creating producer, error: %v", err)
 	}
 
+	dockerClient, err := client.NewClientWithOpts(client.FromEnv)
+	if err != nil {
+		return nil, fmt.Errorf("error creating docker client, error: %v", err)
+	}
+
 	return &Kafka{
-		Container:        container,
+		Container:    container,
+		DockerClient: dockerClient,
+
 		Host:             host,
 		Port:             port.Port(),
 		BootstrapServers: bootstrapServer,

@@ -11,13 +11,15 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
+	"github.com/docker/docker/client"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 	"golang.org/x/net/http2"
 )
 
 type DynamoDB struct {
-	Container testcontainers.Container
+	Container    testcontainers.Container
+	DockerClient *client.Client
 
 	Host      string
 	Port      string
@@ -32,6 +34,7 @@ func NewDynamoDB(ctx context.Context) (*DynamoDB, error) {
 		Image:        "amazon/dynamodb-local",
 		ExposedPorts: []string{"8000/tcp"},
 		WaitingFor:   wait.ForListeningPort("8000"),
+		AutoRemove:   true,
 	}
 
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
@@ -48,19 +51,26 @@ func NewDynamoDB(ctx context.Context) (*DynamoDB, error) {
 	accessKey, secretKey, region := "random", "random", "ap-southeast-1"
 	endpoint := fmt.Sprintf("http://%s:%s", host, port.Port())
 
-	client, err := newDynamoClient(endpoint, accessKey, secretKey, region)
+	dynamoClient, err := newDynamoClient(endpoint, accessKey, secretKey, region)
 	if err != nil {
 		return nil, err
 	}
 
+	dockerClient, err := client.NewClientWithOpts(client.FromEnv)
+	if err != nil {
+		return nil, fmt.Errorf("error creating docker client, error: %v", err)
+	}
+
 	return &DynamoDB{
+		Container:    container,
+		DockerClient: dockerClient,
+
 		Host:      host,
 		Port:      port.Port(),
-		Container: container,
 		AccessKey: accessKey,
 		SecretKey: secretKey,
 		Region:    region,
-		Client:    client,
+		Client:    dynamoClient,
 	}, nil
 }
 

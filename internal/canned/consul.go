@@ -4,13 +4,15 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/docker/docker/client"
 	"github.com/hashicorp/consul/api"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 )
 
 type Consul struct {
-	Container testcontainers.Container
+	Container    testcontainers.Container
+	DockerClient *client.Client
 
 	Host   string
 	Port   string
@@ -22,6 +24,7 @@ func NewConsul(ctx context.Context) (*Consul, error) {
 		Image:        "consul:1.7.3",
 		ExposedPorts: []string{"8500/tcp"},
 		WaitingFor:   wait.ForListeningPort("8500"),
+		AutoRemove:   true,
 	}
 
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
@@ -38,16 +41,23 @@ func NewConsul(ctx context.Context) (*Consul, error) {
 
 	config := api.DefaultConfig()
 	config.Address = fmt.Sprintf("%s:%s", host, port.Port())
-	client, err := api.NewClient(config)
+	consulClient, err := api.NewClient(config)
 
 	if err != nil {
 		return nil, fmt.Errorf("error creating client")
 	}
 
+	dockerClient, err := client.NewClientWithOpts(client.FromEnv)
+	if err != nil {
+		return nil, fmt.Errorf("error creating docker client, error: %v", err)
+	}
+
 	return &Consul{
-		Host:      host,
-		Port:      port.Port(),
-		Container: container,
-		Client:    client,
+		Container:    container,
+		DockerClient: dockerClient,
+
+		Host:   host,
+		Port:   port.Port(),
+		Client: consulClient,
 	}, nil
 }

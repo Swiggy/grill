@@ -9,12 +9,14 @@ import (
 	"github.com/aws/aws-sdk-go/aws/endpoints"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/docker/docker/client"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 )
 
 type Minio struct {
-	Container testcontainers.Container
+	Container    testcontainers.Container
+	DockerClient *client.Client
 
 	Host      string
 	Port      string
@@ -30,6 +32,7 @@ func NewMinio(ctx context.Context) (*Minio, error) {
 		ExposedPorts: []string{"9000/tcp"},
 		WaitingFor:   wait.ForListeningPort("9000/tcp"),
 		Cmd:          []string{"server", "/data"},
+		AutoRemove:   true,
 	}
 
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
@@ -56,8 +59,15 @@ func NewMinio(ctx context.Context) (*Minio, error) {
 		return nil, err
 	}
 
+	dockerClient, err := client.NewClientWithOpts(client.FromEnv)
+	if err != nil {
+		return nil, fmt.Errorf("error creating docker client, error: %v", err)
+	}
+
 	return &Minio{
-		Container: container,
+		Container:    container,
+		DockerClient: dockerClient,
+
 		Host:      host,
 		Port:      port.Port(),
 		AccessKey: accessKey,
