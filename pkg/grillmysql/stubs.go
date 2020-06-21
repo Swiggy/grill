@@ -14,7 +14,7 @@ func (gm *GrillMysql) CreateTable(query string) grill.Stub {
 	})
 }
 
-func (gm *GrillMysql) SeedDataFromCSVFile(tableName string, filePath string) grill.Stub {
+func (gm *GrillMysql) SeedFromCSVFile(tableName string, filePath string) grill.Stub {
 	return grill.StubFunc(func() error {
 		mysql.RegisterLocalFile(filePath)
 		_, err := gm.Client().Exec(fmt.Sprintf(`LOAD DATA LOCAL INFILE  '%s'

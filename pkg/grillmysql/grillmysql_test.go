@@ -26,7 +26,7 @@ func Test_GrillMysql(t *testing.T) {
 			Name: "Test_SeedAndCount",
 			Stubs: []grill.Stub{
 				helper.CreateTable(createTaskTableQuery),
-				helper.SeedDataFromCSVFile("task", "test_data/example.csv"),
+				helper.SeedFromCSVFile("task", "test_data/example.csv"),
 			},
 			Action: func() interface{} {
 				return nil
