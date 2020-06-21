@@ -7,6 +7,7 @@ require (
 	github.com/confluentinc/confluent-kafka-go v1.4.2
 	github.com/docker/docker v0.7.3-0.20190506211059-b20a14b54661
 	github.com/docker/go-connections v0.4.0
+	github.com/go-sql-driver/mysql v1.5.0
 	github.com/golang/mock v1.4.3
 	github.com/gomodule/redigo v2.0.0+incompatible
 	github.com/hashicorp/consul/api v1.5.0

@@ -50,7 +50,7 @@ func NewMysql(ctx context.Context) (*Mysql, error) {
 		return nil, err
 	}
 
-	if _, err := dbClient.Exec("USE DATABASE test"); err != nil {
+	if _, err := dbClient.Exec("USE test"); err != nil {
 		return nil, fmt.Errorf("error setting database test, error: %v", err)
 	}
 
