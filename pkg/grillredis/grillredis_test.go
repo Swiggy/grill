@@ -1,0 +1,36 @@
+package grillredis
+
+import (
+	"testing"
+
+	"bitbucket.org/swigy/grill"
+)
+
+func Test_GrillRedis(t *testing.T) {
+	helper, err := Start()
+	if err != nil {
+		t.Errorf("error starting redis grill, error=%v", err)
+		return
+	}
+
+	tests := []grill.TestCase{
+		{
+			Name: "Test_GetSet",
+			Stubs: []grill.Stub{
+				helper.SelectDB(1),
+				helper.Set("one", "1"),
+			},
+			Action: func() interface{} {
+				return nil
+			},
+			Assertions: []grill.Assertion{
+				helper.AssertItem("one", "1"),
+			},
+			Cleaners: []grill.Cleaner{
+				helper.FlushDB(),
+			},
+		},
+	}
+
+	grill.Run(t, tests)
+}
