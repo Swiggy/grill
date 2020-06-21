@@ -24,7 +24,7 @@ func Test_GrillRedis(t *testing.T) {
 				return nil
 			},
 			Assertions: []grill.Assertion{
-				helper.AssertItem("one", "1"),
+				helper.AssertValue("one", "1"),
 			},
 			Cleaners: []grill.Cleaner{
 				helper.FlushDB(),

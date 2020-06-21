@@ -6,7 +6,7 @@ import (
 	"bitbucket.org/swigy/grill"
 )
 
-func (gr *GrillRedis) AssertItem(key, expected string) grill.Assertion {
+func (gr *GrillRedis) AssertValue(key, expected string) grill.Assertion {
 	return grill.AssertionFunc(func() error {
 		output, err := gr.Client().Do("GET", key)
 		if err != nil {
