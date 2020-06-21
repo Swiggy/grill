@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/endpoints"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/aws/aws-sdk-go/service/s3/s3iface"
 	"github.com/docker/docker/client"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
@@ -23,7 +24,7 @@ type Minio struct {
 	AccessKey string
 	SecretKey string
 	Region    string
-	Client    *s3.S3
+	Client    s3iface.S3API
 }
 
 func NewMinio(ctx context.Context) (*Minio, error) {
