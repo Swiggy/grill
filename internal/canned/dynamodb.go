@@ -3,6 +3,9 @@ package canned
 import (
 	"context"
 	"fmt"
+	"net"
+	"net/http"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -11,8 +14,6 @@ import (
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 	"golang.org/x/net/http2"
-	"net"
-	"net/http"
 )
 
 type DynamoDB struct {

@@ -3,6 +3,7 @@ package canned
 import (
 	"context"
 	"fmt"
+
 	"github.com/gomodule/redigo/redis"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"

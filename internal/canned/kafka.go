@@ -3,10 +3,11 @@ package canned
 import (
 	"context"
 	"fmt"
+	"strconv"
+
 	confluent "github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/docker/go-connections/nat"
 	"github.com/testcontainers/testcontainers-go"
-	"strconv"
 )
 
 const (
