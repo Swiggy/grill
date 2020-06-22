@@ -12,7 +12,7 @@ type OutputAssertion interface {
 	SetOutput(output interface{})
 }
 
-func MultiOutput(output ...interface{}) interface{} {
+func ActionOutput(output ...interface{}) interface{} {
 	return output
 }
 

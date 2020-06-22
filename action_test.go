@@ -18,8 +18,8 @@ func TestMultiOutput(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := MultiOutput(tt.input...); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("MultiOutput() = %v, want %v", got, tt.want)
+			if got := ActionOutput(tt.input...); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("ActionOutput() = %v, want %v", got, tt.want)
 			}
 		})
 	}

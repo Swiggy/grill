@@ -111,7 +111,7 @@ func Test_GrillGRPC(t *testing.T) {
 			},
 			Action: func() interface{} {
 				res, err := client.Hello(context.Background(), &hello.HelloRequest{Message: "Hi"})
-				return grill.MultiOutput(res.Message, err)
+				return grill.ActionOutput(res.Message, err)
 			},
 			Assertions: []grill.Assertion{
 				grill.AssertOutput("Hi!", nil),
@@ -128,7 +128,7 @@ func Test_GrillGRPC(t *testing.T) {
 			},
 			Action: func() interface{} {
 				res, err := client.Hello(context.Background(), &hello.HelloRequest{Message: "hello"})
-				return grill.MultiOutput(res.Message, err)
+				return grill.ActionOutput(res.Message, err)
 			},
 			Assertions: []grill.Assertion{
 				grill.AssertOutput("hello", nil),
@@ -161,7 +161,7 @@ func Test_GrillGRPC(t *testing.T) {
 			},
 			Action: func() interface{} {
 				res, err := client.Hello(context.Background(), &hello.HelloRequest{Message: "namastey"})
-				return grill.MultiOutput(res.Message, err)
+				return grill.ActionOutput(res.Message, err)
 			},
 			Assertions: []grill.Assertion{
 				grill.AssertOutput("Hi!", nil),

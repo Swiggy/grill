@@ -36,12 +36,12 @@ func Test_GrillHTTP(t *testing.T) {
 			Action: func() interface{} {
 				res, err := http.Get(fmt.Sprintf("http://localhost:%s/test", helper.Port()))
 				if res == nil || res.Body == nil {
-					return grill.MultiOutput(nil, err)
+					return grill.ActionOutput(nil, err)
 				}
 				defer res.Body.Close()
 				got, _ := ioutil.ReadAll(res.Body)
 
-				return grill.MultiOutput(string(got), res.StatusCode, err)
+				return grill.ActionOutput(string(got), res.StatusCode, err)
 			},
 			Assertions: []grill.Assertion{
 				grill.AssertOutput(grill.Any, 404, nil),
@@ -59,12 +59,12 @@ func Test_GrillHTTP(t *testing.T) {
 			Action: func() interface{} {
 				res, err := http.Get(fmt.Sprintf("http://localhost:%s/test", helper.Port()))
 				if res == nil || res.Body == nil {
-					return grill.MultiOutput(nil, err)
+					return grill.ActionOutput(nil, err)
 				}
 				defer res.Body.Close()
 				got, _ := ioutil.ReadAll(res.Body)
 
-				return grill.MultiOutput(string(got), res.StatusCode, err)
+				return grill.ActionOutput(string(got), res.StatusCode, err)
 			},
 			Assertions: []grill.Assertion{
 				grill.AssertOutput("PASS", 200, nil),
