@@ -3,6 +3,7 @@ module bitbucket.org/swigy/grill
 go 1.13.6
 
 require (
+	bitbucket.org/swigy/dp-client-go v0.0.0-20200211110009-18ae08fea1be
 	github.com/aws/aws-sdk-go v1.32.6
 	github.com/confluentinc/confluent-kafka-go v1.4.2
 	github.com/docker/docker v0.7.3-0.20190506211059-b20a14b54661
@@ -13,7 +14,10 @@ require (
 	github.com/gomodule/redigo v2.0.0+incompatible
 	github.com/hashicorp/consul/api v1.5.0
 	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826
+	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d // indirect
 	github.com/testcontainers/testcontainers-go v0.7.0
+	github.com/xeipuuv/gojsonschema v1.2.0
 	golang.org/x/net v0.0.0-20200202094626-16171245cfb2
 	google.golang.org/grpc v1.17.0
+
 )

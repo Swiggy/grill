@@ -46,28 +46,23 @@ grill.Run(tests)
 * * *
 Grill provides Inbuilt helpers(stubs,assertions,cleaners) and initializers for most of the infra dependencies we use in swiggy. For external services it provides mocking utilities for http and grpc.
 
-General Helpers -
-
 
 | Grill | Available | Stubs | Assertions  | Cleaners  |
 |---|---|---|---|---|
 | HTTP (wiremock)| yes | Stub, StubFromJSON, StubFromFile| AssertCount  | ResetAllStubs |
-| GRPC |yes | Stub | AssertCount | ResetAllStubs |
-| DynamoDB|yes | CreateTable, SeedDataFromFile | AssertScanCount, AssertItem  | DeleteTable |
-| Kafka|yes | CreateTopics | AssertCount, AssertMessagePresent | DeleteTopics |
-| Redis|yes | SelectDB, Set | AssertValue | FlushDB |
-| Mysql|yes | CreateTable, SeedFromCSVFile | AssertCount | DeleteTable |
-| S3 (minio)|yes | CreateBucket, UploadFile | AssertFileExists | DeleteBucket, DeleteAllFiles |
-| Tile38|yes | SetObject | AssertObject  | FlushDB |
+| GRPC | yes | Stub | AssertCount | ResetAllStubs |
+| DynamoDB| yes | CreateTable, SeedDataFromFile | AssertScanCount, AssertItem  | DeleteTable |
+| Kafka| yes | CreateTopics | AssertCount, AssertMessagePresent | DeleteTopics |
+| Redis| yes | SelectDB, Set | AssertValue | FlushDB |
+| Mysql| yes | CreateTable, SeedFromCSVFile | AssertCount | DeleteTable |
+| S3 (minio)| yes | CreateBucket, UploadFile | AssertFileExists | DeleteBucket, DeleteAllFiles |
+| Tile38| yes | SetObject | AssertObject  | FlushDB |
 | Consul| yes| SeedFromCSVFile, Set | AssertValue | DeleteAllKeys  |
-| Prometheus|no |  |  |  | 
-
- Swiggy Helpers -
- 
- | Grill  | Available | Stubs | Assertions  | Cleaners  |
+| Prometheus| no |  |  |  | 
 |---|---|---|---|---|
-| Data Platform |no | | | | 
-| Experimentation platform |no| | | |
+| Data Platform | yes | | AssertRegisteredApps, AssertCount, AssertSchemaValidation | FlushAllEvents | 
+| Experimentation platform | no| | | |
+
  
 ## Usage 
 * * *

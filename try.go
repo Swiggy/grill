@@ -23,10 +23,12 @@ func (assert *tryAssertion) Assert() error {
 	checkC := time.Tick(assert.deadline / time.Duration(assert.minSuccess*3+3))
 	quitC := time.Tick(assert.deadline)
 	var successCount = 0
+	var errors []string
 	for {
 		select {
 		case <-checkC:
 			if err := assert.assertion.Assert(); err != nil {
+				errors = append(errors, err.Error())
 				successCount = 0
 				continue
 			}
@@ -35,7 +37,19 @@ func (assert *tryAssertion) Assert() error {
 				return nil
 			}
 		case <-quitC:
-			return fmt.Errorf("couldn't complete in given deadline, max consecutive success=%d", successCount)
+			return fmt.Errorf("couldn't complete in given deadline, max consecutive success=%d, errors=%v", successCount, uniq(errors))
 		}
 	}
+}
+
+func uniq(errors []string) []string {
+	temp := map[string]struct{}{}
+	var result []string
+	for _, e := range errors {
+		if _, ok := temp[e]; !ok {
+			result = append(result, e)
+			temp[e] = struct{}{}
+		}
+	}
+	return result
 }
