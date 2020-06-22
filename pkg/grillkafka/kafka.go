@@ -30,14 +30,14 @@ func (gk *Kafka) Stop() error {
 	return gk.kafka.Container.Terminate(context.Background())
 }
 
-func (gk *Kafka) Produce(message Message) error {
+func (gk *Kafka) Produce(topic string, message Message) error {
 	deliveryChan := make(chan confluent.Event)
 	var headers []confluent.Header
 	for key, value := range message.Headers {
 		headers = append(headers, confluent.Header{Key: key, Value: []byte(value)})
 	}
 	err := gk.kafka.Producer.Produce(&confluent.Message{
-		TopicPartition: confluent.TopicPartition{Topic: &message.Topic, Partition: confluent.PartitionAny},
+		TopicPartition: confluent.TopicPartition{Topic: &topic, Partition: confluent.PartitionAny},
 		Key:            []byte(message.Key),
 		Value:          []byte(message.Value),
 		Headers:        headers,
@@ -82,7 +82,6 @@ func (gk *Kafka) NewConsumer(group, topic string, openTime time.Duration) (*Cons
 						headers[h.Key] = string(h.Value)
 					}
 					outputChan <- Message{
-						Topic:   *e.TopicPartition.Topic,
 						Key:     string(e.Key),
 						Value:   string(e.Value),
 						Headers: headers,

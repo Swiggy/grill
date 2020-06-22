@@ -54,7 +54,7 @@ grill.Run(tests)
 | HTTP (wiremock)| yes | Stub, StubFromJSON, StubFromFile| AssertCount  | ResetAllStubs |
 | GRPC | yes | Stub | AssertCount | ResetAllStubs |
 | DynamoDB| yes | CreateTable, SeedDataFromFile | AssertScanCount, AssertItem  | DeleteTable |
-| Kafka| yes | CreateTopics | AssertCount, AssertMessagePresent | DeleteTopics |
+| Kafka| yes | CreateTopics | AssertCount, AssertMessageCount | DeleteTopics |
 | Redis| yes | SelectDB, Set | AssertValue | FlushDB |
 | Mysql| yes | CreateTable, SeedFromCSVFile | AssertCount | DeleteTable |
 | S3 (minio)| yes | CreateBucket, UploadFile | AssertFileExists | DeleteBucket, DeleteAllFiles |

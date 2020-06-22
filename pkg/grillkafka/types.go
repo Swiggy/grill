@@ -5,7 +5,6 @@ import (
 )
 
 type Message struct {
-	Topic   string
 	Key     string
 	Value   string
 	Headers map[string]string

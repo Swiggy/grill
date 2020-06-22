@@ -9,8 +9,10 @@ import (
 )
 
 var (
+	testTopic      = "test_topic"
+	testErrorTopic = "test_topic_error"
+
 	testMessage = Message{
-		Topic:   "test_topic",
 		Key:     "1",
 		Headers: map[string]string{},
 		Value:   "abc",
@@ -29,18 +31,17 @@ func Test_GrillKafka(t *testing.T) {
 			helper.CreateTopics("test_topic", "test_topic_error"),
 		},
 		Action: func() interface{} {
-			err := helper.Produce(testMessage)
+			err := helper.Produce(testTopic, testMessage)
 			if err != nil {
 				return false
 			}
 			go func() {
-				consumer, err := helper.NewConsumer("test_consumer", "test_topic", time.Second*5)
+				consumer, err := helper.NewConsumer("test_consumer", testTopic, time.Second*5)
 				if err != nil {
 					return
 				}
 				for msg := range consumer.MsgChan() {
-					msg.Topic = "test_topic_error"
-					if err := helper.Produce(msg); err != nil {
+					if err := helper.Produce(testErrorTopic, msg); err != nil {
 						fmt.Printf("error producing to error topic, error=%v\n", err)
 					}
 				}
@@ -50,7 +51,7 @@ func Test_GrillKafka(t *testing.T) {
 		Assertions: []grill.Assertion{
 			grill.AssertOutput(true),
 			grill.Try(time.Second*30, 3, helper.AssertCount("test_topic", 1)),
-			grill.Try(time.Second*30, 3, helper.AssertCount("test_topic_error", 1)),
+			grill.Try(time.Second*30, 3, helper.AssertMessageCount("test_topic_error", testMessage, 1)),
 		},
 		Cleaners: []grill.Cleaner{
 			helper.DeleteTopics("test_topic", "test_topic_error"),
