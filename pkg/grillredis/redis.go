@@ -7,33 +7,33 @@ import (
 	"github.com/gomodule/redigo/redis"
 )
 
-type GrillRedis struct {
+type Redis struct {
 	redis *canned.Redis
 }
 
-func Start() (*GrillRedis, error) {
+func Start() (*Redis, error) {
 	redis, err := canned.NewRedis(context.TODO())
 	if err != nil {
 		return nil, err
 	}
 
-	return &GrillRedis{
+	return &Redis{
 		redis: redis,
 	}, nil
 }
 
-func (gr *GrillRedis) Host() string {
+func (gr *Redis) Host() string {
 	return gr.redis.Host
 }
 
-func (gr *GrillRedis) Port() string {
+func (gr *Redis) Port() string {
 	return gr.redis.Port
 }
 
-func (gr *GrillRedis) Client() redis.Conn {
+func (gr *Redis) Client() redis.Conn {
 	return gr.redis.Client
 }
 
-func (gr *GrillRedis) Stop() error {
+func (gr *Redis) Stop() error {
 	return gr.redis.Container.Terminate(context.Background())
 }

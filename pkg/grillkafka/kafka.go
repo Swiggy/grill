@@ -8,35 +8,35 @@ import (
 	confluent "github.com/confluentinc/confluent-kafka-go/kafka"
 )
 
-type GrillKafka struct {
+type Kafka struct {
 	kafka *canned.Kafka
 }
 
-func Start() (*GrillKafka, error) {
+func Start() (*Kafka, error) {
 	kafka, err := canned.NewKafka(context.TODO())
 	if err != nil {
 		return nil, err
 	}
-	return &GrillKafka{
+	return &Kafka{
 		kafka: kafka,
 	}, nil
 }
 
-func (grillkafka *GrillKafka) BootstrapServers() string {
-	return grillkafka.kafka.BootstrapServers
+func (gk *Kafka) BootstrapServers() string {
+	return gk.kafka.BootstrapServers
 }
 
-func (grillkafka *GrillKafka) Stop() error {
-	return grillkafka.kafka.Container.Terminate(context.Background())
+func (gk *Kafka) Stop() error {
+	return gk.kafka.Container.Terminate(context.Background())
 }
 
-func (grillkafka *GrillKafka) Produce(message Message) error {
+func (gk *Kafka) Produce(message Message) error {
 	deliveryChan := make(chan confluent.Event)
 	var headers []confluent.Header
 	for key, value := range message.Headers {
 		headers = append(headers, confluent.Header{Key: key, Value: []byte(value)})
 	}
-	err := grillkafka.kafka.Producer.Produce(&confluent.Message{
+	err := gk.kafka.Producer.Produce(&confluent.Message{
 		TopicPartition: confluent.TopicPartition{Topic: &message.Topic, Partition: confluent.PartitionAny},
 		Key:            []byte(message.Key),
 		Value:          []byte(message.Value),
@@ -50,9 +50,9 @@ func (grillkafka *GrillKafka) Produce(message Message) error {
 	return m.TopicPartition.Error
 }
 
-func (grillkafka *GrillKafka) NewConsumer(group, topic string, openTime time.Duration) (*Consumer, error) {
+func (gk *Kafka) NewConsumer(group, topic string, openTime time.Duration) (*Consumer, error) {
 	kafkaConsumer, err := confluent.NewConsumer(&confluent.ConfigMap{
-		"bootstrap.servers":               grillkafka.kafka.BootstrapServers,
+		"bootstrap.servers":               gk.kafka.BootstrapServers,
 		"broker.address.family":           "v4",
 		"group.id":                        group,
 		"session.timeout.ms":              6000,

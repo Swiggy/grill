@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3"
 )
 
-func (gs *GrillS3) AssertFileExists(bucket, key string) grill.Assertion {
+func (gs *S3) AssertFileExists(bucket, key string) grill.Assertion {
 	return grill.AssertionFunc(func() error {
 		_, err := gs.Client().GetObject(&s3.GetObjectInput{
 			Bucket: aws.String(bucket),

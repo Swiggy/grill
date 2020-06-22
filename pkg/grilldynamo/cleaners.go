@@ -6,9 +6,9 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 )
 
-func (grilldynamo *GrillDynamo) DeleteTable(tableName string) grill.Cleaner {
+func (gd *Dynamo) DeleteTable(tableName string) grill.Cleaner {
 	return grill.CleanerFunc(func() error {
-		_, err := grilldynamo.dynamo.Client.DeleteTable(&dynamodb.DeleteTableInput{
+		_, err := gd.dynamo.Client.DeleteTable(&dynamodb.DeleteTableInput{
 			TableName: aws.String(tableName),
 		})
 		return err

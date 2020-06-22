@@ -7,33 +7,33 @@ import (
 	"github.com/hashicorp/consul/api"
 )
 
-type GrillConsul struct {
+type Consul struct {
 	consul *canned.Consul
 }
 
-func Start() (*GrillConsul, error) {
+func Start() (*Consul, error) {
 	consul, err := canned.NewConsul(context.TODO())
 	if err != nil {
 		return nil, err
 	}
 
-	return &GrillConsul{
+	return &Consul{
 		consul: consul,
 	}, nil
 }
 
-func (gc *GrillConsul) Host() string {
+func (gc *Consul) Host() string {
 	return gc.consul.Host
 }
 
-func (gc *GrillConsul) Port() string {
+func (gc *Consul) Port() string {
 	return gc.consul.Port
 }
 
-func (gc *GrillConsul) Client() *api.Client {
+func (gc *Consul) Client() *api.Client {
 	return gc.consul.Client
 }
 
-func (gc *GrillConsul) Stop() error {
+func (gc *Consul) Stop() error {
 	return gc.consul.Container.Terminate(context.Background())
 }

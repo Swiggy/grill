@@ -11,9 +11,9 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 )
 
-func (grilldynamo *GrillDynamo) CreateTable(req *dynamodb.CreateTableInput) grill.Stub {
+func (gd *Dynamo) CreateTable(req *dynamodb.CreateTableInput) grill.Stub {
 	return grill.StubFunc(func() error {
-		_, err := grilldynamo.dynamo.Client.CreateTable(req)
+		_, err := gd.dynamo.Client.CreateTable(req)
 		return err
 	})
 }
@@ -25,7 +25,7 @@ func (grilldynamo *GrillDynamo) CreateTable(req *dynamodb.CreateTableInput) gril
 //		tableName  - table to put data
 //		filePath - absolute file path.
 //
-func (grilldynamo *GrillDynamo) SeedDataFromFile(tableName string, filePath string) grill.Stub {
+func (gd *Dynamo) SeedDataFromFile(tableName string, filePath string) grill.Stub {
 	return grill.StubFunc(func() error {
 		file, err := os.Open(filePath)
 		if err != nil {
@@ -42,7 +42,7 @@ func (grilldynamo *GrillDynamo) SeedDataFromFile(tableName string, filePath stri
 			if err != nil {
 				continue
 			}
-			_, err = grilldynamo.dynamo.Client.PutItem(&dynamodb.PutItemInput{
+			_, err = gd.dynamo.Client.PutItem(&dynamodb.PutItemInput{
 				Item:      item,
 				TableName: aws.String(tableName),
 			})

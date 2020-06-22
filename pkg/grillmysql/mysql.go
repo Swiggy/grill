@@ -7,45 +7,45 @@ import (
 	"bitbucket.org/swigy/grill/internal/canned"
 )
 
-type GrillMysql struct {
+type Mysql struct {
 	mysql *canned.Mysql
 }
 
-func Start() (*GrillMysql, error) {
+func Start() (*Mysql, error) {
 	mysql, err := canned.NewMysql(context.TODO())
 	if err != nil {
 		return nil, err
 	}
 
-	return &GrillMysql{
+	return &Mysql{
 		mysql: mysql,
 	}, nil
 }
 
-func (gm *GrillMysql) Client() *sql.DB {
+func (gm *Mysql) Client() *sql.DB {
 	return gm.mysql.Client
 }
 
-func (gm *GrillMysql) Host() string {
+func (gm *Mysql) Host() string {
 	return gm.mysql.Host
 }
 
-func (gm *GrillMysql) Port() string {
+func (gm *Mysql) Port() string {
 	return gm.mysql.Port
 }
 
-func (gm *GrillMysql) Database() string {
+func (gm *Mysql) Database() string {
 	return gm.mysql.Database
 }
 
-func (gm *GrillMysql) Username() string {
+func (gm *Mysql) Username() string {
 	return gm.mysql.Username
 }
 
-func (gm *GrillMysql) Password() string {
+func (gm *Mysql) Password() string {
 	return gm.mysql.Password
 }
 
-func (gm *GrillMysql) Stop() error {
+func (gm *Mysql) Stop() error {
 	return gm.mysql.Container.Terminate(context.TODO())
 }

@@ -10,9 +10,9 @@ import (
 	"bitbucket.org/swigy/grill"
 )
 
-func (grillhttp *GrillHTTP) StubFromJSON(stubStr string) grill.Stub {
+func (gh *HTTP) StubFromJSON(stubStr string) grill.Stub {
 	return grill.StubFunc(func() error {
-		url := fmt.Sprintf("%s/__admin/mappings", grillhttp.wiremock.AdminEndpoint)
+		url := fmt.Sprintf("%s/__admin/mappings", gh.wiremock.AdminEndpoint)
 		res, err := http.Post(url, "application/json", strings.NewReader(stubStr))
 		if res != nil && res.Body != nil {
 			defer res.Body.Close()
@@ -21,22 +21,22 @@ func (grillhttp *GrillHTTP) StubFromJSON(stubStr string) grill.Stub {
 	})
 }
 
-func (grillhttp *GrillHTTP) Stub(stub *Stub) grill.Stub {
+func (gh *HTTP) Stub(stub *Stub) grill.Stub {
 	return grill.StubFunc(func() error {
 		jsonStr, err := json.Marshal(stub)
 		if err != nil {
 			return err
 		}
-		return grillhttp.StubFromJSON(string(jsonStr)).Stub()
+		return gh.StubFromJSON(string(jsonStr)).Stub()
 	})
 }
 
-func (grillhttp *GrillHTTP) StubFromFile(filepath string) grill.Stub {
+func (gh *HTTP) StubFromFile(filepath string) grill.Stub {
 	return grill.StubFunc(func() error {
 		stubStr, err := ioutil.ReadFile(filepath)
 		if err != nil {
 			return err
 		}
-		return grillhttp.StubFromJSON(string(stubStr)).Stub()
+		return gh.StubFromJSON(string(stubStr)).Stub()
 	})
 }

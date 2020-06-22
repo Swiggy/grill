@@ -6,7 +6,7 @@ import (
 	"bitbucket.org/swigy/grill"
 )
 
-func (gm *GrillMysql) AssertCount(tableName string, expectedCount int) grill.Assertion {
+func (gm *Mysql) AssertCount(tableName string, expectedCount int) grill.Assertion {
 	return grill.AssertionFunc(func() error {
 		result, err := gm.Client().Query(fmt.Sprintf("SELECT COUNT(*) FROM %s", tableName))
 		if err != nil {

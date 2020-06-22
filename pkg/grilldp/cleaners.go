@@ -7,7 +7,7 @@ import (
 	"bitbucket.org/swigy/grill"
 )
 
-func (gdp *GrillDP) FlushAllEvents() grill.Cleaner {
+func (gdp *DP) FlushAllEvents() grill.Cleaner {
 	return grill.CleanerFunc(func() error {
 		url := fmt.Sprintf("%s/__admin/requests", gdp.wiremock.AdminEndpoint)
 		req, err := http.NewRequest(http.MethodDelete, url, nil)

@@ -9,9 +9,9 @@ import (
 	"bitbucket.org/swigy/grill"
 )
 
-func (grillhttp *GrillHTTP) AssertCount(request *Request, expectedCount int) grill.Assertion {
+func (gh *HTTP) AssertCount(request *Request, expectedCount int) grill.Assertion {
 	return grill.AssertionFunc(func() error {
-		url := fmt.Sprintf("%s/__admin/requests/count", grillhttp.wiremock.AdminEndpoint)
+		url := fmt.Sprintf("%s/__admin/requests/count", gh.wiremock.AdminEndpoint)
 		jsonStr, err := json.Marshal(request)
 		if err != nil {
 			return err

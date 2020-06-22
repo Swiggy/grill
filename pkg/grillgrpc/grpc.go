@@ -7,14 +7,14 @@ import (
 	"google.golang.org/grpc"
 )
 
-type GrillGRPC struct {
+type GRPC struct {
 	server   *grpc.Server
 	recorder *recorder
 	host     string
 	port     string
 }
 
-func Start() (*GrillGRPC, error) {
+func Start() (*GRPC, error) {
 	recorder := newGRPCRecorder()
 	server := grpc.NewServer(grpc.UnaryInterceptor(recorder.unaryInterceptor))
 
@@ -26,7 +26,7 @@ func Start() (*GrillGRPC, error) {
 	go server.Serve(listen)
 
 	port := listen.Addr().(*net.TCPAddr).Port
-	return &GrillGRPC{
+	return &GRPC{
 		server:   server,
 		host:     "localhost",
 		port:     fmt.Sprintf("%d", port),
@@ -34,19 +34,19 @@ func Start() (*GrillGRPC, error) {
 	}, nil
 }
 
-func (gg *GrillGRPC) RegisterServices(fn func(server *grpc.Server)) {
+func (gg *GRPC) RegisterServices(fn func(server *grpc.Server)) {
 	fn(gg.server)
 }
 
-func (gg *GrillGRPC) Host() string {
+func (gg *GRPC) Host() string {
 	return gg.host
 }
 
-func (gg *GrillGRPC) Port() string {
+func (gg *GRPC) Port() string {
 	return gg.port
 }
 
-func (gg *GrillGRPC) Stop() error {
+func (gg *GRPC) Stop() error {
 	gg.server.Stop()
 	return nil
 }

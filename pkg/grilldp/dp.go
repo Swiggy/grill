@@ -10,11 +10,11 @@ import (
 	"bitbucket.org/swigy/grill/internal/canned"
 )
 
-type GrillDP struct {
+type DP struct {
 	wiremock *canned.WireMock
 }
 
-func Start() (*GrillDP, error) {
+func Start() (*DP, error) {
 	wiremock, err := canned.NewWiremock(context.TODO())
 	if err != nil {
 		return nil, err
@@ -26,20 +26,20 @@ func Start() (*GrillDP, error) {
 		}
 	}
 
-	return &GrillDP{
+	return &DP{
 		wiremock: wiremock,
 	}, nil
 }
 
-func (gdp *GrillDP) Host() string {
+func (gdp *DP) Host() string {
 	return gdp.wiremock.Host
 }
 
-func (gdp *GrillDP) Port() string {
+func (gdp *DP) Port() string {
 	return gdp.wiremock.Port
 }
 
-func (gdp *GrillDP) Stop() error {
+func (gdp *DP) Stop() error {
 	return gdp.wiremock.Container.Terminate(context.TODO())
 }
 

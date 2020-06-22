@@ -14,7 +14,7 @@ import (
 // Reads a csv file and puts them in Consul.
 // CSV Format - key,value
 // Headers are not ignored
-func (gc *GrillConsul) SeedFromCSVFile(filepath string) grill.Stub {
+func (gc *Consul) SeedFromCSVFile(filepath string) grill.Stub {
 	return grill.StubFunc(func() error {
 		csvfile, err := os.Open(filepath)
 		if err != nil {
@@ -40,7 +40,7 @@ func (gc *GrillConsul) SeedFromCSVFile(filepath string) grill.Stub {
 	})
 }
 
-func (gc *GrillConsul) Set(key, value string) grill.Stub {
+func (gc *Consul) Set(key, value string) grill.Stub {
 	return grill.StubFunc(func() error {
 		_, err := gc.consul.Client.KV().Put(&api.KVPair{Key: key, Value: []byte(value)}, nil)
 		return err

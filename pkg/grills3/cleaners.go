@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3"
 )
 
-func (gs *GrillS3) DeleteBucket(bucketName string) grill.Cleaner {
+func (gs *S3) DeleteBucket(bucketName string) grill.Cleaner {
 	return grill.CleanerFunc(func() error {
 		_, err := gs.Client().DeleteBucket(&s3.DeleteBucketInput{
 			Bucket: aws.String(bucketName),
@@ -15,7 +15,7 @@ func (gs *GrillS3) DeleteBucket(bucketName string) grill.Cleaner {
 	})
 }
 
-func (gs *GrillS3) DeleteAllFiles(bucketName string) grill.Cleaner {
+func (gs *S3) DeleteAllFiles(bucketName string) grill.Cleaner {
 	return grill.CleanerFunc(func() error {
 		output, err := gs.Client().ListObjectsV2(&s3.ListObjectsV2Input{
 			Bucket: aws.String(bucketName),

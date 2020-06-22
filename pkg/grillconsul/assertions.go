@@ -6,7 +6,7 @@ import (
 	"bitbucket.org/swigy/grill"
 )
 
-func (gc *GrillConsul) AssertValue(key, expected string) grill.Assertion {
+func (gc *Consul) AssertValue(key, expected string) grill.Assertion {
 	return grill.AssertionFunc(func() error {
 		pair, _, err := gc.consul.Client.KV().Get(key, nil)
 		if err != nil {

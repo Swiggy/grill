@@ -11,7 +11,7 @@ import (
 	"github.com/xeipuuv/gojsonschema"
 )
 
-func (gdp *GrillDP) AssertRegisteredApps(apps ...string) grill.Assertion {
+func (gdp *DP) AssertRegisteredApps(apps ...string) grill.Assertion {
 	return grill.AssertionFunc(func() error {
 		journal, err := gdp.getMatchingRequests(registerEventStub.Request)
 		if err != nil || journal == nil {
@@ -46,7 +46,7 @@ func (gdp *GrillDP) AssertRegisteredApps(apps ...string) grill.Assertion {
 
 }
 
-func (gdp *GrillDP) AssertCount(appName, eventName, version string, expectedCount int) grill.Assertion {
+func (gdp *DP) AssertCount(appName, eventName, version string, expectedCount int) grill.Assertion {
 	return grill.AssertionFunc(func() error {
 		journal, err := gdp.getMatchingRequests(messageSetStub.Request)
 		if err != nil || journal == nil {
@@ -71,7 +71,7 @@ func (gdp *GrillDP) AssertCount(appName, eventName, version string, expectedCoun
 	})
 }
 
-func (gdp *GrillDP) AssertSchemaValidation(appName, eventName, version, schemaFilePath string) grill.Assertion {
+func (gdp *DP) AssertSchemaValidation(appName, eventName, version, schemaFilePath string) grill.Assertion {
 	return grill.AssertionFunc(func() error {
 		schemaLoader := gojsonschema.NewReferenceLoader(fmt.Sprintf("file://%s", schemaFilePath))
 		schema, err := gojsonschema.NewSchema(schemaLoader)
@@ -111,7 +111,7 @@ func (gdp *GrillDP) AssertSchemaValidation(appName, eventName, version, schemaFi
 	})
 }
 
-func (gdp *GrillDP) getMatchingRequests(req request) (*requestJournal, error) {
+func (gdp *DP) getMatchingRequests(req request) (*requestJournal, error) {
 	url := fmt.Sprintf("%s/__admin/requests/find", gdp.wiremock.AdminEndpoint)
 	jsonStr, err := json.Marshal(req)
 	if err != nil {

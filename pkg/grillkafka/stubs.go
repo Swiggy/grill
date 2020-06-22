@@ -8,7 +8,7 @@ import (
 	confluent "github.com/confluentinc/confluent-kafka-go/kafka"
 )
 
-func (grillkafka *GrillKafka) CreateTopics(topics ...string) grill.Stub {
+func (gk *Kafka) CreateTopics(topics ...string) grill.Stub {
 	return grill.StubFunc(func() error {
 		var ts []confluent.TopicSpecification
 		for _, topic := range topics {
@@ -18,7 +18,7 @@ func (grillkafka *GrillKafka) CreateTopics(topics ...string) grill.Stub {
 				ReplicationFactor: 1,
 			})
 		}
-		_, err := grillkafka.kafka.AdminClient.CreateTopics(context.TODO(), ts, confluent.SetAdminOperationTimeout(time.Second*10))
+		_, err := gk.kafka.AdminClient.CreateTopics(context.TODO(), ts, confluent.SetAdminOperationTimeout(time.Second*10))
 		return err
 	})
 }

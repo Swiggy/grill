@@ -6,7 +6,7 @@ import (
 	"bitbucket.org/swigy/grill"
 )
 
-func (gg *GrillGRPC) AssertCount(request Request, expectedCount int) grill.Assertion {
+func (gg *GRPC) AssertCount(request Request, expectedCount int) grill.Assertion {
 	return grill.AssertionFunc(func() error {
 		got := gg.recorder.count(&request)
 		if got != expectedCount {

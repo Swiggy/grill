@@ -86,8 +86,8 @@ func Test_GrillDP(t *testing.T) {
 				return nil
 			},
 			Assertions: []grill.Assertion{
-				grill.Try(time.Second*10, 2, helper.AssertCount(appName, eventName, "1.0.0", 1)),
-				grill.Try(time.Second*10, 2, helper.AssertSchemaValidation(appName, eventName, "1.0.0", "test_data/schema.json")),
+				grill.Try(time.Second*5, 2, helper.AssertCount(appName, eventName, "1.0.0", 1)),
+				grill.Try(time.Second*5, 2, helper.AssertSchemaValidation(appName, eventName, "1.0.0", "test_data/schema.json")),
 			},
 			Cleaners: []grill.Cleaner{
 				helper.FlushAllEvents(),
@@ -103,8 +103,8 @@ func Test_GrillDP(t *testing.T) {
 				return nil
 			},
 			Assertions: []grill.Assertion{
-				grill.Try(time.Second*10, 2, helper.AssertCount(appName, eventName, "1.0.0", 1)),
-				grill.AssertError(grill.Try(time.Second*10, 2, helper.AssertSchemaValidation(appName, eventName, "1.0.0", "test_data/schema.json"))),
+				grill.Try(time.Second*5, 2, helper.AssertCount(appName, eventName, "1.0.0", 1)),
+				grill.AssertError(grill.Try(time.Second*5, 2, helper.AssertSchemaValidation(appName, eventName, "1.0.0", "test_data/schema.json"))),
 			},
 			Cleaners: []grill.Cleaner{
 				helper.FlushAllEvents(),
@@ -119,8 +119,8 @@ func Test_GrillDP(t *testing.T) {
 				return nil
 			},
 			Assertions: []grill.Assertion{
-				grill.Try(time.Second*10, 2, helper.AssertCount(appName, eventName, "1.0.0", 1)),
-				grill.AssertError(grill.Try(time.Second*10, 2, helper.AssertSchemaValidation(appName, eventName, "1.0.0", "test_data/schema.json"))),
+				grill.Try(time.Second*5, 2, helper.AssertCount(appName, eventName, "1.0.0", 1)),
+				grill.AssertError(grill.Try(time.Second*5, 2, helper.AssertSchemaValidation(appName, eventName, "1.0.0", "test_data/schema.json"))),
 			},
 			Cleaners: []grill.Cleaner{
 				helper.FlushAllEvents(),
@@ -135,8 +135,8 @@ func Test_GrillDP(t *testing.T) {
 				return nil
 			},
 			Assertions: []grill.Assertion{
-				grill.Try(time.Second*10, 2, helper.AssertCount(appName, eventName, "1.0.0", 1)),
-				grill.Try(time.Second*10, 2, helper.AssertSchemaValidation(appName, eventName, "1.0.0", "test_data/schema.json")),
+				grill.Try(time.Second*5, 2, helper.AssertCount(appName, eventName, "1.0.0", 1)),
+				grill.Try(time.Second*5, 2, helper.AssertSchemaValidation(appName, eventName, "1.0.0", "test_data/schema.json")),
 			},
 			Cleaners: []grill.Cleaner{
 				helper.FlushAllEvents(),

@@ -7,14 +7,14 @@ import (
 	"github.com/go-sql-driver/mysql"
 )
 
-func (gm *GrillMysql) CreateTable(query string) grill.Stub {
+func (gm *Mysql) CreateTable(query string) grill.Stub {
 	return grill.StubFunc(func() error {
 		_, err := gm.Client().Exec(query)
 		return err
 	})
 }
 
-func (gm *GrillMysql) SeedFromCSVFile(tableName string, filePath string) grill.Stub {
+func (gm *Mysql) SeedFromCSVFile(tableName string, filePath string) grill.Stub {
 	return grill.StubFunc(func() error {
 		mysql.RegisterLocalFile(filePath)
 		_, err := gm.Client().Exec(fmt.Sprintf(`LOAD DATA LOCAL INFILE  '%s'

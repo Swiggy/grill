@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3"
 )
 
-func (gs *GrillS3) CreateBucket(bucketName string) grill.Stub {
+func (gs *S3) CreateBucket(bucketName string) grill.Stub {
 	return grill.StubFunc(func() error {
 		_, err := gs.Client().CreateBucket(&s3.CreateBucketInput{
 			Bucket: aws.String(bucketName),
@@ -17,7 +17,7 @@ func (gs *GrillS3) CreateBucket(bucketName string) grill.Stub {
 	})
 }
 
-func (gs *GrillS3) UploadFile(bucket, key, filepath string) grill.Stub {
+func (gs *S3) UploadFile(bucket, key, filepath string) grill.Stub {
 	return grill.StubFunc(func() error {
 		file, err := os.Open(filepath)
 		if err != nil {

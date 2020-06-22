@@ -8,7 +8,7 @@ import (
 	"bitbucket.org/swigy/grill"
 )
 
-func (gt *GrillTile38) AssertObject(key, id string, expected string) grill.Assertion {
+func (gt *Tile38) AssertObject(key, id string, expected string) grill.Assertion {
 	return grill.AssertionFunc(func() error {
 		output, err := gt.Client().Do("GET", key, id)
 		if err != nil {

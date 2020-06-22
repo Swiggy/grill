@@ -9,10 +9,10 @@ import (
 	"bitbucket.org/swigy/grill"
 )
 
-func (grillkafka *GrillKafka) AssertCount(topicName string, expectedCount int) grill.Assertion {
+func (gk *Kafka) AssertCount(topicName string, expectedCount int) grill.Assertion {
 	return grill.AssertionFunc(func() error {
 		group := fmt.Sprintf("%s_%d_%s", "oh_my_test_helper", rand.Intn(1000), time.Now())
-		consumer, err := grillkafka.NewConsumer(group, topicName, time.Second*5)
+		consumer, err := gk.NewConsumer(group, topicName, time.Second*5)
 		if err != nil {
 			return err
 		}
@@ -30,10 +30,10 @@ func (grillkafka *GrillKafka) AssertCount(topicName string, expectedCount int) g
 	})
 }
 
-func (grillkafka *GrillKafka) AssertMessagePresent(message Message) grill.Assertion {
+func (gk *Kafka) AssertMessagePresent(message Message) grill.Assertion {
 	return grill.AssertionFunc(func() error {
 		group := fmt.Sprintf("%s_%d_%s", "oh_my_test_helper", rand.Intn(1000), time.Now())
-		consumer, err := grillkafka.NewConsumer(group, message.Topic, time.Second*5)
+		consumer, err := gk.NewConsumer(group, message.Topic, time.Second*5)
 		if err != nil {
 			return err
 		}
