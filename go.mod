@@ -9,8 +9,11 @@ require (
 	github.com/docker/go-connections v0.4.0
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/golang/mock v1.4.3
+	github.com/golang/protobuf v1.3.3
 	github.com/gomodule/redigo v2.0.0+incompatible
 	github.com/hashicorp/consul/api v1.5.0
+	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826
 	github.com/testcontainers/testcontainers-go v0.7.0
 	golang.org/x/net v0.0.0-20200202094626-16171245cfb2
+	google.golang.org/grpc v1.17.0
 )

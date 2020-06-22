@@ -52,7 +52,7 @@ General Helpers -
 | Grill | Available | Stubs | Assertions  | Cleaners  |
 |---|---|---|---|---|
 | HTTP (wiremock)| yes | Stub, StubFromJSON, StubFromFile| AssertCount  | ResetAllStubs |
-| GRPC|no |  |  |  |
+| GRPC |yes | Stub | AssertCount | ResetAllStubs |
 | DynamoDB|yes | CreateTable, SeedDataFromFile | AssertScanCount, AssertItem  | DeleteTable |
 | Kafka|yes | CreateTopics | AssertCount, AssertMessagePresent | DeleteTopics |
 | Redis|yes | SelectDB, Set | AssertValue | FlushDB |
