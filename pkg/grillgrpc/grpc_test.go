@@ -72,8 +72,8 @@ func (c *codeAssertion) SetOutput(output interface{}) {
 }
 
 func Test_GrillGRPC(t *testing.T) {
-	helper, err := Start()
-	if err != nil {
+	helper := &GRPC{}
+	if err := helper.Start(context.TODO()); err != nil {
 		t.Errorf("error starting grpc grill, error=%v", err)
 		return
 	}

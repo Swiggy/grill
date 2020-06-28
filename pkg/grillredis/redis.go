@@ -11,15 +11,13 @@ type Redis struct {
 	redis *canned.Redis
 }
 
-func Start() (*Redis, error) {
-	redis, err := canned.NewRedis(context.TODO())
+func (gr *Redis) Start(ctx context.Context) error {
+	redis, err := canned.NewRedis(ctx)
 	if err != nil {
-		return nil, err
+		return err
 	}
-
-	return &Redis{
-		redis: redis,
-	}, nil
+	gr.redis = redis
+	return nil
 }
 
 func (gr *Redis) Host() string {

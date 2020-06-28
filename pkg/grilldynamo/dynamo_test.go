@@ -1,6 +1,7 @@
 package grilldynamo
 
 import (
+	"context"
 	"testing"
 
 	"bitbucket.org/swigy/grill"
@@ -38,9 +39,9 @@ var testTableRequest = &dynamodb.CreateTableInput{
 }
 
 func Test_GrillDynamo(t *testing.T) {
-	helper, err := Start()
-	if err != nil {
-		t.Errorf("error starting grill, error=%v", err)
+	helper := &Dynamo{}
+	if err := helper.Start(context.TODO()); err != nil {
+		t.Errorf("error starting dynamo grill, error=%v", err)
 		return
 	}
 

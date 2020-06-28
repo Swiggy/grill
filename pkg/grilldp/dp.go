@@ -14,21 +14,19 @@ type DP struct {
 	wiremock *canned.WireMock
 }
 
-func Start() (*DP, error) {
-	wiremock, err := canned.NewWiremock(context.TODO())
+func (gdp *DP) Start(ctx context.Context) error {
+	wiremock, err := canned.NewWiremock(ctx)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	for _, stub := range []stub{registerEventStub, messageSetStub, messageStub} {
 		if err := createStub(stub, wiremock.AdminEndpoint); err != nil {
-			return nil, fmt.Errorf("error creating stub, error=%v", err)
+			return fmt.Errorf("error creating stub, error=%v", err)
 		}
 	}
-
-	return &DP{
-		wiremock: wiremock,
-	}, nil
+	gdp.wiremock = wiremock
+	return nil
 }
 
 func (gdp *DP) Host() string {

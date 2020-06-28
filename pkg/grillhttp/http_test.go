@@ -1,6 +1,7 @@
 package grillhttp
 
 import (
+	"context"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -23,9 +24,9 @@ var (
 )
 
 func Test_GrillHTTP(t *testing.T) {
-	helper, err := Start()
-	if err != nil {
-		t.Errorf("Error Creating Stub, error = %v", err)
+	helper := &HTTP{}
+	if err := helper.Start(context.TODO()); err != nil {
+		t.Errorf("error starting http grill, error=%v", err)
 		return
 	}
 

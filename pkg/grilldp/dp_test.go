@@ -1,6 +1,7 @@
 package grilldp
 
 import (
+	"context"
 	"fmt"
 	"testing"
 	"time"
@@ -59,8 +60,8 @@ func newDpClient(host, port string) dataplatform.DPClient {
 }
 
 func Test_GrillDP(t *testing.T) {
-	helper, err := Start()
-	if err != nil {
+	helper := &DP{}
+	if err := helper.Start(context.TODO()); err != nil {
 		t.Errorf("error starting dp grill, error=%v", err)
 		return
 	}

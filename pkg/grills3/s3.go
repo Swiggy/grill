@@ -11,15 +11,13 @@ type S3 struct {
 	minio *canned.Minio
 }
 
-func Start() (*S3, error) {
-	minio, err := canned.NewMinio(context.TODO())
+func (gs *S3) Start(ctx context.Context) error {
+	minio, err := canned.NewMinio(ctx)
 	if err != nil {
-		return nil, err
+		return err
 	}
-
-	return &S3{
-		minio: minio,
-	}, nil
+	gs.minio = minio
+	return nil
 }
 
 func (gs *S3) Host() string {

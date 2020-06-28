@@ -1,6 +1,7 @@
 package grilltile38
 
 import (
+	"context"
 	"testing"
 
 	"bitbucket.org/swigy/grill"
@@ -11,8 +12,8 @@ var (
 )
 
 func Test_GrillTile38(t *testing.T) {
-	helper, err := Start()
-	if err != nil {
+	helper := &Tile38{}
+	if err := helper.Start(context.TODO()); err != nil {
 		t.Errorf("error starting tile38 grill, error=%v", err)
 		return
 	}
