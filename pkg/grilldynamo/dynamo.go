@@ -11,15 +11,13 @@ type Dynamo struct {
 	dynamo *canned.DynamoDB
 }
 
-func Start() (*Dynamo, error) {
-	dynamo, err := canned.NewDynamoDB(context.TODO())
+func (gd *Dynamo) Start(ctx context.Context) error {
+	dynamo, err := canned.NewDynamoDB(ctx)
 	if err != nil {
-		return nil, err
+		return err
 	}
-
-	return &Dynamo{
-		dynamo: dynamo,
-	}, nil
+	gd.dynamo = dynamo
+	return nil
 }
 
 func (gd *Dynamo) Client() dynamodbiface.DynamoDBAPI {

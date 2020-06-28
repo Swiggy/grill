@@ -1,6 +1,7 @@
 package grillgrpc
 
 import (
+	"context"
 	"fmt"
 	"net"
 
@@ -14,24 +15,25 @@ type GRPC struct {
 	port     string
 }
 
-func Start() (*GRPC, error) {
+func (gg *GRPC) Start(ctx context.Context) error {
 	recorder := newGRPCRecorder()
 	server := grpc.NewServer(grpc.UnaryInterceptor(recorder.unaryInterceptor))
 
 	listen, err := net.Listen("tcp", ":0")
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	go server.Serve(listen)
 
 	port := listen.Addr().(*net.TCPAddr).Port
-	return &GRPC{
-		server:   server,
-		host:     "localhost",
-		port:     fmt.Sprintf("%d", port),
-		recorder: recorder,
-	}, nil
+
+	gg.server = server
+	gg.host = "localhost"
+	gg.port = fmt.Sprintf("%d", port)
+	gg.recorder = recorder
+
+	return nil
 }
 
 func (gg *GRPC) RegisterServices(fn func(server *grpc.Server)) {

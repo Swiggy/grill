@@ -12,14 +12,13 @@ type Kafka struct {
 	kafka *canned.Kafka
 }
 
-func Start() (*Kafka, error) {
-	kafka, err := canned.NewKafka(context.TODO())
+func (gk *Kafka) Start(ctx context.Context) error {
+	kafka, err := canned.NewKafka(ctx)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return &Kafka{
-		kafka: kafka,
-	}, nil
+	gk.kafka = kafka
+	return nil
 }
 
 func (gk *Kafka) BootstrapServers() string {

@@ -1,6 +1,7 @@
 package grillkafka
 
 import (
+	"context"
 	"fmt"
 	"testing"
 	"time"
@@ -20,9 +21,10 @@ var (
 )
 
 func Test_GrillKafka(t *testing.T) {
-	helper, err := Start()
-	if err != nil {
+	helper := &Kafka{}
+	if err := helper.Start(context.TODO()); err != nil {
 		t.Errorf("error starting kafka grill, error=%v", err)
+		return
 	}
 
 	test := grill.TestCase{

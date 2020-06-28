@@ -11,15 +11,14 @@ type Tile38 struct {
 	tile38 *canned.Tile38
 }
 
-func Start() (*Tile38, error) {
-	tile38, err := canned.NewTile38(context.TODO())
+func (gt *Tile38) Start(ctx context.Context) error {
+	tile38, err := canned.NewTile38(ctx)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return &Tile38{
-		tile38: tile38,
-	}, nil
+	gt.tile38 = tile38
+	return nil
 }
 
 func (gt *Tile38) Host() string {

@@ -10,14 +10,13 @@ type HTTP struct {
 	wiremock *canned.WireMock
 }
 
-func Start() (*HTTP, error) {
-	wiremock, err := canned.NewWiremock(context.TODO())
+func (gh *HTTP) Start(ctx context.Context) error {
+	wiremock, err := canned.NewWiremock(ctx)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return &HTTP{
-		wiremock: wiremock,
-	}, nil
+	gh.wiremock = wiremock
+	return nil
 }
 
 func (gh *HTTP) Host() string {

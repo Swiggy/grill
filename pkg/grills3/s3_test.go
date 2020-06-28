@@ -1,14 +1,15 @@
 package grills3
 
 import (
+	"context"
 	"testing"
 
 	"bitbucket.org/swigy/grill"
 )
 
 func Test_GrillS3(t *testing.T) {
-	helper, err := Start()
-	if err != nil {
+	helper := &S3{}
+	if err := helper.Start(context.TODO()); err != nil {
 		t.Errorf("error starting s3 grill, error=%v", err)
 		return
 	}

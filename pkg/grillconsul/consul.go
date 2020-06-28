@@ -11,15 +11,14 @@ type Consul struct {
 	consul *canned.Consul
 }
 
-func Start() (*Consul, error) {
-	consul, err := canned.NewConsul(context.TODO())
+func (gc *Consul) Start(ctx context.Context) error {
+	consul, err := canned.NewConsul(ctx)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return &Consul{
-		consul: consul,
-	}, nil
+	gc.consul = consul
+	return nil
 }
 
 func (gc *Consul) Host() string {

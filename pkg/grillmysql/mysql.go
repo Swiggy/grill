@@ -11,15 +11,13 @@ type Mysql struct {
 	mysql *canned.Mysql
 }
 
-func Start() (*Mysql, error) {
-	mysql, err := canned.NewMysql(context.TODO())
+func (gm *Mysql) Start(ctx context.Context) error {
+	mysql, err := canned.NewMysql(ctx)
 	if err != nil {
-		return nil, err
+		return err
 	}
-
-	return &Mysql{
-		mysql: mysql,
-	}, nil
+	gm.mysql = mysql
+	return nil
 }
 
 func (gm *Mysql) Client() *sql.DB {

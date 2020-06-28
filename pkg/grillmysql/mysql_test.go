@@ -1,6 +1,7 @@
 package grillmysql
 
 import (
+	"context"
 	"testing"
 
 	"bitbucket.org/swigy/grill"
@@ -15,8 +16,8 @@ const createTaskTableQuery = `CREATE TABLE task (
 	)`
 
 func Test_GrillMysql(t *testing.T) {
-	helper, err := Start()
-	if err != nil {
+	helper := &Mysql{}
+	if err := helper.Start(context.TODO()); err != nil {
 		t.Errorf("error starting mysql grill, error=%v", err)
 		return
 	}

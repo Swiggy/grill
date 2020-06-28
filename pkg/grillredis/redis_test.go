@@ -1,14 +1,15 @@
 package grillredis
 
 import (
+	"context"
 	"testing"
 
 	"bitbucket.org/swigy/grill"
 )
 
 func Test_GrillRedis(t *testing.T) {
-	helper, err := Start()
-	if err != nil {
+	helper := &Redis{}
+	if err := helper.Start(context.TODO()); err != nil {
 		t.Errorf("error starting redis grill, error=%v", err)
 		return
 	}
