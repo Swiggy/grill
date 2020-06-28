@@ -3,6 +3,7 @@ package canned
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/docker/docker/client"
 
@@ -21,6 +22,7 @@ type Redis struct {
 }
 
 func NewRedis(ctx context.Context) (*Redis, error) {
+	os.Setenv("TC_HOST", "localhost")
 	req := testcontainers.ContainerRequest{
 		Image:        "redis",
 		ExposedPorts: []string{"6379/tcp"},

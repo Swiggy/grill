@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"os"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
@@ -30,6 +31,7 @@ type DynamoDB struct {
 }
 
 func NewDynamoDB(ctx context.Context) (*DynamoDB, error) {
+	os.Setenv("TC_HOST", "localhost")
 	req := testcontainers.ContainerRequest{
 		Image:        "amazon/dynamodb-local",
 		ExposedPorts: []string{"8000/tcp"},

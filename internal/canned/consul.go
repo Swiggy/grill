@@ -3,6 +3,7 @@ package canned
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/docker/docker/client"
 	"github.com/hashicorp/consul/api"
@@ -20,6 +21,7 @@ type Consul struct {
 }
 
 func NewConsul(ctx context.Context) (*Consul, error) {
+	os.Setenv("TC_HOST", "localhost")
 	req := testcontainers.ContainerRequest{
 		Image:        "consul:1.7.3",
 		ExposedPorts: []string{"8500/tcp"},

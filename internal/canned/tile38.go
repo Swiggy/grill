@@ -3,6 +3,7 @@ package canned
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/docker/docker/client"
 	"github.com/gomodule/redigo/redis"
@@ -20,6 +21,7 @@ type Tile38 struct {
 }
 
 func NewTile38(ctx context.Context) (*Tile38, error) {
+	os.Setenv("TC_HOST", "localhost")
 	req := testcontainers.ContainerRequest{
 		Image:        "tile38/tile38",
 		ExposedPorts: []string{"9851/tcp"},
