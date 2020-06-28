@@ -37,8 +37,8 @@ func (gdp *DP) Port() string {
 	return gdp.wiremock.Port
 }
 
-func (gdp *DP) Stop() error {
-	return gdp.wiremock.Container.Terminate(context.TODO())
+func (gdp *DP) Stop(ctx context.Context) error {
+	return gdp.wiremock.Container.Terminate(ctx)
 }
 
 func createStub(stub stub, adminEndpoint string) error {

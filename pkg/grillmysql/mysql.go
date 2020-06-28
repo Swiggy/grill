@@ -44,6 +44,6 @@ func (gm *Mysql) Password() string {
 	return gm.mysql.Password
 }
 
-func (gm *Mysql) Stop() error {
-	return gm.mysql.Container.Terminate(context.TODO())
+func (gm *Mysql) Stop(ctx context.Context) error {
+	return gm.mysql.Container.Terminate(ctx)
 }

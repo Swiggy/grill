@@ -25,8 +25,8 @@ func (gk *Kafka) BootstrapServers() string {
 	return gk.kafka.BootstrapServers
 }
 
-func (gk *Kafka) Stop() error {
-	return gk.kafka.Container.Terminate(context.Background())
+func (gk *Kafka) Stop(ctx context.Context) error {
+	return gk.kafka.Container.Terminate(ctx)
 }
 
 func (gk *Kafka) Produce(topic string, message Message) error {

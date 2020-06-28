@@ -33,6 +33,6 @@ func (gt *Tile38) Client() redis.Conn {
 	return gt.tile38.Client
 }
 
-func (gt *Tile38) Stop() error {
-	return gt.tile38.Container.Terminate(context.Background())
+func (gt *Tile38) Stop(ctx context.Context) error {
+	return gt.tile38.Container.Terminate(ctx)
 }

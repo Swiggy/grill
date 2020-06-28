@@ -44,6 +44,6 @@ func (gd *Dynamo) SecretKey() string {
 	return gd.dynamo.SecretKey
 }
 
-func (gd *Dynamo) Stop() error {
-	return gd.dynamo.Container.Terminate(context.TODO())
+func (gd *Dynamo) Stop(ctx context.Context) error {
+	return gd.dynamo.Container.Terminate(ctx)
 }

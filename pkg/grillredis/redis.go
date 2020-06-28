@@ -32,6 +32,6 @@ func (gr *Redis) Client() redis.Conn {
 	return gr.redis.Client
 }
 
-func (gr *Redis) Stop() error {
-	return gr.redis.Container.Terminate(context.Background())
+func (gr *Redis) Stop(ctx context.Context) error {
+	return gr.redis.Container.Terminate(ctx)
 }

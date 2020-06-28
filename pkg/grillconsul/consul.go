@@ -33,6 +33,6 @@ func (gc *Consul) Client() *api.Client {
 	return gc.consul.Client
 }
 
-func (gc *Consul) Stop() error {
-	return gc.consul.Container.Terminate(context.Background())
+func (gc *Consul) Stop(ctx context.Context) error {
+	return gc.consul.Container.Terminate(ctx)
 }

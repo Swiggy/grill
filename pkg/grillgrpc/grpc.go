@@ -48,7 +48,7 @@ func (gg *GRPC) Port() string {
 	return gg.port
 }
 
-func (gg *GRPC) Stop() error {
+func (gg *GRPC) Stop(ctx context.Context) error {
 	gg.server.Stop()
 	return nil
 }

@@ -31,6 +31,6 @@ func (gh *HTTP) AdminEndpoint() string {
 	return gh.wiremock.AdminEndpoint
 }
 
-func (gh *HTTP) Stop() error {
-	return gh.wiremock.Container.Terminate(context.TODO())
+func (gh *HTTP) Stop(ctx context.Context) error {
+	return gh.wiremock.Container.Terminate(ctx)
 }

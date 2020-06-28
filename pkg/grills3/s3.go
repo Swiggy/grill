@@ -44,6 +44,6 @@ func (gs *S3) SecretKey() string {
 	return gs.minio.SecretKey
 }
 
-func (gs *S3) Stop() error {
-	return gs.minio.Container.Terminate(context.Background())
+func (gs *S3) Stop(ctx context.Context) error {
+	return gs.minio.Container.Terminate(ctx)
 }
