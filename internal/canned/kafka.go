@@ -3,6 +3,7 @@ package canned
 import (
 	"context"
 	"fmt"
+	"os"
 	"strconv"
 
 	confluent "github.com/confluentinc/confluent-kafka-go/kafka"
@@ -29,6 +30,7 @@ type Kafka struct {
 }
 
 func NewKafka(ctx context.Context) (*Kafka, error) {
+	os.Setenv("TC_HOST", "localhost")
 	env := map[string]string{
 		"KAFKA_LISTENERS":                        fmt.Sprintf("PLAINTEXT://0.0.0.0:%v,BROKER://0.0.0.0:%s", kafkaPort.Port(), brokerPort.Port()),
 		"KAFKA_LISTENER_SECURITY_PROTOCOL_MAP":   "BROKER:PLAINTEXT,PLAINTEXT:PLAINTEXT",

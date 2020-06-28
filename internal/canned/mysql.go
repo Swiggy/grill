@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"os"
 
 	"github.com/docker/docker/client"
 	"github.com/testcontainers/testcontainers-go"
@@ -23,6 +24,7 @@ type Mysql struct {
 }
 
 func NewMysql(ctx context.Context) (*Mysql, error) {
+	os.Setenv("TC_HOST", "localhost")
 	req := testcontainers.ContainerRequest{
 		Image:        "mysql:5.6",
 		ExposedPorts: []string{"3306/tcp"},

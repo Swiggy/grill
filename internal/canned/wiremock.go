@@ -3,6 +3,7 @@ package canned
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/docker/docker/client"
 	"github.com/testcontainers/testcontainers-go"
@@ -19,6 +20,7 @@ type WireMock struct {
 }
 
 func NewWiremock(ctx context.Context) (*WireMock, error) {
+	os.Setenv("TC_HOST", "localhost")
 	req := testcontainers.ContainerRequest{
 		Image:        "rodolpheche/wiremock",
 		ExposedPorts: []string{"8080/tcp", "8443/tcp"},

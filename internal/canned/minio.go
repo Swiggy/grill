@@ -3,6 +3,7 @@ package canned
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
@@ -28,6 +29,7 @@ type Minio struct {
 }
 
 func NewMinio(ctx context.Context) (*Minio, error) {
+	os.Setenv("TC_HOST", "localhost")
 	req := testcontainers.ContainerRequest{
 		Image:        "minio/minio",
 		ExposedPorts: []string{"9000/tcp"},
