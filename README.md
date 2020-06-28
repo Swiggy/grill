@@ -40,7 +40,7 @@ type TestCase struct {
 * Grill has it own test case runner which takes in a slice of testcases and runs them.
 ```	
 tests := []grill.TestCases{}
-grill.Run(tests)
+grill.Run(t, tests)
 ```
 
 ## Features
@@ -91,7 +91,8 @@ grill.AssertOutput(grill.Any, nil)
 
 ##### Starting a Grill
 ```
-grl, err := grillHTTP.Start()
+grl := grillHTTP.HTTP{}
+err := grl.Start()
 ``` 
 
 ##### Writing Tests
