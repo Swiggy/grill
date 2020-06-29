@@ -92,7 +92,7 @@ grill.AssertOutput(grill.Any, nil)
 ##### Starting a Grill
 ```
 grl := grillHTTP.HTTP{}
-err := grl.Start()
+err := grl.Start(context.Background())
 ``` 
 
 ##### Writing Tests
