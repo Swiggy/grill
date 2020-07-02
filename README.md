@@ -89,10 +89,22 @@ action := func() interface{} {
 grill.AssertOutput(grill.Any, nil)
 ```
 
-##### Starting a Grill
+##### Starting/Stopping a Grill
+* To Start/Stop one Grill 
 ```
 grl := grillHTTP.HTTP{}
 err := grl.Start(context.Background())
+err := grl.Stop(context.Background())
+``` 
+* To Start/Stop Multiple Grills 
+```
+grills := Grills{
+    HTTP:   &grillHTTP.HTTP{},
+    GRPC:   &grillGRPC.GRPC{},
+    Dynamo: &grillDynamo.Dynamo{},
+}
+err := grill.StartAll(context.Background(), grills.HTTP, grills.GRPC, grills.Dynamo)
+err := grill.StopAll(context.Background(), grills.HTTP, grills.GRPC, grills.Dynamo)
 ``` 
 
 ##### Writing Tests
