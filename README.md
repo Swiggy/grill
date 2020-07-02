@@ -62,7 +62,7 @@ grill.Run(t, tests)
 | Consul| yes| SeedFromCSVFile, Set | AssertValue | DeleteAllKeys  |
 | Prometheus| no |  |  |  | 
 |---|---|---|---|---|
-| Data Platform | yes | | AssertRegisteredApps, AssertCount, AssertSchemaValidation | FlushAllEvents | 
+| Data Platform | yes | | AssertRegisteredApps, AssertCount, AssertValidSchema | FlushAllEvents | 
 | Experimentation platform | no| | | |
 
  
@@ -169,9 +169,9 @@ grill.Try(time.Second, 3, grill.AssertOutput("PASS", http.StatusOK, nil))
 ```
 
 ##### Testing Negative Assertions
-* To test assertions which should fail, wrap them using `grill.AssertError(assertion)`.
+* To test assertions which should fail, wrap them using `grill.Not(assertion)`.
 ```
-grill.AssertError(grill.AssertOutput("PASS", http.StatusOK, nil))
+grill.Not(grill.AssertOutput("PASS", http.StatusOK, nil))
 ```
 
 ##### Writing Custom Stubs, Assertions and Cleaners

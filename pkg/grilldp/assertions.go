@@ -71,7 +71,7 @@ func (gdp *DP) AssertCount(appName, eventName, version string, expectedCount int
 	})
 }
 
-func (gdp *DP) AssertSchemaValidation(appName, eventName, version, schemaFilePath string) grill.Assertion {
+func (gdp *DP) AssertValidSchema(appName, eventName, version, schemaFilePath string) grill.Assertion {
 	return grill.AssertionFunc(func() error {
 		schemaLoader := gojsonschema.NewReferenceLoader(fmt.Sprintf("file://%s", schemaFilePath))
 		schema, err := gojsonschema.NewSchema(schemaLoader)
