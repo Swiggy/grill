@@ -38,6 +38,7 @@ func doAll(ctx context.Context, fn func(ctx context.Context, lc LifeCycle) error
 		}(grill, &wg)
 	}
 	wg.Wait()
+	close(errChan)
 
 	var errors []string
 	for err := range errChan {
