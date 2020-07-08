@@ -9,19 +9,25 @@ import (
 )
 
 type GRPC struct {
-	server   *grpc.Server
-	recorder *recorder
-	host     string
-	port     string
+	server     *grpc.Server
+	registerFn []func(*grpc.Server)
+	recorder   *recorder
+	host       string
+	port       string
 }
 
 func (gg *GRPC) Start(ctx context.Context) error {
 	recorder := newGRPCRecorder()
+
 	server := grpc.NewServer(grpc.UnaryInterceptor(recorder.unaryInterceptor))
 
 	listen, err := net.Listen("tcp", ":0")
 	if err != nil {
 		return err
+	}
+
+	for _, fn := range gg.registerFn {
+		fn(server)
 	}
 
 	go server.Serve(listen)
@@ -37,7 +43,7 @@ func (gg *GRPC) Start(ctx context.Context) error {
 }
 
 func (gg *GRPC) RegisterServices(fn func(server *grpc.Server)) {
-	fn(gg.server)
+	gg.registerFn = append(gg.registerFn, fn)
 }
 
 func (gg *GRPC) Host() string {

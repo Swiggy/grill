@@ -44,6 +44,8 @@ func doAll(ctx context.Context, fn func(ctx context.Context, lc LifeCycle) error
 	for err := range errChan {
 		errors = append(errors, err.Error())
 	}
-
-	return fmt.Errorf("%v", errors)
+	if len(errors) > 0 {
+		return fmt.Errorf("%v", errors)
+	}
+	return nil
 }

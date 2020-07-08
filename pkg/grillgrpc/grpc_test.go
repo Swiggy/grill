@@ -74,13 +74,14 @@ func (c *codeAssertion) SetOutput(output interface{}) {
 
 func Test_GrillGRPC(t *testing.T) {
 	helper := &GRPC{}
+	helper.RegisterServices(func(server *grpc.Server) {
+		hello.RegisterHelloAPIServer(server, &hello.UnimplementedHelloAPIServer{})
+	})
+
 	if err := helper.Start(context.TODO()); err != nil {
 		t.Errorf("error starting grpc grill, error=%v", err)
 		return
 	}
-	helper.RegisterServices(func(server *grpc.Server) {
-		hello.RegisterHelloAPIServer(server, &hello.UnimplementedHelloAPIServer{})
-	})
 
 	conn, err := grpc.Dial(fmt.Sprintf("localhost:%s", helper.Port()), grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {

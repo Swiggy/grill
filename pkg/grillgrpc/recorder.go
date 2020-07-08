@@ -81,8 +81,12 @@ func (r *recorder) count(request *Request) int {
 	matched := 0
 	for _, req := range rec.requests {
 		copyReq := deepcopy.Copy(req)
-		if request.MatchFn(copyReq) {
+		if request.MatchFn == nil {
 			matched++
+		} else {
+			if request.MatchFn(copyReq) {
+				matched++
+			}
 		}
 	}
 
