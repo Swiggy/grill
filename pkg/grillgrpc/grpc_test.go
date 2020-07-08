@@ -108,7 +108,7 @@ func Test_GrillGRPC(t *testing.T) {
 		{
 			Name: "Test_ReturnsStubResponse",
 			Stubs: []grill.Stub{
-				helper.Stub(&Stub{Request: request, Response: response}),
+				helper.Stub(request, response),
 			},
 			Action: func() interface{} {
 				res, err := client.Hello(context.Background(), &hello.HelloRequest{Message: "Hi"})
@@ -125,7 +125,7 @@ func Test_GrillGRPC(t *testing.T) {
 		{
 			Name: "Test_ResponseTemplateTest",
 			Stubs: []grill.Stub{
-				helper.Stub(&Stub{Request: request, Response: templateResponse}),
+				helper.Stub(request, templateResponse),
 			},
 			Action: func() interface{} {
 				res, err := client.Hello(context.Background(), &hello.HelloRequest{Message: "hello"})
@@ -142,7 +142,7 @@ func Test_GrillGRPC(t *testing.T) {
 		{
 			Name: "Test_RequestMatchTest-Failure",
 			Stubs: []grill.Stub{
-				helper.Stub(&Stub{Request: requestMatchFn, Response: response}),
+				helper.Stub(requestMatchFn, response),
 			},
 			Action: func() interface{} {
 				_, err := client.Hello(context.Background(), &hello.HelloRequest{Message: "hello"})
@@ -158,7 +158,7 @@ func Test_GrillGRPC(t *testing.T) {
 		{
 			Name: "Test_RequestMatchTest-Success",
 			Stubs: []grill.Stub{
-				helper.Stub(&Stub{Request: requestMatchFn, Response: response}),
+				helper.Stub(requestMatchFn, response),
 			},
 			Action: func() interface{} {
 				res, err := client.Hello(context.Background(), &hello.HelloRequest{Message: "namastey"})

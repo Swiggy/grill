@@ -55,7 +55,7 @@ func Test_GrillHTTP(t *testing.T) {
 		{
 			Name: "TestMockHTTP_StubPresent",
 			Stubs: []grill.Stub{
-				helper.Stub(&testStub),
+				helper.Stub(testStub.Request, testStub.Response),
 			},
 			Action: func() interface{} {
 				res, err := http.Get(fmt.Sprintf("http://localhost:%s/test", helper.Port()))

@@ -21,9 +21,9 @@ func (gh *HTTP) StubFromJSON(stubStr string) grill.Stub {
 	})
 }
 
-func (gh *HTTP) Stub(stub *Stub) grill.Stub {
+func (gh *HTTP) Stub(request Request, response Response) grill.Stub {
 	return grill.StubFunc(func() error {
-		jsonStr, err := json.Marshal(stub)
+		jsonStr, err := json.Marshal(&Stub{Request: request, Response: response})
 		if err != nil {
 			return err
 		}
