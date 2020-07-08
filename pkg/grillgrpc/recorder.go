@@ -77,7 +77,6 @@ func (r *recorder) count(request *Request) int {
 	if !ok || len(rec.requests) == 0 {
 		return 0
 	}
-
 	matched := 0
 	for _, req := range rec.requests {
 		copyReq := deepcopy.Copy(req)
