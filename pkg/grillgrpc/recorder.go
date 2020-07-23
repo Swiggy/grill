@@ -6,7 +6,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/mohae/deepcopy"
+	"github.com/golang/protobuf/proto"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -79,7 +80,7 @@ func (r *recorder) count(request *Request) int {
 	}
 	matched := 0
 	for _, req := range rec.requests {
-		copyReq := deepcopy.Copy(req)
+		copyReq := proto.Clone(req.(proto.Message))
 		if request.MatchFn == nil {
 			matched++
 		} else {
@@ -99,7 +100,7 @@ func (r *recorder) unaryInterceptor(ctx context.Context, req interface{}, info *
 	}
 	stub := record.stub
 	if stub.Request.MatchFn != nil {
-		copyReq := deepcopy.Copy(req)
+		copyReq := proto.Clone(req.(proto.Message))
 		if !stub.Request.MatchFn(copyReq) {
 			return nil, status.Errorf(codes.Unimplemented, "request match failed for method=%v, request=%v", info.FullMethod, req)
 		}
@@ -110,7 +111,7 @@ func (r *recorder) unaryInterceptor(ctx context.Context, req interface{}, info *
 	time.Sleep(time.Millisecond * time.Duration(record.stub.Response.FixedDelayMilliseconds))
 
 	if stub.Response.TemplateFn != nil {
-		response := deepcopy.Copy(stub.Response.Data)
+		response := proto.Clone(stub.Response.Data.(proto.Message))
 		stub.Response.TemplateFn(req, response)
 		return response, stub.Response.Err
 	}

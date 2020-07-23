@@ -129,11 +129,12 @@ func Test_GrillGRPC(t *testing.T) {
 				helper.Stub(request, templateResponse),
 			},
 			Action: func() interface{} {
-				res, err := client.Hello(context.Background(), &hello.HelloRequest{Message: "hello"})
-				return grill.ActionOutput(res.Message, err)
+				res1, err := client.Hello(context.Background(), &hello.HelloRequest{Message: "hello"})
+				res2, err := client.Hello(context.Background(), &hello.HelloRequest{Message: "noHello"})
+				return grill.ActionOutput(res1.Message, res2.Message, err)
 			},
 			Assertions: []grill.Assertion{
-				grill.AssertOutput("hello", nil),
+				grill.AssertOutput("hello", "Hi!", nil),
 				&codeAssertion{expected: codes.OK},
 			},
 			Cleaners: []grill.Cleaner{
@@ -162,13 +163,15 @@ func Test_GrillGRPC(t *testing.T) {
 				helper.Stub(requestMatchFn, response),
 			},
 			Action: func() interface{} {
-				res, err := client.Hello(context.Background(), &hello.HelloRequest{Message: "namastey"})
-				return grill.ActionOutput(res.Message, err)
+				res1, err := client.Hello(context.Background(), &hello.HelloRequest{Message: "namastey"})
+				res2, err := client.Hello(context.Background(), &hello.HelloRequest{Message: "namastey"})
+				_, _ = client.Hello(context.Background(), &hello.HelloRequest{Message: "hello"})
+				return grill.ActionOutput(res1.Message, res2.Message, err)
 			},
 			Assertions: []grill.Assertion{
-				grill.AssertOutput("Hi!", nil),
+				grill.AssertOutput("Hi!", "Hi!", nil),
 				&codeAssertion{expected: codes.OK},
-				helper.AssertCount(requestMatchFn, 1),
+				helper.AssertCount(requestMatchFn, 2),
 			},
 			Cleaners: []grill.Cleaner{
 				helper.ResetAllStubs(),
