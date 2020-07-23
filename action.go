@@ -2,8 +2,9 @@ package grill
 
 import (
 	"fmt"
-	"github.com/gogo/protobuf/proto"
 	"reflect"
+
+	"github.com/gogo/protobuf/proto"
 )
 
 var Any = struct{}{}

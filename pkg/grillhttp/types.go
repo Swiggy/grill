@@ -12,16 +12,16 @@ type BasicAuthCredentials struct {
 }
 
 type Request struct {
-	Method               string                    `json:"method,omitempty"`
-	Url                  string                    `json:"url,omitempty"`
-	UrlPath              string                    `json:"urlPath,omitempty"`
-	UrlPathPattern       string                    `json:"urlPathPattern,omitempty"`
-	UrlPattern           string                    `json:"urlPattern,omitempty"`
-	QueryParameters      map[string]MatchCondition `json:"queryParameters,omitempty"`
-	Headers              map[string]MatchCondition `json:"headers,omitempty"`
-	BodyPatterns         map[string]MatchCondition `json:"bodyPatterns,omitempty"`
-	Cookies              map[string]MatchCondition `json:"cookies,omitempty"`
-	BasicAuthCredentials *BasicAuthCredentials     `json:"basicAuthCredentials,omitempty"`
+	Method               string                      `json:"method,omitempty"`
+	Url                  string                      `json:"url,omitempty"`
+	UrlPath              string                      `json:"urlPath,omitempty"`
+	UrlPathPattern       string                      `json:"urlPathPattern,omitempty"`
+	UrlPattern           string                      `json:"urlPattern,omitempty"`
+	QueryParameters      map[string]MatchCondition   `json:"queryParameters,omitempty"`
+	Headers              map[string]MatchCondition   `json:"headers,omitempty"`
+	Cookies              map[string]MatchCondition   `json:"cookies,omitempty"`
+	BodyPatterns         []map[string]MatchCondition `json:"bodyPatterns,omitempty"`
+	BasicAuthCredentials *BasicAuthCredentials       `json:"basicAuthCredentials,omitempty"`
 }
 
 type Response struct {
