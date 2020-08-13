@@ -1,6 +1,6 @@
 module bitbucket.org/swigy/grill
 
-go 1.13.6
+go 1.13
 
 require (
 	bitbucket.org/swigy/dp-client-go v0.0.0-20200211110009-18ae08fea1be
