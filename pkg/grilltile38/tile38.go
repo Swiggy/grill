@@ -29,8 +29,8 @@ func (gt *Tile38) Port() string {
 	return gt.tile38.Port
 }
 
-func (gt *Tile38) Client() redis.Conn {
-	return gt.tile38.Client
+func (gt *Tile38) Pool() *redis.Pool {
+	return gt.tile38.Pool
 }
 
 func (gt *Tile38) Stop(ctx context.Context) error {

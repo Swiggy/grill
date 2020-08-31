@@ -4,7 +4,10 @@ import "bitbucket.org/swigy/grill"
 
 func (gt *Tile38) FlushDB() grill.Cleaner {
 	return grill.CleanerFunc(func() error {
-		_, err := gt.Client().Do("flushdb")
+		conn := gt.Pool().Get()
+		defer conn.Close()
+
+		_, err := conn.Do("flushdb")
 		return err
 	})
 }

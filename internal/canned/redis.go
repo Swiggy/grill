@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/docker/docker/client"
 
@@ -16,9 +17,9 @@ type Redis struct {
 	Container    testcontainers.Container
 	DockerClient *client.Client
 
-	Host   string
-	Port   string
-	Client redis.Conn
+	Host string
+	Port string
+	Pool *redis.Pool
 }
 
 func NewRedis(ctx context.Context) (*Redis, error) {
@@ -42,9 +43,12 @@ func NewRedis(ctx context.Context) (*Redis, error) {
 	host, _ := container.Host(ctx)
 	port, _ := container.MappedPort(ctx, "6379")
 
-	rediClient, err := redis.Dial("tcp", fmt.Sprintf("%s:%s", host, port.Port()))
-	if err != nil {
-		return nil, fmt.Errorf("error dialing redis, error: %v", err)
+	redisPool := &redis.Pool{
+		MaxIdle:     3,
+		IdleTimeout: 240 * time.Second,
+		Dial: func() (redis.Conn, error) {
+			return redis.Dial("tcp", fmt.Sprintf("%s:%s", host, port.Port()))
+		},
 	}
 
 	dockerClient, err := client.NewClientWithOpts(client.FromEnv)
@@ -56,8 +60,8 @@ func NewRedis(ctx context.Context) (*Redis, error) {
 		Container:    container,
 		DockerClient: dockerClient,
 
-		Host:   host,
-		Port:   port.Port(),
-		Client: rediClient,
+		Host: host,
+		Port: port.Port(),
+		Pool: redisPool,
 	}, nil
 }

@@ -8,7 +8,10 @@ import (
 
 func (gr *Redis) AssertValue(key, expected string) grill.Assertion {
 	return grill.AssertionFunc(func() error {
-		output, err := gr.Client().Do("GET", key)
+		conn := gr.Pool().Get()
+		defer conn.Close()
+
+		output, err := conn.Do("GET", key)
 		if err != nil {
 			return err
 		}

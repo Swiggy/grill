@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/docker/docker/client"
 	"github.com/gomodule/redigo/redis"
@@ -15,9 +16,9 @@ type Tile38 struct {
 	Container    testcontainers.Container
 	DockerClient *client.Client
 
-	Host   string
-	Port   string
-	Client redis.Conn
+	Host string
+	Port string
+	Pool *redis.Pool
 }
 
 func NewTile38(ctx context.Context) (*Tile38, error) {
@@ -41,12 +42,19 @@ func NewTile38(ctx context.Context) (*Tile38, error) {
 	host, _ := container.Host(ctx)
 	port, _ := container.MappedPort(ctx, "9851")
 
-	redisClient, err := redis.Dial("tcp", fmt.Sprintf("%s:%s", host, port.Port()))
-	if err != nil {
-		return nil, fmt.Errorf("error dialing redis, error: %v", err)
-	}
-	if err := redisClient.Send("OUTPUT", "json"); err != nil {
-		return nil, fmt.Errorf("error setting output-json, error: %v", err)
+	redisPool := &redis.Pool{
+		MaxIdle:     3,
+		IdleTimeout: 240 * time.Second,
+		Dial: func() (redis.Conn, error) {
+			conn, err := redis.Dial("tcp", fmt.Sprintf("%s:%s", host, port.Port()))
+			if err != nil {
+				return nil, err
+			}
+			if err := conn.Send("OUTPUT", "json"); err != nil {
+				return nil, fmt.Errorf("error setting output-json, error: %v", err)
+			}
+			return conn, nil
+		},
 	}
 
 	dockerClient, err := client.NewClientWithOpts(client.FromEnv)
@@ -58,8 +66,8 @@ func NewTile38(ctx context.Context) (*Tile38, error) {
 		Container:    container,
 		DockerClient: dockerClient,
 
-		Host:   host,
-		Port:   port.Port(),
-		Client: redisClient,
+		Host: host,
+		Port: port.Port(),
+		Pool: redisPool,
 	}, nil
 }
