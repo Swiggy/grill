@@ -28,8 +28,8 @@ func (gr *Redis) Port() string {
 	return gr.redis.Port
 }
 
-func (gr *Redis) Client() redis.Conn {
-	return gr.redis.Client
+func (gr *Redis) Pool() *redis.Pool {
+	return gr.redis.Pool
 }
 
 func (gr *Redis) Stop(ctx context.Context) error {

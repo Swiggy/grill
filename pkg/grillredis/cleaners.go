@@ -4,7 +4,10 @@ import "bitbucket.org/swigy/grill"
 
 func (gr *Redis) FlushDB() grill.Cleaner {
 	return grill.CleanerFunc(func() error {
-		_, err := gr.Client().Do("flushdb")
+		conn := gr.Pool().Get()
+		defer conn.Close()
+
+		_, err := conn.Do("flushdb")
 		return err
 	})
 }
