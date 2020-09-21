@@ -37,6 +37,10 @@ func (gd *Dynamo) AssertItem(input *dynamodb.GetItemInput, expected interface{})
 			return err
 		}
 
+		if len(output.Item) == 0 && len(want) == 0 {
+			return nil
+		}
+
 		if !reflect.DeepEqual(output.Item, want) {
 			return fmt.Errorf("invalid item, got=%v, want=%v", output.Item, want)
 		}
