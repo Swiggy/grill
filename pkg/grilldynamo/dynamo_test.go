@@ -68,6 +68,26 @@ func Test_GrillDynamo(t *testing.T) {
 				helper.DeleteTable(tableName),
 			},
 		},
+		{
+			Name: "TestDynamo_ItemNotFound",
+			Stubs: []grill.Stub{
+				helper.CreateTable(testTableRequest),
+				helper.SeedDataFromFile(tableName, "test_data/db.seed"),
+			},
+			Action: func() interface{} {
+				return nil
+			},
+			Assertions: []grill.Assertion{
+				helper.AssertScanCount(&dynamodb.ScanInput{TableName: aws.String(tableName)}, 3),
+				helper.AssertItem(&dynamodb.GetItemInput{
+					TableName: aws.String(tableName),
+					Key:       map[string]*dynamodb.AttributeValue{"PartitionKey": {S: aws.String("4")}},
+				}, nil),
+			},
+			Cleaners: []grill.Cleaner{
+				helper.DeleteTable(tableName),
+			},
+		},
 	}
 
 	grill.Run(t, tests)
