@@ -18,6 +18,16 @@ func (gd *Dynamo) CreateTable(req *dynamodb.CreateTableInput) grill.Stub {
 	})
 }
 
+func (gd *Dynamo) PutItem(tableName string, item map[string]*dynamodb.AttributeValue) grill.Stub {
+	return grill.StubFunc(func() error {
+		_, err := gd.dynamo.Client.PutItem(&dynamodb.PutItemInput{
+			TableName: aws.String(tableName),
+			Item:      item,
+		})
+		return err
+	})
+}
+
 // Reads a File containing json objects and puts them in DynamoDB.
 // Each Line represents a new item
 //
