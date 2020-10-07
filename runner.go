@@ -1,6 +1,7 @@
 package grill
 
 import (
+	"sync"
 	"testing"
 )
 
@@ -11,7 +12,16 @@ func Run(t *testing.T, testCases []TestCase) {
 }
 
 func RunParallel(t *testing.T, testCases []TestCase) {
+	wg := &sync.WaitGroup{}
+	wg.Add(len(testCases))
+
 	for _, testCase := range testCases {
-		go testCase.Run(t)
+		go func(tt TestCase, wg *sync.WaitGroup) {
+			defer wg.Done()
+
+			testCase.Run(t)
+		}(testCase, wg)
 	}
+
+	wg.Wait()
 }
