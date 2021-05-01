@@ -1,0 +1,39 @@
+templateVersion: 2.0
+meta:
+  org: "mfp"
+  pod: "location-platform"
+  name: "grill"
+  tier: 1
+  version: "1.0"
+  qualityGateName: "MFP"
+  frameworks:
+    - name: "go"
+      version: "Go_1.13.6"
+
+pipeline:
+  stages:
+    - name: "CI - Test Build"
+      env: "ci"
+      actions:
+        - type: "test"
+          name: "test"
+          params:
+            command: "make coverage"
+        - type: "codeCoverage"
+          name: "coverage"
+          params:
+            exclusions: "**/*.yaml, **/*.json, **/go.*, **/*_test.go"
+            inclusions: ""
+            coverageExclusions: "**/mock/**"
+            testExclusions: ""
+            testInclusions: ""
+            cpdExclusions: ""
+            coverageReportPaths: "coverage.out"
+            customArgs: ""
+
+ciSetup:
+  baseContainer:
+    name: "ubuntu-dind"
+    resources:
+      cpu: "2"
+      memory: "8Gi"
