@@ -6,7 +6,7 @@ setup:
 
 .PHONY: coverage
 coverage: setup
-	go test -count=1 -covermode=atomic -coverprofile=coverage.out ./...
+	go test -count=1 -covermode=atomic -coverpkg=./... -coverprofile=coverage.out ./...
 
 clean:
 	rm -rf coverage*.out
