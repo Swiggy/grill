@@ -49,7 +49,7 @@ func NewMinio(ctx context.Context) (*Minio, error) {
 
 	host, _ := container.Host(ctx)
 	port, _ := container.MappedPort(ctx, "9000")
-	accessKey, secretKey, region := "minioadmin", "minioadmin", "ap-southeast-1"
+	accessKey, secretKey, region := "random", "random", "ap-southeast-1"
 
 	s3Endpoint := fmt.Sprintf("http://%s:%s", host, port.Port())
 	awsSession, err := session.NewSession(&aws.Config{
