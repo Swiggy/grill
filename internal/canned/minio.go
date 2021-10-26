@@ -30,12 +30,18 @@ type Minio struct {
 
 func NewMinio(ctx context.Context) (*Minio, error) {
 	os.Setenv("TC_HOST", "localhost")
+	accessKey, secretKey, region := "awsaccesskey", "awssecretkey", "ap-southeast-1"
+
 	req := testcontainers.ContainerRequest{
 		Image:        "minio/minio",
 		ExposedPorts: []string{"9000/tcp"},
 		WaitingFor:   wait.ForListeningPort("9000/tcp"),
 		Cmd:          []string{"server", "/data"},
-		AutoRemove:   true,
+		Env: map[string]string{
+			"MINIO_ROOT_USER":     accessKey,
+			"MINIO_ROOT_PASSWORD": secretKey,
+		},
+		AutoRemove: true,
 	}
 
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
@@ -49,7 +55,6 @@ func NewMinio(ctx context.Context) (*Minio, error) {
 
 	host, _ := container.Host(ctx)
 	port, _ := container.MappedPort(ctx, "9000")
-	accessKey, secretKey, region := "minioadmin", "minioadmin", "ap-southeast-1"
 
 	s3Endpoint := fmt.Sprintf("http://%s:%s", host, port.Port())
 	awsSession, err := session.NewSession(&aws.Config{
