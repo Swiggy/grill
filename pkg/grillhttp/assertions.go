@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"bitbucket.org/swigy/grill"
+	"github.com/swiggy-private/grill"
 )
 
 func (gh *HTTP) AssertCount(request *Request, expectedCount int) grill.Assertion {

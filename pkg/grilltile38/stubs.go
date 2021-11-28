@@ -1,7 +1,7 @@
 package grilltile38
 
 import (
-	"bitbucket.org/swigy/grill"
+	"github.com/swiggy-private/grill"
 )
 
 func (gt *Tile38) SetObject(key string, id string, object string) grill.Stub {

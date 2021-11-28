@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"bitbucket.org/swigy/grill"
+	"github.com/swiggy-private/grill"
 )
 
 func (gdp *DP) FlushAllEvents() grill.Cleaner {

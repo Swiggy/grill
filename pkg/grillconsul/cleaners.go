@@ -1,6 +1,6 @@
 package grillconsul
 
-import "bitbucket.org/swigy/grill"
+import "github.com/swiggy-private/grill"
 
 func (gc *Consul) DeleteAllKeys() grill.Cleaner {
 	return grill.CleanerFunc(func() error {

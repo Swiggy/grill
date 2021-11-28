@@ -6,7 +6,7 @@ import (
 
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 
-	"bitbucket.org/swigy/grill"
+	"github.com/swiggy-private/grill"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 )

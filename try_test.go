@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"bitbucket.org/swigy/grill/mock"
+	"github.com/swiggy-private/grill/mock"
 	"github.com/golang/mock/gomock"
 )
 

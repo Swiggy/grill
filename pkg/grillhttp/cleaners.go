@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"bitbucket.org/swigy/grill"
+	"github.com/swiggy-private/grill"
 )
 
 func (gh *HTTP) ResetAllStubs() grill.Cleaner {

@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"bitbucket.org/swigy/grill"
+	"github.com/swiggy-private/grill"
 )
 
 const createTaskTableQuery = `CREATE TABLE task (

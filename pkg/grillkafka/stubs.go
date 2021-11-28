@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"bitbucket.org/swigy/grill"
+	"github.com/swiggy-private/grill"
 	confluent "github.com/confluentinc/confluent-kafka-go/kafka"
 )
 

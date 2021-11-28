@@ -7,7 +7,7 @@ import (
 	"sort"
 	"strings"
 
-	"bitbucket.org/swigy/grill"
+	"github.com/swiggy-private/grill"
 	"github.com/xeipuuv/gojsonschema"
 )
 

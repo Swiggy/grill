@@ -3,7 +3,7 @@ package grillconsul
 import (
 	"context"
 
-	"bitbucket.org/swigy/grill/internal/canned"
+	"github.com/swiggy-private/grill/internal/canned"
 	"github.com/hashicorp/consul/api"
 )
 

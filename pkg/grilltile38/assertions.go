@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"reflect"
 
-	"bitbucket.org/swigy/grill"
+	"github.com/swiggy-private/grill"
 	"github.com/gomodule/redigo/redis"
 )
 
