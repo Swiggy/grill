@@ -1,6 +1,6 @@
 package grillgrpc
 
-import "bitbucket.org/swigy/grill"
+import "github.com/swiggy-private/grill"
 
 func (gg *GRPC) ResetAllStubs() grill.Cleaner {
 	return grill.CleanerFunc(func() error {

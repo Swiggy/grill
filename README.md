@@ -70,7 +70,7 @@ grill.Run(t, tests)
 * * *
 ##### Download
 ```
-go get bitbucket.org/swigy/grill
+go get github.com/swiggy-private/grill
 ```
 
 ##### Actions

@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"bitbucket.org/swigy/grill/internal/canned"
+	"github.com/swiggy-private/grill/internal/canned"
 )
 
 type DP struct {

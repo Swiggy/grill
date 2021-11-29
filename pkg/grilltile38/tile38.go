@@ -3,7 +3,7 @@ package grilltile38
 import (
 	"context"
 
-	"bitbucket.org/swigy/grill/internal/canned"
+	"github.com/swiggy-private/grill/internal/canned"
 	"github.com/gomodule/redigo/redis"
 )
 

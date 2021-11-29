@@ -7,7 +7,7 @@ import (
 	"log"
 	"os"
 
-	"bitbucket.org/swigy/grill"
+	"github.com/swiggy-private/grill"
 	"github.com/hashicorp/consul/api"
 )
 

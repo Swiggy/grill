@@ -3,7 +3,7 @@ package grillhttp
 import (
 	"context"
 
-	"bitbucket.org/swigy/grill/internal/canned"
+	"github.com/swiggy-private/grill/internal/canned"
 )
 
 type HTTP struct {

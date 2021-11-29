@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	dataplatform "bitbucket.org/swigy/dp-client-go"
-	"bitbucket.org/swigy/grill"
+	dataplatform "github.com/swiggy-private/dp-client-go"
+	"github.com/swiggy-private/grill"
 )
 
 const (
