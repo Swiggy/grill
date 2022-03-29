@@ -1,7 +1,7 @@
 templateVersion: 2.0
 meta:
   org: "mfp"
-  pod: "location-platform"
+  pod: "fulfillment"
   name: "grill"
   tier: 1
   version: "1.0"

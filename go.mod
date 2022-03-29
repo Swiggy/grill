@@ -11,6 +11,7 @@ require (
 	github.com/golang/mock v1.4.3
 	github.com/golang/protobuf v1.4.3
 	github.com/gomodule/redigo v2.0.0+incompatible
+	github.com/google/uuid v1.2.0
 	github.com/hashicorp/consul/api v1.5.0
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d // indirect
 	github.com/swiggy-private/dp-client-go v0.0.0-20200211110009-18ae08fea1be
