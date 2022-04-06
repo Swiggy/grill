@@ -2,8 +2,8 @@ package grills3
 
 import (
 	"context"
+	"github.com/swiggy-private/grill/canned"
 
-	"github.com/swiggy-private/grill/internal/canned"
 	"github.com/aws/aws-sdk-go/service/s3/s3iface"
 )
 

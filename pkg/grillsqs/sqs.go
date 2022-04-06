@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/sqs"
 	"github.com/aws/aws-sdk-go/service/sqs/sqsiface"
-	"github.com/swiggy-private/grill/internal/canned"
+	"github.com/swiggy-private/grill/canned"
 )
 
 type SQS struct {
