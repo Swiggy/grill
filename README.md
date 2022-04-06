@@ -1,4 +1,4 @@
-![Grill](https://image.flaticon.com/icons/png/128/114/114873.png) **Grill**
+**Grill**
 ---
 ---
 Grill your application.
@@ -6,15 +6,14 @@ Grill your application.
 ## Motivation
 * * *
 * Reduce the overload of writing Functional Tests at the same time better their quality.
-* Functional Tests should test the behaviour of your application, without any knowledge of its internals(Behaviour Driven Testing/Black Box Testing).
-* Functional Tests should be declarative, so its easy to read, understand and review them.
-* There should be an easy way to mock external dependencies and setup infra components.
+* Functional Tests should test the behaviour of your application, without any knowledge of its internals (Behaviour Driven/ Black Box Tests).
+* Functional Tests should be declarative, so it's easy to read, understand and review them.
+* Provide an easy way to mock external dependencies and setup infra components.
 
 
 ## How it Works
 * * *
 * It defines a testcase using a list of stubs, assertions and cleaners and an Action method to invoke the public api of your application.
-* This pattern has organically emerged from writing functional tests using the original oh-my-test-helper project.
 ```
 type Stub interface {
 	Stub() error
@@ -49,22 +48,19 @@ grill.Run(t, tests)
 * For external/upstream/downstream services it provides mocking utilities for http and grpc.
 
 
-| Grill                    | Available | Stubs                                  | Assertions  | Cleaners                     |
-|--------------------------|---|----------------------------------------|---|------------------------------|
-| HTTP (wiremock)          | yes | Stub, StubFromJSON, StubFromFile       | AssertCount  | ResetAllStubs                |
-| GRPC                     | yes | Stub                                   | AssertCount | ResetAllStubs                |
-| DynamoDB                 | yes | CreateTable, SeedDataFromFile, PutItem | AssertScanCount, AssertItem  | DeleteTable, DeleteItem      |
-| Kafka                    | yes | CreateTopics                           | AssertCount, AssertMessageCount | DeleteTopics                 |
-| Redis                    | yes | SelectDB, Set                          | AssertValue | FlushDB                      |
-| Mysql                    | yes | CreateTable, SeedFromCSVFile           | AssertCount | DeleteTable                  |
-| S3 (minio)               | yes | CreateBucket, UploadFile               | AssertFileExists | DeleteBucket, DeleteAllFiles |
-| Tile38                   | yes | SetObject                              | AssertObject  | FlushDB                      |
-| Consul                   | yes| SeedFromCSVFile, Set                   | AssertValue | DeleteAllKeys                |
-| SQS                      | yes| CreateQueue                            | AssertCount, AssertMessageCount | DeleteQueues                 |
-| Prometheus               | no |                                        |  |                              | 
-| ---                      |---| ---                                    |---| ---                          |
-| Data Platform            | yes |                                        | AssertRegisteredApps, AssertCount, AssertValidSchema | FlushAllEvents               | 
-| Experimentation platform | no|                                        | |                              |
+| Grill                    | Stubs                                  | Assertions  | Cleaners                     |
+|--------------------------|----------------------------------------|---|------------------------------|
+| HTTP (wiremock)          | Stub, StubFromJSON, StubFromFile       | AssertCount  | ResetAllStubs                |
+| GRPC                     | Stub                                   | AssertCount | ResetAllStubs                |
+| DynamoDB                 | CreateTable, SeedDataFromFile, PutItem | AssertScanCount, AssertItem  | DeleteTable, DeleteItem      |
+| Kafka                    | CreateTopics                           | AssertCount, AssertMessageCount | DeleteTopics                 |
+| Redis                    | SelectDB, Set                          | AssertValue | FlushDB                      |
+| Mysql                    | CreateTable, SeedFromCSVFile           | AssertCount | DeleteTable                  |
+| S3 (minio)               | CreateBucket, UploadFile               | AssertFileExists | DeleteBucket, DeleteAllFiles |
+| Tile38                   | SetObject                              | AssertObject  | FlushDB                      |
+| Consul                   | SeedFromCSVFile, Set                   | AssertValue | DeleteAllKeys                |
+| SQS                      | CreateQueue                            | AssertCount, AssertMessageCount | DeleteQueues                 |
+
 
  
 ## Usage 
