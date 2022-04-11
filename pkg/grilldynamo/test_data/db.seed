@@ -1,3 +1,0 @@
-{"PartitionKey": "1", "Name": "one"}
-{"PartitionKey": "2", "Name": "two"}
-{"PartitionKey": "3", "Name": {"Value": "three"}}
