@@ -1,19 +1,16 @@
-**Grill**
----
----
-Grill your application.
-
 ## Motivation
-* * *
-* Reduce the overload of writing Functional Tests at the same time better their quality.
-* Functional Tests should test the behaviour of your application, without any knowledge of its internals (Behaviour Driven/ Black Box Tests).
-* Functional Tests should be declarative, so it's easy to read, understand and review them.
-* Provide an easy way to mock external dependencies and setup infra components.
+The behavior of any system should be tested only from the user's perspective, as if its done without any knowledge of its internal implementation, i.e. the System Under Test(SUT) should be a black box for the test. In the test we call the public API of the SUT, validate the response and any outgoing requests/messages.
+
+This decouples the test from the actual system and allows us to change the implementation without any change in the test cases.
+
+All tests, be it unit tests, service level tests or end to end integration tests, should follow the same methodology, only the SUT changes in all cases.
+
+![test](https://github.com/Swiggy/grill/blob/media/testing.png?raw=true)
 
 
-## How it Works
-* * *
-* It defines a testcase using a list of stubs, assertions and cleaners and an Action method to invoke the public api of your application.
+## Grill
+Grill is a testing utility which extends the above principle and provides a declarative way for writing service level tests. The core framework defines a TestCase struct with interfaces for stubs, assertions and cleaners.
+
 ```
 type Stub interface {
 	Stub() error
@@ -29,24 +26,21 @@ type Cleaner interface {
 
 type TestCase struct {
 	Name       string
-	Stubs      []Stub
-	Action     func() interface{}
-	Assertions []Assertion
-	Cleaners   []Cleaner
+	Stubs      []Stub              // Setup all mocks, stubs etc. Inject them as required. 
+	Action     func() interface{}  // Call the public API of the SUT (http call, kafka publish etc) 
+	Assertions []Assertion         // Validate the response received, outgoing requests made. 
+	Cleaners   []Cleaner           // Undo all the mocks and reset the state for the next test.
+
 }
 ```
 
-* Grill has it own test case runner which takes in a slice of testcases and runs them.
-```	
-tests := []grill.TestCases{}
-grill.Run(t, tests)
-```
+The core framework can be used for any type of tests, we just have to provide required implementations of stubs, assertions and cleaners.
 
-## Features
-* * *
-* Grill provides Inbuilt helpers(stubs,assertions,cleaners) and initializers for most of the infra dependencies we use.
-* For external/upstream/downstream services it provides mocking utilities for http and grpc.
+But since the library was built for aiding in service level tests, it provides helpers(stubs, assertions, cleaners implementations) for commonly used infra dependencies like dynamodb, redis, grpc/http downstreams, kafka etc out of the box.
 
+It uses testcontainers-go underneath for dockers.
+
+## Supported Features
 
 | Grill                    | Stubs                                  | Assertions  | Cleaners                     |
 |--------------------------|----------------------------------------|---|------------------------------|
@@ -61,127 +55,7 @@ grill.Run(t, tests)
 | Consul                   | SeedFromCSVFile, Set                   | AssertValue | DeleteAllKeys                |
 | SQS                      | CreateQueue                            | AssertCount, AssertMessageCount | DeleteQueues                 |
 
-
- 
-## Usage 
-* * *
-##### Download
-```
-go get github.com/swiggy-private/grill
-```
-
-##### Actions
-
-* Use Actions to call the public API of your application. eg - http request, grpc method, kafka produce.
-* Return the output to assert on.
-* Use `grill.ActionOutput(out ...interface)` to return multiple outputs.
-* Grill has an in build assertion `grill.AssertOutput(outputs ...interface)` to compare the output using reflect.DeepEqual. Use grill.Any to skip a particular field.
-
-```
-action := func() interface{} {
-    res, err := http.Get("http://www.google.com")
-    return grill.ActionOutput(res, err)
-}
-
-grill.AssertOutput(grill.Any, nil)
-```
-
-##### Starting/Stopping a Grill
-* To Start/Stop one Grill 
-```
-grl := grillHTTP.HTTP{}
-err := grl.Start(context.Background())
-err := grl.Stop(context.Background())
-``` 
-* To Start/Stop Multiple Grills 
-```
-grills := Grills{
-    HTTP:   &grillHTTP.HTTP{},
-    GRPC:   &grillGRPC.GRPC{},
-    Dynamo: &grillDynamo.Dynamo{},
-}
-err := grill.StartAll(context.Background(), grills.HTTP, grills.GRPC, grills.Dynamo)
-err := grill.StopAll(context.Background(), grills.HTTP, grills.GRPC, grills.Dynamo)
-``` 
-
-##### Writing Tests
-```
-testStub = grillhttp.Stub{
-    Request: grillhttp.Request{Method:"GET",UrlPath:"/test"},
-    Response: grillhttp.Response{Status: 200,Body: "PASS"},
-}
-
-tests := []grill.TestCase{
-    {
-        Name: "TestHTTPStub",
-        Stubs: []grill.Stub{
-            grl.Stub(&testStub),
-        },
-        Action: func() interface{} {
-            res, err := http.Get(fmt.Sprintf("http://localhost:%s/test", grl.Port()))
-            if err != nil {
-                return err
-            }
-            if res == nil || res.Body == nil {
-                return nil
-            }
-            defer res.Body.Close()
-            got, _ := ioutil.ReadAll(res.Body)
-    
-            return grill.ActionOutput(string(got), res.StatusCode, err)
-        },
-        Assertions: []grill.Assertion{
-            grill.AssertOutput("PASS", http.StatusOK, nil),
-            grl.AssertCount(&testStub.Request, 1),
-            
-            // Check Items in Database, messages in kafka topics, dp events etc.
-        },
-        Cleaners: []grill.Cleaner{
-            grl.ResetAllStubs(),
-        },
-    },
-}
-```
-##### Running Tests
-* To run a single test use `Run()` method on the testcase.
-* To run multiple tests use `grill.Run(t, tests)`.
-* To run tests in parallel use `grill.RunParallel(t, tests)`. Only use this if your tests don't share state. 
-```
-test := grill.TestCase{}
-test.Run(t)
-
-tests := []grill.TestCase{test, test, test}
-grill.Run(t, tests) 
-OR
-grill.RunParallel(t, tests)
-```
-
-
-##### Testing Async Flows
-* Use `grill.Try(deadline, minSuccess, assertion)` method to test async flows, like kafka, dp etc.
-* It fails if an assertion is not successful minSuccess times in the given deadline.
-* As a best practice keep minSuccess > 1 to make sure the assertion didn't succeed in an intermediate state.
-```
-grill.Try(time.Second, 3, grill.AssertOutput("PASS", http.StatusOK, nil))
-```
-
-##### Testing Negative Assertions
-* To test assertions which should fail, wrap them using `grill.Not(assertion)`.
-```
-grill.Not(grill.AssertOutput("PASS", http.StatusOK, nil))
-```
-
-##### Writing Custom Stubs, Assertions and Cleaners
-* Implement the Interface.
-* Wrap a function using `grill.StubFunc(fn)`, `grill.AssertionFunc(fn)` or `grill.CleanerFunc(fn)`.
-```
-grill.AssertFunc(func() error {
-    return fmt.Errorf("i will always fail")
-}) 
-
-```
 ## Why write functional tests at all ??
 * * *
 Ans:
 ![umbrella](https://media.tenor.com/images/74be340020f6b91b66065b51abae7a76/tenor.gif)
-
