@@ -9,7 +9,7 @@ All tests, be it unit tests, service level tests or end to end integration tests
 
 
 ## Grill
-Grill is a testing utility which extends the above principle and provides a declarative way for writing service level tests. The core framework defines a TestCase struct with interfaces for stubs, assertions and cleaners.
+Grill is a testing utility which extends the above principle and provides a declarative way for writing service level test. The core framework defines a TestCase struct with interfaces for stubs, assertions and cleaners.
 
 ```
 type Stub interface {
