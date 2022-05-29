@@ -1,5 +1,9 @@
 package grill
 
+type Stub2 interface {
+	Stub2() error
+}
+
 type Stub interface {
 	Stub() error
 }
