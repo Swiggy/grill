@@ -1,4 +1,4 @@
-## Motivation
+fhdgfdfghdgfhkdgfke## Motivation
 The behavior of any system should be tested only from the user's perspective, as if its done without any knowledge of its internal implementation, i.e. the System Under Test(SUT) should be a black box for the test. In the test we call the public API of the SUT, validate the response and any outgoing requests/messages.
 
 This decouples the test from the actual system and allows us to change the implementation without any change in the test cases.
