@@ -1,4 +1,5 @@
-## Motivation
+# Grill - A test framework for functional validation of golang microservices
+## Background
 The behavior of any system should be tested only from the user's perspective, as if its done without any knowledge of its internal implementation, i.e. the System Under Test(SUT) should be a black box for the test. In the test we call the public API of the SUT, validate the response and any outgoing requests/messages.
 
 This decouples the test from the actual system and allows us to change the implementation without any change in the test cases.
@@ -7,9 +8,21 @@ All tests, be it unit tests, service level tests or end to end integration tests
 
 ![test](https://github.com/Swiggy/grill/blob/media/testing.png?raw=true)
 
+## Motivation
+With rapid adoption of microservices architecture at Swiggy, we realized the limitation of unit tests. Especially for I/O bound microservice which 
+typically engage in data transformation, interaction with downstream dependencies and infrastructural components (e.g. database, queues, 
+cache etc.) to implement business logic, unit tests have limited value. It was more important to test the API surface of the microservice 
+with all of its infrastructure components such that the complete behaviour of the microservice can be validated. In this type of test, the 
+microservices along with its infrastructure dependencies in installed locally and the test client invokes the public APIs and validates output via 
+both API response and via storage layer validation(e.g. checking the output of a queue). We coined a term for this type of test - Service Level Testing (SLT). 
+
+While individual microservices could develop their own test framework along with mocking, container management for infra components, we developed a utility 
+that drastically reduced the cost of writing SLT test cases. Once the tool was widely adopted within Swiggy, we decided to open source 
+this tool to give back to the community and solicit more contributions.
 
 ## Grill
-Grill is a testing utility which extends the above principle and provides a declarative way for writing service level tests. The core framework defines a TestCase struct with interfaces for stubs, assertions and cleaners.
+Grill is a SLT framework which extends the above principle and provides a declarative way for writing service level tests. The core framework defines a TestCase struct 
+with interfaces for stubs, assertions and cleaners.
 
 ```
 type Stub interface {
