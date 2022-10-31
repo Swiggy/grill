@@ -3,7 +3,7 @@ package grillgrpc
 import (
 	"fmt"
 
-	"github.com/swiggy-private/grill"
+	"github.com/Swiggy/grill"
 )
 
 func (gg *GRPC) AssertCount(request Request, expectedCount int) grill.Assertion {

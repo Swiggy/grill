@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/swiggy-private/grill"
+	"github.com/Swiggy/grill"
 )
 
 var (

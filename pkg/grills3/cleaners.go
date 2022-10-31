@@ -1,7 +1,7 @@
 package grills3
 
 import (
-	"github.com/swiggy-private/grill"
+	"github.com/Swiggy/grill"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/s3"
 )

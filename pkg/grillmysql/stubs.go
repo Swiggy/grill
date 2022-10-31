@@ -3,7 +3,7 @@ package grillmysql
 import (
 	"fmt"
 
-	"github.com/swiggy-private/grill"
+	"github.com/Swiggy/grill"
 	"github.com/go-sql-driver/mysql"
 )
 

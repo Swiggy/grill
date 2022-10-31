@@ -3,7 +3,7 @@ package grillmysql
 import (
 	"fmt"
 
-	"github.com/swiggy-private/grill"
+	"github.com/Swiggy/grill"
 )
 
 func (gm *Mysql) AssertCount(tableName string, expectedCount int) grill.Assertion {

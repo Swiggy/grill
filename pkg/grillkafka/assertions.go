@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/swiggy-private/grill"
+	"github.com/Swiggy/grill"
 )
 
 func (gk *Kafka) AssertCount(topicName string, expectedCount int) grill.Assertion {

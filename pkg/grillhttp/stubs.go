@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/swiggy-private/grill"
+	"github.com/Swiggy/grill"
 )
 
 func (gh *HTTP) StubFromJSON(stubStr string) grill.Stub {
