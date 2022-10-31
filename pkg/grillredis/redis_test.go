@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/swiggy-private/grill"
+	"github.com/Swiggy/grill"
 )
 
 func Test_GrillRedis(t *testing.T) {

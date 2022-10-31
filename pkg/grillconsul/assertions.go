@@ -3,7 +3,7 @@ package grillconsul
 import (
 	"fmt"
 
-	"github.com/swiggy-private/grill"
+	"github.com/Swiggy/grill"
 )
 
 func (gc *Consul) AssertValue(key, expected string) grill.Assertion {

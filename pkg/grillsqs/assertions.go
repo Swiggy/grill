@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/sqs"
-	"github.com/swiggy-private/grill"
+	"github.com/Swiggy/grill"
 	"time"
 )
 

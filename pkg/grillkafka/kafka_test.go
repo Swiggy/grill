@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/swiggy-private/grill"
+	"github.com/Swiggy/grill"
 )
 
 var (
