@@ -2,7 +2,7 @@ package grillredis
 
 import (
 	"context"
-	"github.com/Swiggy/grill/canned"
+	"github.com/lovlin-thakkar/swiggy-grill/canned"
 
 	"github.com/gomodule/redigo/redis"
 )

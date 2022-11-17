@@ -3,8 +3,8 @@ package grillmysql
 import (
 	"fmt"
 
-	"github.com/Swiggy/grill"
 	"github.com/go-sql-driver/mysql"
+	"github.com/lovlin-thakkar/swiggy-grill"
 )
 
 func (gm *Mysql) CreateTable(query string) grill.Stub {

@@ -3,7 +3,7 @@ package grillredis
 import (
 	"fmt"
 
-	"github.com/Swiggy/grill"
+	"github.com/lovlin-thakkar/swiggy-grill"
 )
 
 func (gr *Redis) AssertValue(key, expected string) grill.Assertion {

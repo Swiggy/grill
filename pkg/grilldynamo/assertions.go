@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/Swiggy/grill"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
+	"github.com/lovlin-thakkar/swiggy-grill"
 )
 
 func (gd *Dynamo) AssertScanCount(input *dynamodb.ScanInput, expectedCount int) grill.Assertion {

@@ -1,9 +1,9 @@
 package grills3
 
 import (
-	"github.com/Swiggy/grill"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/lovlin-thakkar/swiggy-grill"
 )
 
 func (gs *S3) DeleteBucket(bucketName string) grill.Cleaner {

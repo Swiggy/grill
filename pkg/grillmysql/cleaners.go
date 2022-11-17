@@ -3,7 +3,7 @@ package grillmysql
 import (
 	"fmt"
 
-	"github.com/Swiggy/grill"
+	"github.com/lovlin-thakkar/swiggy-grill"
 )
 
 func (gm *Mysql) DeleteTable(tableName string) grill.Cleaner {

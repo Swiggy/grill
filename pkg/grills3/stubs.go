@@ -3,9 +3,9 @@ package grills3
 import (
 	"os"
 
-	"github.com/Swiggy/grill"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/lovlin-thakkar/swiggy-grill"
 )
 
 func (gs *S3) CreateBucket(bucketName string) grill.Stub {

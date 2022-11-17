@@ -7,8 +7,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/Swiggy/grill"
 	"github.com/hashicorp/consul/api"
+	"github.com/lovlin-thakkar/swiggy-grill"
 )
 
 // Reads a csv file and puts them in Consul.

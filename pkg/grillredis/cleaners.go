@@ -1,6 +1,6 @@
 package grillredis
 
-import "github.com/Swiggy/grill"
+import "github.com/lovlin-thakkar/swiggy-grill"
 
 func (gr *Redis) FlushDB() grill.Cleaner {
 	return grill.CleanerFunc(func() error {

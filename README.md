@@ -6,7 +6,7 @@ This decouples the test from the actual system and allows us to change the imple
 
 All tests, be it unit tests, service level tests or end to end integration tests, should follow the same methodology, only the SUT changes in all cases.
 
-![test](https://github.com/Swiggy/grill/blob/media/testing.png?raw=true)
+![test](https://github.com/lovlin-thakkar/swiggy-grill/blob/media/testing.png?raw=true)
 
 ## Motivation
 With rapid adoption of microservices architecture at Swiggy, we realized the limitation of unit tests. Especially for I/O bound microservice which 
