@@ -23,6 +23,7 @@ func NewWiremock(ctx context.Context) (*WireMock, error) {
 	os.Setenv("TC_HOST", "localhost")
 	req := testcontainers.ContainerRequest{
 		Image:        "rodolpheche/wiremock",
+		SkipReaper:   true,
 		ExposedPorts: []string{"8080/tcp", "8443/tcp"},
 		WaitingFor:   wait.ForListeningPort("8080"),
 		AutoRemove:   true,
