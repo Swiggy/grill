@@ -32,7 +32,7 @@ type SQS struct {
 
 func NewSQS(ctx context.Context) (*SQS, error) {
 	os.Setenv("TC_HOST", "localhost")
-	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_SKIP_REAPER"))
+	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_RYUK_DISABLED"))
 	req := testcontainers.ContainerRequest{
 		Image:        "softwaremill/elasticmq-native:1.3.6",
 		SkipReaper:   skipReaper,

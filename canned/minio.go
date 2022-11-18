@@ -31,7 +31,7 @@ type Minio struct {
 
 func NewMinio(ctx context.Context) (*Minio, error) {
 	os.Setenv("TC_HOST", "localhost")
-	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_SKIP_REAPER"))
+	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_RYUK_DISABLED"))
 	accessKey, secretKey, region := "awsaccesskey", "awssecretkey", "ap-southeast-1"
 
 	req := testcontainers.ContainerRequest{

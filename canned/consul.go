@@ -23,7 +23,7 @@ type Consul struct {
 
 func NewConsul(ctx context.Context) (*Consul, error) {
 	os.Setenv("TC_HOST", "localhost")
-	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_SKIP_REAPER"))
+	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_RYUK_DISABLED"))
 	req := testcontainers.ContainerRequest{
 		Image:        "consul:1.7.3",
 		SkipReaper:   skipReaper,

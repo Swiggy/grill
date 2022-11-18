@@ -22,7 +22,7 @@ type WireMock struct {
 
 func NewWiremock(ctx context.Context) (*WireMock, error) {
 	os.Setenv("TC_HOST", "localhost")
-	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_SKIP_REAPER"))
+	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_RYUK_DISABLED"))
 	req := testcontainers.ContainerRequest{
 		Image:        "rodolpheche/wiremock",
 		SkipReaper:   skipReaper,

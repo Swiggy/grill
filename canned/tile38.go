@@ -24,7 +24,7 @@ type Tile38 struct {
 
 func NewTile38(ctx context.Context) (*Tile38, error) {
 	os.Setenv("TC_HOST", "localhost")
-	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_SKIP_REAPER"))
+	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_RYUK_DISABLED"))
 	req := testcontainers.ContainerRequest{
 		Image:        "tile38/tile38",
 		SkipReaper:   skipReaper,

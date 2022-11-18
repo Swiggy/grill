@@ -33,7 +33,7 @@ type DynamoDB struct {
 
 func NewDynamoDB(ctx context.Context) (*DynamoDB, error) {
 	os.Setenv("TC_HOST", "localhost")
-	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_SKIP_REAPER"))
+	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_RYUK_DISABLED"))
 	req := testcontainers.ContainerRequest{
 		Image:        "amazon/dynamodb-local",
 		SkipReaper:   skipReaper,
