@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/docker/docker/client"
 	"github.com/hashicorp/consul/api"
@@ -22,8 +23,10 @@ type Consul struct {
 
 func NewConsul(ctx context.Context) (*Consul, error) {
 	os.Setenv("TC_HOST", "localhost")
+	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_SKIP_REAPER"))
 	req := testcontainers.ContainerRequest{
 		Image:        "consul:1.7.3",
+		SkipReaper:   skipReaper,
 		ExposedPorts: []string{"8500/tcp"},
 		WaitingFor:   wait.ForListeningPort("8500"),
 		AutoRemove:   true,

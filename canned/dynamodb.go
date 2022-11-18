@@ -6,6 +6,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
@@ -32,8 +33,10 @@ type DynamoDB struct {
 
 func NewDynamoDB(ctx context.Context) (*DynamoDB, error) {
 	os.Setenv("TC_HOST", "localhost")
+	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_SKIP_REAPER"))
 	req := testcontainers.ContainerRequest{
 		Image:        "amazon/dynamodb-local",
+		SkipReaper:   skipReaper,
 		ExposedPorts: []string{"8000/tcp"},
 		WaitingFor:   wait.ForListeningPort("8000"),
 		AutoRemove:   true,

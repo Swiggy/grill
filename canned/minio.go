@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
@@ -30,10 +31,12 @@ type Minio struct {
 
 func NewMinio(ctx context.Context) (*Minio, error) {
 	os.Setenv("TC_HOST", "localhost")
+	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_SKIP_REAPER"))
 	accessKey, secretKey, region := "awsaccesskey", "awssecretkey", "ap-southeast-1"
 
 	req := testcontainers.ContainerRequest{
 		Image:        "minio/minio",
+		SkipReaper:   skipReaper,
 		ExposedPorts: []string{"9000/tcp"},
 		WaitingFor:   wait.ForListeningPort("9000/tcp"),
 		Cmd:          []string{"server", "/data"},
