@@ -1,7 +1,7 @@
 package grillgrpc
 
 import (
-	"github.com/lovlin-thakkar/swiggy-grill"
+	"github.com/Swiggy/grill"
 )
 
 func (gg *GRPC) Stub(request Request, response Response) grill.Stub {

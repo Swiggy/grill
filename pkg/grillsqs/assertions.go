@@ -2,9 +2,9 @@ package grillsqs
 
 import (
 	"fmt"
+	"github.com/Swiggy/grill"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/sqs"
-	"github.com/lovlin-thakkar/swiggy-grill"
 	"time"
 )
 

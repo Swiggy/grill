@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Swiggy/grill/mock"
 	"github.com/golang/mock/gomock"
-	"github.com/lovlin-thakkar/swiggy-grill/mock"
 )
 
 func TestTry(t *testing.T) {

@@ -1,6 +1,6 @@
 package grillredis
 
-import "github.com/lovlin-thakkar/swiggy-grill"
+import "github.com/Swiggy/grill"
 
 func (gr *Redis) SelectDB(db int) grill.Stub {
 	return grill.StubFunc(func() error {

@@ -3,10 +3,10 @@ package grillsqs
 import (
 	"context"
 	"fmt"
+	"github.com/Swiggy/grill/canned"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/sqs"
 	"github.com/aws/aws-sdk-go/service/sqs/sqsiface"
-	"github.com/lovlin-thakkar/swiggy-grill/canned"
 )
 
 type SQS struct {

@@ -1,4 +1,4 @@
-module github.com/lovlin-thakkar/swiggy-grill
+module github.com/Swiggy/grill
 
 go 1.13
 

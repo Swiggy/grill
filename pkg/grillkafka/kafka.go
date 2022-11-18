@@ -2,7 +2,7 @@ package grillkafka
 
 import (
 	"context"
-	"github.com/lovlin-thakkar/swiggy-grill/canned"
+	"github.com/Swiggy/grill/canned"
 	"time"
 
 	confluent "github.com/confluentinc/confluent-kafka-go/kafka"

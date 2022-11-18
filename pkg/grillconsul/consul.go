@@ -2,7 +2,7 @@ package grillconsul
 
 import (
 	"context"
-	"github.com/lovlin-thakkar/swiggy-grill/canned"
+	"github.com/Swiggy/grill/canned"
 
 	"github.com/hashicorp/consul/api"
 )

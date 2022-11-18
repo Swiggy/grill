@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/Swiggy/grill"
 	"github.com/gomodule/redigo/redis"
-	"github.com/lovlin-thakkar/swiggy-grill"
 )
 
 func (gt *Tile38) AssertObject(key, id string, expected string) grill.Assertion {
