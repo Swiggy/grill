@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/docker/docker/client"
 	"github.com/testcontainers/testcontainers-go"
@@ -21,8 +22,10 @@ type WireMock struct {
 
 func NewWiremock(ctx context.Context) (*WireMock, error) {
 	os.Setenv("TC_HOST", "localhost")
+	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_RYUK_DISABLED"))
 	req := testcontainers.ContainerRequest{
 		Image:        "rodolpheche/wiremock",
+		SkipReaper:   skipReaper,
 		ExposedPorts: []string{"8080/tcp", "8443/tcp"},
 		WaitingFor:   wait.ForListeningPort("8080"),
 		AutoRemove:   true,
