@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"strconv"
 	"time"
 
 	"github.com/docker/docker/client"
@@ -25,10 +24,10 @@ type Redis struct {
 
 func NewRedis(ctx context.Context) (*Redis, error) {
 	os.Setenv("TC_HOST", "localhost")
-	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_RYUK_DISABLED"))
+
 	req := testcontainers.ContainerRequest{
-		Image:        "redis",
-		SkipReaper:   skipReaper,
+		Image:        getEnvString("REDIS_CONTAINER_IMAGE", "redis:7.0.11"),
+		SkipReaper:   skipReaper(),
 		ExposedPorts: []string{"6379/tcp"},
 		WaitingFor:   wait.ForListeningPort("6379"),
 		AutoRemove:   true,

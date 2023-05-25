@@ -3,11 +3,6 @@ package canned
 import (
 	"context"
 	"fmt"
-	"net"
-	"net/http"
-	"os"
-	"strconv"
-
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -17,6 +12,9 @@ import (
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 	"golang.org/x/net/http2"
+	"net"
+	"net/http"
+	"os"
 )
 
 type DynamoDB struct {
@@ -33,10 +31,9 @@ type DynamoDB struct {
 
 func NewDynamoDB(ctx context.Context) (*DynamoDB, error) {
 	os.Setenv("TC_HOST", "localhost")
-	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_RYUK_DISABLED"))
 	req := testcontainers.ContainerRequest{
-		Image:        "amazon/dynamodb-local",
-		SkipReaper:   skipReaper,
+		Image:        getEnvString("DYNAMODB_CONTAINER_IMAGE", "amazon/dynamodb-local:1.13.5"),
+		SkipReaper:   skipReaper(),
 		ExposedPorts: []string{"8000/tcp"},
 		WaitingFor:   wait.ForListeningPort("8000"),
 		AutoRemove:   true,

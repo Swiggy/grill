@@ -3,12 +3,10 @@ package canned
 import (
 	"context"
 	"fmt"
-	"os"
-	"strconv"
-
 	"github.com/docker/docker/client"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
+	"os"
 )
 
 type WireMock struct {
@@ -22,10 +20,10 @@ type WireMock struct {
 
 func NewWiremock(ctx context.Context) (*WireMock, error) {
 	os.Setenv("TC_HOST", "localhost")
-	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_RYUK_DISABLED"))
+
 	req := testcontainers.ContainerRequest{
-		Image:        "rodolpheche/wiremock",
-		SkipReaper:   skipReaper,
+		Image:        getEnvString("WIREMOCK_CONTAINER_IMAGE", "wiremock/wiremock:2.32.0"),
+		SkipReaper:   skipReaper(),
 		ExposedPorts: []string{"8080/tcp", "8443/tcp"},
 		WaitingFor:   wait.ForListeningPort("8080"),
 		AutoRemove:   true,

@@ -3,13 +3,11 @@ package canned
 import (
 	"context"
 	"fmt"
-	"os"
-	"strconv"
-
 	"github.com/docker/docker/client"
 	"github.com/hashicorp/consul/api"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
+	"os"
 )
 
 type Consul struct {
@@ -23,10 +21,9 @@ type Consul struct {
 
 func NewConsul(ctx context.Context) (*Consul, error) {
 	os.Setenv("TC_HOST", "localhost")
-	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_RYUK_DISABLED"))
 	req := testcontainers.ContainerRequest{
-		Image:        "consul:1.7.3",
-		SkipReaper:   skipReaper,
+		Image:        getEnvString("CONSUL_CONTAINER_IMAGE", "consul:1.7.3"),
+		SkipReaper:   skipReaper(),
 		ExposedPorts: []string{"8500/tcp"},
 		WaitingFor:   wait.ForListeningPort("8500"),
 		AutoRemove:   true,

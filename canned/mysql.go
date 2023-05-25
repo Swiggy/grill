@@ -4,12 +4,10 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"os"
-	"strconv"
-
 	"github.com/docker/docker/client"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
+	"os"
 )
 
 type Mysql struct {
@@ -26,10 +24,10 @@ type Mysql struct {
 
 func NewMysql(ctx context.Context) (*Mysql, error) {
 	os.Setenv("TC_HOST", "localhost")
-	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_RYUK_DISABLED"))
+
 	req := testcontainers.ContainerRequest{
-		Image:        "mysql:5.6",
-		SkipReaper:   skipReaper,
+		Image:        getEnvString("MYSQL_CONTAINER_IMAGE", "mysql:5.7.34"),
+		SkipReaper:   skipReaper(),
 		ExposedPorts: []string{"3306/tcp"},
 		WaitingFor:   wait.ForListeningPort("3306"),
 		Env: map[string]string{
