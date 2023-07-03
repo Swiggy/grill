@@ -55,18 +55,22 @@ It uses testcontainers-go underneath for dockers.
 
 ## Supported Features
 
-| Grill                    | Stubs                                  | Assertions  | Cleaners                     |
-|--------------------------|----------------------------------------|---|------------------------------|
-| HTTP (wiremock)          | Stub, StubFromJSON, StubFromFile       | AssertCount  | ResetAllStubs                |
-| GRPC                     | Stub                                   | AssertCount | ResetAllStubs                |
-| DynamoDB                 | CreateTable, SeedDataFromFile, PutItem | AssertScanCount, AssertItem  | DeleteTable, DeleteItem      |
-| Kafka                    | CreateTopics                           | AssertCount, AssertMessageCount | DeleteTopics                 |
-| Redis                    | SelectDB, Set                          | AssertValue | FlushDB                      |
-| Mysql                    | CreateTable, SeedFromCSVFile           | AssertCount | DeleteTable                  |
-| S3 (minio)               | CreateBucket, UploadFile               | AssertFileExists | DeleteBucket, DeleteAllFiles |
-| Tile38                   | SetObject                              | AssertObject  | FlushDB                      |
-| Consul                   | SeedFromCSVFile, Set                   | AssertValue | DeleteAllKeys                |
-| SQS                      | CreateQueue                            | AssertCount, AssertMessageCount | DeleteQueues                 |
+| Grill           | Stubs                                 | Assertions  | Cleaners                     |
+|-----------------|---------------------------------------|---|------------------------------|
+| HTTP (wiremock) | Stub, StubFromJSON, StubFromFile      | AssertCount  | ResetAllStubs                |
+| GRPC            | Stub                                  | AssertCount | ResetAllStubs                |
+| DynamoDB        | CreateTable, SeedDataFromFile, PutItem | AssertScanCount, AssertItem  | DeleteTable, DeleteItem      |
+| Kafka           | CreateTopics                          | AssertCount, AssertMessageCount | DeleteTopics                 |
+| Redis           | SelectDB, Set                         | AssertValue | FlushDB                      |
+| Clustered Redis | Set                          | AssertValue | FlushDB                      |
+| Mysql           | CreateTable, SeedFromCSVFile          | AssertCount | DeleteTable                  |
+| S3 (minio)      | CreateBucket, UploadFile              | AssertFileExists | DeleteBucket, DeleteAllFiles |
+| Tile38          | SetObject                             | AssertObject  | FlushDB                      |
+| Consul          | SeedFromCSVFile, Set                  | AssertValue | DeleteAllKeys                |
+| SQS             | CreateQueue                           | AssertCount, AssertMessageCount | DeleteQueues                 |
+
+## Getting Started
+Check the [Wiki page](https://github.com/Swiggy/grill/wiki) for getting started with Grill
 
 ## Why write functional tests at all ??
 * * *
