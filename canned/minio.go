@@ -3,9 +3,6 @@ package canned
 import (
 	"context"
 	"fmt"
-	"os"
-	"strconv"
-
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/endpoints"
@@ -15,6 +12,7 @@ import (
 	"github.com/docker/docker/client"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
+	"os"
 )
 
 type Minio struct {
@@ -31,12 +29,11 @@ type Minio struct {
 
 func NewMinio(ctx context.Context) (*Minio, error) {
 	os.Setenv("TC_HOST", "localhost")
-	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_RYUK_DISABLED"))
 	accessKey, secretKey, region := "awsaccesskey", "awssecretkey", "ap-southeast-1"
 
 	req := testcontainers.ContainerRequest{
-		Image:        "minio/minio",
-		SkipReaper:   skipReaper,
+		Image:        getEnvString("MINIO_CONTAINER_IMAGE", "minio/minio:RELEASE.2023-05-18T00-05-36Z"),
+		SkipReaper:   skipReaper(),
 		ExposedPorts: []string{"9000/tcp"},
 		WaitingFor:   wait.ForListeningPort("9000/tcp"),
 		Cmd:          []string{"server", "/data"},

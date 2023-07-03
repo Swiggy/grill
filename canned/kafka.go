@@ -3,13 +3,13 @@ package canned
 import (
 	"context"
 	"fmt"
+	"github.com/testcontainers/testcontainers-go"
 	"os"
 	"strconv"
 
 	confluent "github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/docker/docker/client"
 	"github.com/docker/go-connections/nat"
-	"github.com/testcontainers/testcontainers-go"
 )
 
 const (
@@ -31,7 +31,7 @@ type Kafka struct {
 
 func NewKafka(ctx context.Context) (*Kafka, error) {
 	os.Setenv("TC_HOST", "localhost")
-	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_RYUK_DISABLED"))
+
 	env := map[string]string{
 		"KAFKA_LISTENERS":                        fmt.Sprintf("PLAINTEXT://0.0.0.0:%v,BROKER://0.0.0.0:%s", kafkaPort.Port(), brokerPort.Port()),
 		"KAFKA_LISTENER_SECURITY_PROTOCOL_MAP":   "BROKER:PLAINTEXT,PLAINTEXT:PLAINTEXT",
@@ -45,8 +45,8 @@ func NewKafka(ctx context.Context) (*Kafka, error) {
 	}
 
 	req := testcontainers.ContainerRequest{
-		Image:        "confluentinc/cp-kafka:5.2.1",
-		SkipReaper:   skipReaper,
+		Image:        getEnvString("KAFKA_CONTAINER_IMAGE", "confluentinc/cp-kafka:5.2.1"),
+		SkipReaper:   skipReaper(),
 		ExposedPorts: []string{brokerPort.Port(), kafkaPort.Port(), zookeeperPort},
 		Cmd:          []string{"sleep", "infinity"},
 		Env:          env,
@@ -75,12 +75,12 @@ func NewKafka(ctx context.Context) (*Kafka, error) {
 		return nil, fmt.Errorf("failed to start kafka, error: %v", err)
 	}
 
-	ac, err := confluent.NewAdminClient(&confluent.ConfigMap{"bootstrap.servers": bootstrapServer})
+	ac, err := confluent.NewAdminClient(&confluent.ConfigMap{"bootstrap.servers": bootstrapServer, "security.protocol": "PLAINTEXT"})
 	if err != nil {
 		return nil, fmt.Errorf("error creating admin client, error: %v", err)
 	}
 
-	producer, err := confluent.NewProducer(&confluent.ConfigMap{"bootstrap.servers": bootstrapServer})
+	producer, err := confluent.NewProducer(&confluent.ConfigMap{"bootstrap.servers": bootstrapServer, "security.protocol": "PLAINTEXT"})
 	if err != nil {
 		return nil, fmt.Errorf("error creating producer, error: %v", err)
 	}

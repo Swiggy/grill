@@ -15,7 +15,6 @@ import (
 	"net"
 	"net/http"
 	"os"
-	"strconv"
 )
 
 type SQS struct {
@@ -32,10 +31,9 @@ type SQS struct {
 
 func NewSQS(ctx context.Context) (*SQS, error) {
 	os.Setenv("TC_HOST", "localhost")
-	skipReaper, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_RYUK_DISABLED"))
 	req := testcontainers.ContainerRequest{
-		Image:        "softwaremill/elasticmq-native:1.3.6",
-		SkipReaper:   skipReaper,
+		Image:        getEnvString("SQS_CONTAINER_IMAGE", "softwaremill/elasticmq-native:1.3.14"),
+		SkipReaper:   skipReaper(),
 		ExposedPorts: []string{"9324/tcp"},
 		WaitingFor:   wait.ForListeningPort("9324"),
 		AutoRemove:   true,
