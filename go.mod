@@ -16,5 +16,4 @@ require (
 	github.com/testcontainers/testcontainers-go v0.14.0
 	golang.org/x/net v0.7.0
 	google.golang.org/grpc v1.47.0
-
 )
