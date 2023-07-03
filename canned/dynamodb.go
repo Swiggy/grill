@@ -33,10 +33,11 @@ func NewDynamoDB(ctx context.Context) (*DynamoDB, error) {
 	os.Setenv("TC_HOST", "localhost")
 	req := testcontainers.ContainerRequest{
 		Image:        getEnvString("DYNAMODB_CONTAINER_IMAGE", "amazon/dynamodb-local:1.13.5"),
-		SkipReaper:   skipReaper(),
 		ExposedPorts: []string{"8000/tcp"},
 		WaitingFor:   wait.ForListeningPort("8000"),
 		AutoRemove:   true,
+		SkipReaper:   skipReaper(),
+		RegistryCred: getBasicAuth(),
 	}
 
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
@@ -50,7 +51,7 @@ func NewDynamoDB(ctx context.Context) (*DynamoDB, error) {
 
 	host, _ := container.Host(ctx)
 	port, _ := container.MappedPort(ctx, "8000")
-	accessKey, secretKey, region := "awsaccesskey", "awssecretkey", "ap-southeast-1"
+	accessKey, secretKey, region := getAWSConfig()
 	endpoint := fmt.Sprintf("http://%s:%s", host, port.Port())
 
 	dynamoClient, err := newDynamoClient(endpoint, accessKey, secretKey, region)

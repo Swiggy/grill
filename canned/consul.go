@@ -23,10 +23,11 @@ func NewConsul(ctx context.Context) (*Consul, error) {
 	os.Setenv("TC_HOST", "localhost")
 	req := testcontainers.ContainerRequest{
 		Image:        getEnvString("CONSUL_CONTAINER_IMAGE", "consul:1.7.3"),
-		SkipReaper:   skipReaper(),
 		ExposedPorts: []string{"8500/tcp"},
 		WaitingFor:   wait.ForListeningPort("8500"),
 		AutoRemove:   true,
+		SkipReaper:   skipReaper(),
+		RegistryCred: getBasicAuth(),
 	}
 
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{

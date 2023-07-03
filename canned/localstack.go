@@ -34,6 +34,7 @@ func NewLocalstack(ctx context.Context) (*Localstack, error) {
 		ExposedPorts: []string{"4566/tcp"},
 		WaitingFor:   wait.ForListeningPort("4566"),
 		AutoRemove:   true,
+		SkipReaper:   skipReaper(),
 		RegistryCred: getBasicAuth(),
 	}
 
@@ -48,7 +49,7 @@ func NewLocalstack(ctx context.Context) (*Localstack, error) {
 
 	host, _ := container.Host(ctx)
 	port, _ := container.MappedPort(ctx, "4566")
-	accessKey, secretKey, region := "awsaccesskey", "awssecretkey", "ap-southeast-1"
+	accessKey, secretKey, region := getAWSConfig()
 	endpoint := fmt.Sprintf("http://%s:%s", host, port.Port())
 
 	awsSession, err := newAWSSession(accessKey, secretKey, endpoint, region)

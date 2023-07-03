@@ -23,10 +23,11 @@ func NewWiremock(ctx context.Context) (*WireMock, error) {
 
 	req := testcontainers.ContainerRequest{
 		Image:        getEnvString("WIREMOCK_CONTAINER_IMAGE", "wiremock/wiremock:2.32.0"),
-		SkipReaper:   skipReaper(),
 		ExposedPorts: []string{"8080/tcp", "8443/tcp"},
 		WaitingFor:   wait.ForListeningPort("8080"),
 		AutoRemove:   true,
+		SkipReaper:   skipReaper(),
+		RegistryCred: getBasicAuth(),
 	}
 
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{

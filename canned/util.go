@@ -25,6 +25,14 @@ func getEnvString(variable string, defaultValue string) string {
 	return val
 }
 
+func getAWSConfig() (string, string, string) {
+	accessKey := getEnvString("AWS_ACCESS_KEY_ID", "awsaccesskey")
+	secretKey := getEnvString("AWS_SECRET_ACCESS_KEY", "awssecretkey")
+	region := getEnvString("AWS_REGION", "ap-southeast-1")
+
+	return accessKey, secretKey, region
+}
+
 func getBasicAuth() string {
 	username := os.Getenv("CONTAINER_REGISTRY_USERNAME")
 	password := os.Getenv("CONTAINER_REGISTRY_PASSWORD")

@@ -27,14 +27,15 @@ func NewMysql(ctx context.Context) (*Mysql, error) {
 
 	req := testcontainers.ContainerRequest{
 		Image:        getEnvString("MYSQL_CONTAINER_IMAGE", "mysql:5.7.34"),
-		SkipReaper:   skipReaper(),
 		ExposedPorts: []string{"3306/tcp"},
 		WaitingFor:   wait.ForListeningPort("3306"),
 		Env: map[string]string{
 			"MYSQL_ROOT_PASSWORD": "password",
 			"MYSQL_DATABASE":      "test",
 		},
-		AutoRemove: true,
+		AutoRemove:   true,
+		SkipReaper:   skipReaper(),
+		RegistryCred: getBasicAuth(),
 	}
 
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{

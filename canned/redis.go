@@ -27,10 +27,11 @@ func NewRedis(ctx context.Context) (*Redis, error) {
 
 	req := testcontainers.ContainerRequest{
 		Image:        getEnvString("REDIS_CONTAINER_IMAGE", "redis:7.0.11"),
-		SkipReaper:   skipReaper(),
 		ExposedPorts: []string{"6379/tcp"},
 		WaitingFor:   wait.ForListeningPort("6379"),
 		AutoRemove:   true,
+		SkipReaper:   skipReaper(),
+		RegistryCred: getBasicAuth(),
 	}
 
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{

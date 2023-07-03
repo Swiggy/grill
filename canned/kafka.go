@@ -46,11 +46,12 @@ func NewKafka(ctx context.Context) (*Kafka, error) {
 
 	req := testcontainers.ContainerRequest{
 		Image:        getEnvString("KAFKA_CONTAINER_IMAGE", "confluentinc/cp-kafka:5.2.1"),
-		SkipReaper:   skipReaper(),
 		ExposedPorts: []string{brokerPort.Port(), kafkaPort.Port(), zookeeperPort},
 		Cmd:          []string{"sleep", "infinity"},
 		Env:          env,
 		AutoRemove:   true,
+		SkipReaper:   skipReaper(),
+		RegistryCred: getBasicAuth(),
 	}
 
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
@@ -75,12 +76,12 @@ func NewKafka(ctx context.Context) (*Kafka, error) {
 		return nil, fmt.Errorf("failed to start kafka, error: %v", err)
 	}
 
-	ac, err := confluent.NewAdminClient(&confluent.ConfigMap{"bootstrap.servers": bootstrapServer, "security.protocol": "PLAINTEXT"})
+	ac, err := confluent.NewAdminClient(&confluent.ConfigMap{"bootstrap.servers": bootstrapServer, "api.version.request": false})
 	if err != nil {
 		return nil, fmt.Errorf("error creating admin client, error: %v", err)
 	}
 
-	producer, err := confluent.NewProducer(&confluent.ConfigMap{"bootstrap.servers": bootstrapServer, "security.protocol": "PLAINTEXT"})
+	producer, err := confluent.NewProducer(&confluent.ConfigMap{"bootstrap.servers": bootstrapServer, "api.version.request": false})
 	if err != nil {
 		return nil, fmt.Errorf("error creating producer, error: %v", err)
 	}
@@ -104,7 +105,7 @@ func NewKafka(ctx context.Context) (*Kafka, error) {
 
 func startZookeeper(ctx context.Context, container testcontainers.Container) error {
 	cmd := []string{"sh", "-c", "printf 'clientPort=2181\ndataDir=/var/lib/zookeeper/data\ndataLogDir=/var/lib/zookeeper/log'> /zookeeper.properties; zookeeper-server-start /zookeeper.properties >/dev/null 2>&1 &"}
-	_, err := container.Exec(ctx, cmd)
+	_, _, err := container.Exec(ctx, cmd)
 	if err != nil {
 		return err
 	}
@@ -114,7 +115,7 @@ func startZookeeper(ctx context.Context, container testcontainers.Container) err
 func startKafka(ctx context.Context, container testcontainers.Container, bootstrapServers string) error {
 	zookeeperConnect := fmt.Sprintf("localhost:%s", zookeeperPort)
 	cmd := []string{"sh", "-c", fmt.Sprintf("export KAFKA_ZOOKEEPER_CONNECT=%s; export KAFKA_ADVERTISED_LISTENERS=%s,BROKER://:%s; /etc/confluent/docker/run >/tmp/kafka-start.log 2>/tmp/kafka-start &", zookeeperConnect, bootstrapServers, brokerPort.Port())}
-	_, err := container.Exec(ctx, cmd)
+	_, _, err := container.Exec(ctx, cmd)
 	if err != nil {
 		return err
 	}

@@ -33,10 +33,11 @@ func NewSQS(ctx context.Context) (*SQS, error) {
 	os.Setenv("TC_HOST", "localhost")
 	req := testcontainers.ContainerRequest{
 		Image:        getEnvString("SQS_CONTAINER_IMAGE", "softwaremill/elasticmq-native:1.3.14"),
-		SkipReaper:   skipReaper(),
 		ExposedPorts: []string{"9324/tcp"},
 		WaitingFor:   wait.ForListeningPort("9324"),
 		AutoRemove:   true,
+		SkipReaper:   skipReaper(),
+		RegistryCred: getBasicAuth(),
 	}
 
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
@@ -50,7 +51,7 @@ func NewSQS(ctx context.Context) (*SQS, error) {
 
 	host, _ := container.Host(ctx)
 	port, _ := container.MappedPort(ctx, "9324")
-	accessKey, secretKey, region := "awsaccesskey", "awssecretkey", "ap-southeast-1"
+	accessKey, secretKey, region := getAWSConfig()
 	endpoint := fmt.Sprintf("http://%s:%s", host, port.Port())
 
 	sqsClient, err := newSQSClient(endpoint, accessKey, secretKey, region)

@@ -49,6 +49,7 @@ func NewClusteredRedis() (*ClusteredRedis, error) {
 			"SLAVES_PER_MASTER": "0",
 		},
 		AutoRemove:   true,
+		SkipReaper:   skipReaper(),
 		RegistryCred: getBasicAuth(),
 	}
 

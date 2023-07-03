@@ -58,6 +58,7 @@ func (gk *Kafka) NewConsumer(group, topic string, openTime time.Duration) (*Cons
 		"auto.offset.reset":               "earliest",
 		"go.events.channel.enable":        true,
 		"go.application.rebalance.enable": true,
+		"api.version.request":             false,
 	})
 	if err != nil {
 		return nil, err
