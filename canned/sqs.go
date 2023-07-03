@@ -50,7 +50,7 @@ func NewSQS(ctx context.Context) (*SQS, error) {
 
 	host, _ := container.Host(ctx)
 	port, _ := container.MappedPort(ctx, "9324")
-	accessKey, secretKey, region := "awsaccesskey", "awssecretkey", "ap-southeast-1"
+	accessKey, secretKey, region := getAWSConfig()
 	endpoint := fmt.Sprintf("http://%s:%s", host, port.Port())
 
 	sqsClient, err := newSQSClient(endpoint, accessKey, secretKey, region)

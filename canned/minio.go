@@ -29,7 +29,7 @@ type Minio struct {
 
 func NewMinio(ctx context.Context) (*Minio, error) {
 	os.Setenv("TC_HOST", "localhost")
-	accessKey, secretKey, region := "awsaccesskey", "awssecretkey", "ap-southeast-1"
+	accessKey, secretKey, region := getAWSConfig()
 
 	req := testcontainers.ContainerRequest{
 		Image:        getEnvString("MINIO_CONTAINER_IMAGE", "minio/minio:RELEASE.2023-05-18T00-05-36Z"),

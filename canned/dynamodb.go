@@ -50,7 +50,7 @@ func NewDynamoDB(ctx context.Context) (*DynamoDB, error) {
 
 	host, _ := container.Host(ctx)
 	port, _ := container.MappedPort(ctx, "8000")
-	accessKey, secretKey, region := "awsaccesskey", "awssecretkey", "ap-southeast-1"
+	accessKey, secretKey, region := getAWSConfig()
 	endpoint := fmt.Sprintf("http://%s:%s", host, port.Port())
 
 	dynamoClient, err := newDynamoClient(endpoint, accessKey, secretKey, region)
