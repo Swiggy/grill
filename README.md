@@ -68,6 +68,7 @@ It uses testcontainers-go underneath for dockers.
 | Tile38          | SetObject                             | AssertObject  | FlushDB                      |
 | Consul          | SeedFromCSVFile, Set                  | AssertValue | DeleteAllKeys                |
 | SQS             | CreateQueue                           | AssertCount, AssertMessageCount | DeleteQueues                 |
+| ES              | CreateIndex, PutItem                   | AssertItem, AssertNoItem        | DeleteIndices, DeleteItem    | 
 
 ## Getting Started
 Check the [Wiki page](https://github.com/Swiggy/grill/wiki) for getting started with Grill
