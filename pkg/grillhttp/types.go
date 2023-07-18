@@ -29,6 +29,7 @@ type Response struct {
 	StatusMessage          string            `json:"statusMessage,omitempty"`
 	Headers                map[string]string `json:"headers,omitempty"`
 	Body                   string            `json:"body,omitempty"`
+	Base64Body             string            `json:"base64Body,omitempty"`
 	JsonBody               interface{}       `json:"jsonBody,omitempty"`
 	FixedDelayMilliseconds int               `json:"fixedDelayMilliseconds,omitempty"`
 }
