@@ -5,8 +5,10 @@ import (
 )
 
 const (
-	itemFoundStatusCode    = 200
-	itemNotFoundStatusCode = 404
+	itemFoundStatusCode          = 200
+	itemNotFoundStatusCode       = 404
+	resourceModifiedSuccessfully = 200
+	resourceCreatedSuccessfully  = 201
 )
 
 type getItem struct {
