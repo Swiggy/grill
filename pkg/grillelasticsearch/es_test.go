@@ -19,16 +19,17 @@ func TestElasticSearch_PutItem(t *testing.T) {
 
 	tests := []grill.TestCase{
 		{
-			Name: "Item should get indexed",
+			Name: "Items should get indexed",
 			Stubs: []grill.Stub{
 				helper.CreateIndex("test_index", mapping),
 				helper.UpsertItem("test_index", "doc_id", testData),
+				helper.UpsertItem("test_index", "doc_id_2", testData),
 			},
 			Action: func() interface{} {
 				return nil
 			},
 			Assertions: []grill.Assertion{
-				helper.AssertItem("test_index", "doc_id", json.RawMessage(testData)),
+				helper.AssertItemsCount("test_index", 2, []json.RawMessage{json.RawMessage(testData), json.RawMessage(testData)}),
 			},
 			Cleaners: []grill.Cleaner{
 				helper.DeleteIndices("test_index"),
@@ -45,7 +46,7 @@ func TestElasticSearch_PutItem(t *testing.T) {
 				return nil
 			},
 			Assertions: []grill.Assertion{
-				helper.AssertItem("test_index", "doc_id", json.RawMessage(modifiedTestData)),
+				helper.AssertItemsCount("test_index", 1, []json.RawMessage{json.RawMessage(modifiedTestData)}),
 			},
 			Cleaners: []grill.Cleaner{
 				helper.DeleteIndices("test_index"),
@@ -60,7 +61,7 @@ func TestElasticSearch_PutItem(t *testing.T) {
 				return nil
 			},
 			Assertions: []grill.Assertion{
-				helper.AssertNoItem("test_index", "doc_id"),
+				helper.AssertItemsCount("test_index", 0, nil),
 			},
 			Cleaners: []grill.Cleaner{
 				helper.DeleteIndices("test_index"),
