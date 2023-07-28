@@ -59,7 +59,7 @@ It uses testcontainers-go underneath for dockers.
 |-----------------|---------------------------------------|---|------------------------------|
 | HTTP (wiremock) | Stub, StubFromJSON, StubFromFile      | AssertCount  | ResetAllStubs                |
 | GRPC            | Stub                                  | AssertCount | ResetAllStubs                |
-| DynamoDB        | CreateTable, SeedDataFromFile, PutItem | AssertScanCount, AssertItem  | DeleteTable, DeleteItem      |
+| DynamoDB        | CreateTable, SeedDataFromFile, PutItem | AssertScanCount, AssertItem | DeleteTable, DeleteItem      |
 | Kafka           | CreateTopics                          | AssertCount, AssertMessageCount | DeleteTopics                 |
 | Redis           | SelectDB, Set                         | AssertValue | FlushDB                      |
 | Clustered Redis | Set                          | AssertValue | FlushDB                      |
@@ -68,7 +68,7 @@ It uses testcontainers-go underneath for dockers.
 | Tile38          | SetObject                             | AssertObject  | FlushDB                      |
 | Consul          | SeedFromCSVFile, Set                  | AssertValue | DeleteAllKeys                |
 | SQS             | CreateQueue                           | AssertCount, AssertMessageCount | DeleteQueues                 |
-| ES              | CreateIndex, PutItem                   | AssertItem, AssertNoItem        | DeleteIndices, DeleteItem    | 
+| ES              | CreateIndex, PutItem                   | AssertItemsCount        | DeleteIndices, DeleteItem    | 
 
 ## Getting Started
 Check the [Wiki page](https://github.com/Swiggy/grill/wiki) for getting started with Grill
