@@ -26,7 +26,7 @@ func NewMysql(ctx context.Context) (*Mysql, error) {
 	os.Setenv("TC_HOST", "localhost")
 
 	req := testcontainers.ContainerRequest{
-		Image:        getEnvString("MYSQL_CONTAINER_IMAGE", "mysql:5.7.34"),
+		Image:        getEnvString("MYSQL_CONTAINER_IMAGE", "mysql:8.1.0"),
 		ExposedPorts: []string{"3306/tcp"},
 		WaitingFor:   wait.ForListeningPort("3306"),
 		Env: map[string]string{
@@ -56,6 +56,10 @@ func NewMysql(ctx context.Context) (*Mysql, error) {
 
 	if _, err := dbClient.Exec("USE test"); err != nil {
 		return nil, fmt.Errorf("error setting database test, error: %v", err)
+	}
+
+	if _, err = dbClient.Exec("SET GLOBAL local_infile=1"); err != nil {
+		return nil, fmt.Errorf("error setting local_infile, error: %v", err)
 	}
 
 	dockerClient, err := client.NewClientWithOpts(client.FromEnv)
