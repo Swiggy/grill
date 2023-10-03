@@ -7,6 +7,7 @@ import (
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 	"os"
+	"time"
 )
 
 type ElasticSearch struct {
@@ -24,7 +25,7 @@ func NewElasticSearch(ctx context.Context) (*ElasticSearch, error) {
 		Env: map[string]string{
 			"discovery.type": "single-node"},
 		ExposedPorts: []string{"9200/tcp"},
-		WaitingFor:   wait.ForListeningPort("9200"),
+		WaitingFor:   wait.ForListeningPort("9200").WithStartupTimeout(time.Minute * 3), // Default timeout is 1 minute
 		RegistryCred: getBasicAuth(),
 	}
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
