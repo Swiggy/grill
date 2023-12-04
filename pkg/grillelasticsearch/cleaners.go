@@ -1,7 +1,9 @@
 package grillelasticsearch
 
 import (
+	"context"
 	"github.com/Swiggy/grill"
+	"github.com/elastic/go-elasticsearch/v7/esapi"
 )
 
 func (ge *ElasticSearch) DeleteIndices(indices ...string) grill.Cleaner {
@@ -14,6 +16,16 @@ func (ge *ElasticSearch) DeleteIndices(indices ...string) grill.Cleaner {
 func (ge *ElasticSearch) DeleteItem(index, id string) grill.Cleaner {
 	return grill.CleanerFunc(func() error {
 		_, err := ge.elasticSearch.Client.Delete(index, id)
+		return err
+	})
+}
+
+func (ge *ElasticSearch) DeleteScript(name string) grill.Cleaner {
+	return grill.CleanerFunc(func() error {
+		req := esapi.DeleteScriptRequest{
+			DocumentID: name,
+		}
+		_, err := req.Do(context.Background(), ge.elasticSearch.Client)
 		return err
 	})
 }

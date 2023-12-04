@@ -1,6 +1,7 @@
 package grillelasticsearch
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -47,6 +48,27 @@ func (ge *ElasticSearch) AssertItemsCount(index string, count int, expected []js
 
 		if !reflect.DeepEqual(rawItems, expected) {
 			return fmt.Errorf("invalid item, got=%v, want=%v", rawItems, expected)
+		}
+		return nil
+	})
+}
+
+func (ge *ElasticSearch) AssertScript(name string) grill.Assertion {
+	return grill.AssertionFunc(func() error {
+
+		req := esapi.GetScriptRequest{
+			DocumentID: name,
+		}
+		res, err := req.Do(context.Background(), ge.elasticSearch.Client)
+		defer res.Body.Close()
+		if err != nil {
+			return err
+		}
+		if res.StatusCode != resourceModifiedSuccessfully && res.StatusCode != resourceCreatedSuccessfully {
+			buf := new(bytes.Buffer)
+			_, _ = buf.ReadFrom(res.Body)
+			respBytes := buf.String()
+			return fmt.Errorf(respBytes)
 		}
 		return nil
 	})
