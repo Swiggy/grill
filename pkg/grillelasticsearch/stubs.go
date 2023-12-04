@@ -50,13 +50,14 @@ func (ge *ElasticSearch) UpsertItem(index, docId, data string) grill.Stub {
 	})
 }
 
-func (ge *ElasticSearch) AddTemplate(name string, data string) grill.Stub {
+func (ge *ElasticSearch) AddTemplate(name string, template string) grill.Stub {
 	return grill.StubFunc(func() error {
 		req := esapi.IndicesPutTemplateRequest{
-			Body: strings.NewReader(data),
+			Body: strings.NewReader(template),
 			Name: name,
 		}
 		res, err := req.Do(context.Background(), ge.elasticSearch.Client)
+		defer res.Body.Close()
 		if err != nil {
 			return err
 		}
