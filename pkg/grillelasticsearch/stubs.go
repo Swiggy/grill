@@ -70,23 +70,3 @@ func (ge *ElasticSearch) AddScript(name string, script string) grill.Stub {
 		return nil
 	})
 }
-
-func (ge *ElasticSearch) getScript(name string, script string) grill.Stub {
-	return grill.StubFunc(func() error {
-		req := esapi.GetScriptRequest{
-			DocumentID: name,
-		}
-		res, err := req.Do(context.Background(), ge.elasticSearch.Client)
-		defer res.Body.Close()
-		if err != nil {
-			return err
-		}
-		if res.StatusCode != resourceModifiedSuccessfully && res.StatusCode != resourceCreatedSuccessfully {
-			buf := new(bytes.Buffer)
-			_, _ = buf.ReadFrom(res.Body)
-			respBytes := buf.String()
-			return fmt.Errorf(respBytes)
-		}
-		return nil
-	})
-}
