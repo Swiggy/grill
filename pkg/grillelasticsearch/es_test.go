@@ -3,9 +3,22 @@ package grillelasticsearch
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"github.com/Swiggy/grill"
 	"testing"
 )
+
+type errorAssertion struct {
+	got      error
+	expected error
+}
+
+func (c *errorAssertion) Assert() error {
+	if c.got != c.expected {
+		return fmt.Errorf("got=%v, want=%v", c.got, c.expected)
+	}
+	return nil
+}
 
 func TestElasticSearch_PutItem(t *testing.T) {
 	helper := &ElasticSearch{}
@@ -16,6 +29,7 @@ func TestElasticSearch_PutItem(t *testing.T) {
 	const mapping = `{"mappings":{"properties":{"fname":{"type":"keyword"},"lname":{"type":"keyword"}}}}`
 	const testData = `{"fname": "John", "lname": "Doe"}`
 	const modifiedTestData = `{"fname": "NewJohn", "lname": "Doe"}`
+	const testScript = "{\n  \"script\": {\n    \"lang\": \"painless\",\n    \"source\": \"Math.log(_score * 2) + params['my_modifier']\"\n  }\n}"
 
 	tests := []grill.TestCase{
 		{
@@ -69,5 +83,32 @@ func TestElasticSearch_PutItem(t *testing.T) {
 		},
 	}
 
+	grill.Run(t, tests)
+}
+
+func TestElasticSearch_AddScript(t *testing.T) {
+	helper := &ElasticSearch{}
+	if err := helper.Start(context.TODO()); err != nil {
+		t.Errorf("error starting elastic search grill, error=%v", err)
+		return
+	}
+	const testScript = "{\n  \"script\": {\n    \"lang\": \"painless\",\n    \"source\": \"Math.log(_score * 2) + params['my_modifier']\"\n  }\n}"
+
+	tests := []grill.TestCase{
+		{
+			Name:  "Add Script",
+			Stubs: []grill.Stub{},
+			Action: func() interface{} {
+				err := helper.AddScript("testScript", testScript)
+				return err
+			},
+			Assertions: []grill.Assertion{
+				&errorAssertion{expected: nil},
+			},
+			Cleaners: []grill.Cleaner{
+				helper.DeleteScript("testScript"),
+			},
+		},
+	}
 	grill.Run(t, tests)
 }
