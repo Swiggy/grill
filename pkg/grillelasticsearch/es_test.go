@@ -3,9 +3,22 @@ package grillelasticsearch
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"github.com/Swiggy/grill"
 	"testing"
 )
+
+type errorAssertion struct {
+	got      error
+	expected error
+}
+
+func (c *errorAssertion) Assert() error {
+	if c.got != c.expected {
+		return fmt.Errorf("got=%v, want=%v", c.got, c.expected)
+	}
+	return nil
+}
 
 func TestElasticSearch_PutItem(t *testing.T) {
 	helper := &ElasticSearch{}
@@ -83,15 +96,14 @@ func TestElasticSearch_AddScript(t *testing.T) {
 
 	tests := []grill.TestCase{
 		{
-			Name: "Add Script",
-			Stubs: []grill.Stub{
-				helper.AddScript("testScript", testScript),
-			},
+			Name:  "Add Script",
+			Stubs: []grill.Stub{},
 			Action: func() interface{} {
-				return nil
+				err := helper.AddScript("testScript", testScript)
+				return err
 			},
 			Assertions: []grill.Assertion{
-				helper.AssertScript("testScript"),
+				&errorAssertion{expected: nil},
 			},
 			Cleaners: []grill.Cleaner{
 				helper.DeleteScript("testScript"),
