@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/Swiggy/grill"
 	"testing"
+	"time"
 )
 
 type errorAssertion struct {
@@ -20,7 +21,7 @@ func (c *errorAssertion) Assert() error {
 	return nil
 }
 
-func TestElasticSearch_PutItem(t *testing.T) {
+func TestElasticSearch(t *testing.T) {
 	helper := &ElasticSearch{}
 	if err := helper.Start(context.TODO()); err != nil {
 		t.Errorf("error starting elastic search grill, error=%v", err)
@@ -29,7 +30,6 @@ func TestElasticSearch_PutItem(t *testing.T) {
 	const mapping = `{"mappings":{"properties":{"fname":{"type":"keyword"},"lname":{"type":"keyword"}}}}`
 	const testData = `{"fname": "John", "lname": "Doe"}`
 	const modifiedTestData = `{"fname": "NewJohn", "lname": "Doe"}`
-	const testScript = "{\n  \"script\": {\n    \"lang\": \"painless\",\n    \"source\": \"Math.log(_score * 2) + params['my_modifier']\"\n  }\n}"
 
 	tests := []grill.TestCase{
 		{
@@ -43,7 +43,7 @@ func TestElasticSearch_PutItem(t *testing.T) {
 				return nil
 			},
 			Assertions: []grill.Assertion{
-				helper.AssertItemsCount("test_index", 2, []json.RawMessage{json.RawMessage(testData), json.RawMessage(testData)}),
+				grill.Try(time.Second*5, 2, helper.AssertItemsCount("test_index", 2, []json.RawMessage{json.RawMessage(testData), json.RawMessage(testData)})),
 			},
 			Cleaners: []grill.Cleaner{
 				helper.DeleteIndices("test_index"),
@@ -60,7 +60,7 @@ func TestElasticSearch_PutItem(t *testing.T) {
 				return nil
 			},
 			Assertions: []grill.Assertion{
-				helper.AssertItemsCount("test_index", 1, []json.RawMessage{json.RawMessage(modifiedTestData)}),
+				grill.Try(time.Second*5, 2, helper.AssertItemsCount("test_index", 1, []json.RawMessage{json.RawMessage(modifiedTestData)})),
 			},
 			Cleaners: []grill.Cleaner{
 				helper.DeleteIndices("test_index"),
@@ -81,24 +81,11 @@ func TestElasticSearch_PutItem(t *testing.T) {
 				helper.DeleteIndices("test_index"),
 			},
 		},
-	}
-
-	grill.Run(t, tests)
-}
-
-func TestElasticSearch_AddScript(t *testing.T) {
-	helper := &ElasticSearch{}
-	if err := helper.Start(context.TODO()); err != nil {
-		t.Errorf("error starting elastic search grill, error=%v", err)
-		return
-	}
-	const testScript = "{\n  \"script\": {\n    \"lang\": \"painless\",\n    \"source\": \"Math.log(_score * 2) + params['my_modifier']\"\n  }\n}"
-
-	tests := []grill.TestCase{
 		{
 			Name:  "Add Script",
 			Stubs: []grill.Stub{},
 			Action: func() interface{} {
+				testScript := "{\"script\":{\"lang\":\"painless\",\"source\":\"Math.log(_score * 2) + params['my_modifier']\"}}"
 				err := helper.AddScript("testScript", testScript)
 				return err
 			},
@@ -110,5 +97,6 @@ func TestElasticSearch_AddScript(t *testing.T) {
 			},
 		},
 	}
+
 	grill.Run(t, tests)
 }
