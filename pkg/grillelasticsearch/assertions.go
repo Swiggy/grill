@@ -60,10 +60,10 @@ func (ge *ElasticSearch) AssertScript(name string) grill.Assertion {
 			DocumentID: name,
 		}
 		res, err := req.Do(context.Background(), ge.elasticSearch.Client)
-		defer res.Body.Close()
 		if err != nil {
 			return err
 		}
+		defer res.Body.Close()
 		if res.StatusCode != resourceModifiedSuccessfully && res.StatusCode != resourceCreatedSuccessfully {
 			buf := new(bytes.Buffer)
 			_, _ = buf.ReadFrom(res.Body)

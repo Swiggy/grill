@@ -57,10 +57,10 @@ func (ge *ElasticSearch) AddScript(name string, script string) grill.Stub {
 			DocumentID: name,
 		}
 		res, err := req.Do(context.Background(), ge.elasticSearch.Client)
-		defer res.Body.Close()
 		if err != nil {
 			return err
 		}
+		defer res.Body.Close()
 		if res.StatusCode != resourceModifiedSuccessfully && res.StatusCode != resourceCreatedSuccessfully {
 			buf := new(bytes.Buffer)
 			_, _ = buf.ReadFrom(res.Body)
