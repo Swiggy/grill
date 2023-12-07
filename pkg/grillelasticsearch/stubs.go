@@ -53,8 +53,8 @@ func (ge *ElasticSearch) UpsertItem(index, docId, data string) grill.Stub {
 func (ge *ElasticSearch) AddScript(name string, script string) grill.Stub {
 	return grill.StubFunc(func() error {
 		req := esapi.PutScriptRequest{
-			Body:       strings.NewReader(script),
-			DocumentID: name,
+			Body:     strings.NewReader(script),
+			ScriptID: name,
 		}
 		res, err := req.Do(context.Background(), ge.elasticSearch.Client)
 		if err != nil {

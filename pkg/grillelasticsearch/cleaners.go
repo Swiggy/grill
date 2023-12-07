@@ -23,7 +23,7 @@ func (ge *ElasticSearch) DeleteItem(index, id string) grill.Cleaner {
 func (ge *ElasticSearch) DeleteScript(name string) grill.Cleaner {
 	return grill.CleanerFunc(func() error {
 		req := esapi.DeleteScriptRequest{
-			DocumentID: name,
+			ScriptID: name,
 		}
 		_, err := req.Do(context.Background(), ge.elasticSearch.Client)
 		return err
