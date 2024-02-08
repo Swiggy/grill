@@ -28,6 +28,7 @@ func NewElasticSearch(ctx context.Context) (*ElasticSearch, error) {
 		ExposedPorts: []string{"9200/tcp"},
 		WaitingFor:   wait.ForListeningPort("9200").WithStartupTimeout(time.Minute * 3), // Default timeout is 1 minute
 		RegistryCred: getBasicAuth(),
+		SkipReaper:   skipReaper(),
 	}
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
 		ContainerRequest: req,
