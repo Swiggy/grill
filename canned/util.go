@@ -5,16 +5,25 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/docker/docker/api/types"
 	"math/rand"
 	"net"
 	"os"
 	"strconv"
+
+	"github.com/docker/docker/api/types"
+	"github.com/testcontainers/testcontainers-go"
 )
 
 func skipReaper() bool {
 	val, _ := strconv.ParseBool(os.Getenv("TESTCONTAINERS_RYUK_DISABLED"))
 	return val
+}
+func testContainerProvider() testcontainers.ProviderType {
+	val := os.Getenv("TESTCONTAINERS_PROVIDER")
+	if val == "podman" {
+		return testcontainers.ProviderPodman
+	}
+	return testcontainers.ProviderDocker
 }
 
 func getEnvString(variable string, defaultValue string) string {

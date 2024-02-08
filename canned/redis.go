@@ -37,6 +37,7 @@ func NewRedis(ctx context.Context) (*Redis, error) {
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
 		ContainerRequest: req,
 		Started:          true,
+		ProviderType:     testContainerProvider(),
 	})
 
 	if err != nil {

@@ -3,10 +3,11 @@ package canned
 import (
 	"context"
 	"fmt"
+	"os"
+
 	"github.com/docker/docker/client"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
-	"os"
 )
 
 type WireMock struct {
@@ -33,6 +34,7 @@ func NewWiremock(ctx context.Context) (*WireMock, error) {
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
 		ContainerRequest: req,
 		Started:          true,
+		ProviderType:     testContainerProvider(),
 	})
 
 	if err != nil {
