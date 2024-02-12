@@ -3,6 +3,10 @@ package canned
 import (
 	"context"
 	"fmt"
+	"net"
+	"net/http"
+	"os"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -10,9 +14,6 @@ import (
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 	"golang.org/x/net/http2"
-	"net"
-	"net/http"
-	"os"
 )
 
 type Localstack struct {
@@ -41,6 +42,7 @@ func NewLocalstack(ctx context.Context) (*Localstack, error) {
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
 		ContainerRequest: req,
 		Started:          true,
+		ProviderType:     testContainerProvider(),
 	})
 
 	if err != nil {

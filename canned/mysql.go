@@ -4,10 +4,11 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"os"
+
 	"github.com/docker/docker/client"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
-	"os"
 )
 
 type Mysql struct {
@@ -41,6 +42,7 @@ func NewMysql(ctx context.Context) (*Mysql, error) {
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
 		ContainerRequest: req,
 		Started:          true,
+		ProviderType:     testContainerProvider(),
 	})
 	if err != nil {
 		return nil, err

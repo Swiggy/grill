@@ -36,6 +36,7 @@ func NewTile38(ctx context.Context) (*Tile38, error) {
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
 		ContainerRequest: req,
 		Started:          true,
+		ProviderType:     testContainerProvider(),
 	})
 
 	if err != nil {

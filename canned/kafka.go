@@ -3,9 +3,10 @@ package canned
 import (
 	"context"
 	"fmt"
-	"github.com/testcontainers/testcontainers-go"
 	"os"
 	"strconv"
+
+	"github.com/testcontainers/testcontainers-go"
 
 	confluent "github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/docker/docker/client"
@@ -57,6 +58,7 @@ func NewKafka(ctx context.Context) (*Kafka, error) {
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
 		ContainerRequest: req,
 		Started:          true,
+		ProviderType:     testContainerProvider(),
 	})
 	if err != nil {
 		return nil, err

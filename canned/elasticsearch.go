@@ -3,11 +3,12 @@ package canned
 import (
 	"context"
 	"fmt"
+	"os"
+	"time"
+
 	"github.com/elastic/go-elasticsearch/v7"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
-	"os"
-	"time"
 )
 
 type ElasticSearch struct {
@@ -27,10 +28,12 @@ func NewElasticSearch(ctx context.Context) (*ElasticSearch, error) {
 		ExposedPorts: []string{"9200/tcp"},
 		WaitingFor:   wait.ForListeningPort("9200").WithStartupTimeout(time.Minute * 3), // Default timeout is 1 minute
 		RegistryCred: getBasicAuth(),
+		SkipReaper:   skipReaper(),
 	}
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
 		ContainerRequest: req,
 		Started:          true,
+		ProviderType:     testContainerProvider(),
 	})
 	if err != nil {
 		return nil, err
