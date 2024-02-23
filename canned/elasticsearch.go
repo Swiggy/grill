@@ -22,12 +22,13 @@ type ElasticSearch struct {
 func NewElasticSearch(ctx context.Context) (*ElasticSearch, error) {
 	_ = os.Setenv("TC_HOST", "localhost")
 	req := testcontainers.ContainerRequest{
-		Image: getEnvString("ES_CONTAINER_IMAGE", "elasticsearch:7.17.9"),
+		Image: getEnvString("ES_CONTAINER_IMAGE", "docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2"),
 		Env: map[string]string{
 			"discovery.type": "single-node"},
 		ExposedPorts: []string{"9200/tcp"},
 		WaitingFor:   wait.ForListeningPort("9200").WithStartupTimeout(time.Minute * 3), // Default timeout is 1 minute
 		RegistryCred: getBasicAuth(),
+		AutoRemove:   true,
 		SkipReaper:   skipReaper(),
 	}
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
