@@ -23,7 +23,7 @@ func NewElasticSearch(ctx context.Context) (*ElasticSearch, error) {
 	_ = os.Setenv("TC_HOST", "localhost")
 	req := testcontainers.ContainerRequest{
 		//Image: getEnvString("ES_CONTAINER_IMAGE", "docker.elastic.co/elasticsearch/elasticsearch-oss:7.0.0"),
-		Image: getEnvString("ES_CONTAINER_IMAGE", "elasticsearch:7.0.0"),
+		Image: getEnvString("ES_CONTAINER_IMAGE", "157529275398.dkr.ecr.ap-south-1.amazonaws.com/ci-libraries/docker.elastic.co/elasticsearch/elasticsearch:6.4.2"),
 		Env: map[string]string{
 			"discovery.type":    "single-node",
 			"network.host":      "0.0.0.0",
