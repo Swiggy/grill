@@ -29,7 +29,7 @@ func NewElasticSearch(ctx context.Context) (*ElasticSearch, error) {
 			"network.host":      "0.0.0.0",
 			"network.bind_host": "0.0.0.0",
 		},
-		ExposedPorts: []string{"9200/tcp"},
+		ExposedPorts: []string{"9200/tcp", "9300/tcp"},
 		//WaitingFor:   wait.ForListeningPort("9200").WithStartupTimeout(time.Minute * 3), // Default timeout is 1 minute
 		WaitingFor:   wait.ForHTTP("/").WithPort("9200/tcp").WithStartupTimeout(time.Minute * 3),
 		RegistryCred: getBasicAuth(),
