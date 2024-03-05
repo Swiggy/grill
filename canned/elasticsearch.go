@@ -25,16 +25,16 @@ func NewElasticSearch(ctx context.Context) (*ElasticSearch, error) {
 		Image: getEnvString("ES_CONTAINER_IMAGE", "docker.elastic.co/elasticsearch/elasticsearch-oss:7.0.0"),
 		//Image: getEnvString("ES_CONTAINER_IMAGE", "157529275398.dkr.ecr.ap-south-1.amazonaws.com/ci-libraries/docker.elastic.co/elasticsearch/elasticsearch:6.4.2"),
 		Env: map[string]string{
-			"discovery.type":    "single-node",
-			"network.host":      "0.0.0.0",
-			"network.bind_host": "0.0.0.0",
+			"discovery.type": "single-node",
+			//"network.host":      "0.0.0.0",
+			//"network.bind_host": "0.0.0.0",
 		},
 		ExposedPorts: []string{"9200/tcp", "9300/tcp"},
 		WaitingFor:   wait.ForListeningPort("9200").WithStartupTimeout(time.Minute * 3), // Default timeout is 1 minute
 		//WaitingFor:   wait.ForHTTP("/").WithPort("9200/tcp").WithStartupTimeout(time.Minute * 3),
 		RegistryCred: getBasicAuth(),
 		//AutoRemove:   true,
-		SkipReaper:   skipReaper(),
+		SkipReaper: skipReaper(),
 	}
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
 		ContainerRequest: req,
@@ -54,7 +54,8 @@ func NewElasticSearch(ctx context.Context) (*ElasticSearch, error) {
 	}
 
 	client, err := elasticsearch.NewClient(elasticsearch.Config{
-		Addresses: []string{endpoint},
+		Addresses:            []string{endpoint},
+		EnableRetryOnTimeout: true,
 	})
 	if err != nil {
 		return nil, err
