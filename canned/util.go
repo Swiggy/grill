@@ -5,12 +5,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/docker/docker/api/types/registry"
 	"math/rand"
 	"net"
 	"os"
 	"strconv"
 
-	"github.com/docker/docker/api/types"
 	"github.com/testcontainers/testcontainers-go"
 )
 
@@ -20,10 +20,14 @@ func skipReaper() bool {
 }
 func testContainerProvider() testcontainers.ProviderType {
 	val := os.Getenv("TESTCONTAINERS_PROVIDER")
-	if val == "podman" {
+
+	switch val {
+	case "podman":
 		return testcontainers.ProviderPodman
+	default:
+		return testcontainers.ProviderDocker
+
 	}
-	return testcontainers.ProviderDocker
 }
 
 func getEnvString(variable string, defaultValue string) string {
@@ -49,7 +53,7 @@ func getBasicAuth() string {
 		return ""
 	}
 
-	auth := types.AuthConfig{
+	auth := registry.AuthConfig{
 		Username: username,
 		Password: password,
 	}

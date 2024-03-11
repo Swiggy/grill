@@ -3,10 +3,9 @@ package canned
 import (
 	"context"
 	"fmt"
-	"os"
-	"strconv"
-
 	"github.com/testcontainers/testcontainers-go"
+	"github.com/testcontainers/testcontainers-go/modules/kafka"
+	"os"
 
 	confluent "github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/docker/docker/client"
@@ -33,50 +32,15 @@ type Kafka struct {
 func NewKafka(ctx context.Context) (*Kafka, error) {
 	os.Setenv("TC_HOST", "localhost")
 
-	env := map[string]string{
-		"KAFKA_LISTENERS":                        fmt.Sprintf("PLAINTEXT://0.0.0.0:%v,BROKER://0.0.0.0:%s", kafkaPort.Port(), brokerPort.Port()),
-		"KAFKA_LISTENER_SECURITY_PROTOCOL_MAP":   "BROKER:PLAINTEXT,PLAINTEXT:PLAINTEXT",
-		"KAFKA_INTER_BROKER_LISTENER_NAME":       "BROKER",
-		"KAFKA_BROKER_ID":                        "1",
-		"KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR": "1",
-		"KAFKA_OFFSETS_TOPIC_NUM_PARTITIONS":     "1",
-		"KAFKA_LOG_FLUSH_INTERVAL_MESSAGES":      "10000000",
-		"KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS": "0",
-		"KAFKA_AUTO_CREATE_TOPICS_ENABLE":        strconv.FormatBool(true),
-	}
-
-	req := testcontainers.ContainerRequest{
-		Image:        getEnvString("KAFKA_CONTAINER_IMAGE", "confluentinc/cp-kafka:5.2.1"),
-		ExposedPorts: []string{brokerPort.Port(), kafkaPort.Port(), zookeeperPort},
-		Cmd:          []string{"sleep", "infinity"},
-		Env:          env,
-		AutoRemove:   true,
-		SkipReaper:   skipReaper(),
-		RegistryCred: getBasicAuth(),
-	}
-
-	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
-		ContainerRequest: req,
-		Started:          true,
-		ProviderType:     testContainerProvider(),
-	})
+	kafkaContainer, err := kafka.RunContainer(ctx, testcontainers.CustomizeRequestOption(kafkaTestContainerProvider))
 	if err != nil {
 		return nil, err
 	}
 
-	err = startZookeeper(ctx, container)
-	if err != nil {
-		return nil, fmt.Errorf("failed to start zookeeper, error: %v", err)
-	}
+	port, _ := kafkaContainer.MappedPort(ctx, kafkaPort)
+	host, _ := kafkaContainer.Host(ctx)
 
-	port, _ := container.MappedPort(ctx, kafkaPort)
-	host, _ := container.Host(ctx)
 	bootstrapServer := fmt.Sprintf("PLAINTEXT://%s:%s", host, port.Port())
-
-	err = startKafka(ctx, container, bootstrapServer)
-	if err != nil {
-		return nil, fmt.Errorf("failed to start kafka, error: %v", err)
-	}
 
 	ac, err := confluent.NewAdminClient(&confluent.ConfigMap{"bootstrap.servers": bootstrapServer, "api.version.request": false})
 	if err != nil {
@@ -94,7 +58,7 @@ func NewKafka(ctx context.Context) (*Kafka, error) {
 	}
 
 	return &Kafka{
-		Container:    container,
+		Container:    kafkaContainer,
 		DockerClient: dockerClient,
 
 		Host:             host,
@@ -105,21 +69,6 @@ func NewKafka(ctx context.Context) (*Kafka, error) {
 	}, nil
 }
 
-func startZookeeper(ctx context.Context, container testcontainers.Container) error {
-	cmd := []string{"sh", "-c", "printf 'clientPort=2181\ndataDir=/var/lib/zookeeper/data\ndataLogDir=/var/lib/zookeeper/log'> /zookeeper.properties; zookeeper-server-start /zookeeper.properties >/dev/null 2>&1 &"}
-	_, _, err := container.Exec(ctx, cmd)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func startKafka(ctx context.Context, container testcontainers.Container, bootstrapServers string) error {
-	zookeeperConnect := fmt.Sprintf("localhost:%s", zookeeperPort)
-	cmd := []string{"sh", "-c", fmt.Sprintf("export KAFKA_ZOOKEEPER_CONNECT=%s; export KAFKA_ADVERTISED_LISTENERS=%s,BROKER://:%s; /etc/confluent/docker/run >/tmp/kafka-start.log 2>/tmp/kafka-start &", zookeeperConnect, bootstrapServers, brokerPort.Port())}
-	_, _, err := container.Exec(ctx, cmd)
-	if err != nil {
-		return err
-	}
-	return nil
+func kafkaTestContainerProvider(req *testcontainers.GenericContainerRequest) {
+	req.ProviderType = testContainerProvider()
 }
