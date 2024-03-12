@@ -21,33 +21,17 @@ type ElasticSearch struct {
 
 func NewElasticSearch(ctx context.Context) (*ElasticSearch, error) {
 	_ = os.Setenv("TC_HOST", "localhost")
-	//volumeConfig := map[string]string{
-	//	"host-path":      "my_es_data",
-	//	"container-path": "/usr/share/elasticsearch/data",
-	//}
 	req := testcontainers.ContainerRequest{
-		Image: getEnvString("ES_CONTAINER_IMAGE", "docker.elastic.co/elasticsearch/elasticsearch-oss:7.0.0"),
-		//Image: getEnvString("ES_CONTAINER_IMAGE", "elasticsearch:7.0.0"),
+		Image: getEnvString("ES_CONTAINER_IMAGE", "elasticsearch:7.0.0"),
 		Env: map[string]string{
 			"discovery.type":    "single-node",
 			"network.host":      "0.0.0.0",
 			"network.bind_host": "0.0.0.0",
 		},
-		//Mounts: testcontainers.ContainerMounts{
-		//	{
-		//		Source: testcontainers.GenericVolumeMountSource{
-		//			Name: volumeConfig["host-path"],
-		//		},
-		//		Target:   testcontainers.ContainerMountTarget(volumeConfig["container-path"]),
-		//		ReadOnly: false,
-		//	},
-		//},
 		ExposedPorts: []string{"9200/tcp", "9300/tcp"},
 		WaitingFor:   wait.ForListeningPort("9200").WithStartupTimeout(time.Minute * 3), // Default timeout is 1 minute
-		//WaitingFor:   wait.ForHTTP("/").WithPort("9200/tcp").WithStartupTimeout(time.Minute * 3),
 		RegistryCred: getBasicAuth(),
-		//AutoRemove:   true,
-		SkipReaper: skipReaper(),
+		SkipReaper:   skipReaper(),
 	}
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
 		ContainerRequest: req,
@@ -59,8 +43,6 @@ func NewElasticSearch(ctx context.Context) (*ElasticSearch, error) {
 	}
 	host, _ := container.Host(ctx)
 	port, _ := container.MappedPort(ctx, "9200")
-	//port2, _ := container.MappedPort(ctx, "9300")
-	//endpoint, err := container.Endpoint(ctx, "")
 	endpoint := fmt.Sprintf("http://%s:%s", host, port.Port())
 
 	if err != nil {
@@ -68,7 +50,7 @@ func NewElasticSearch(ctx context.Context) (*ElasticSearch, error) {
 	}
 
 	client, err := elasticsearch.NewClient(elasticsearch.Config{
-		Addresses:            []string{endpoint}, //, fmt.Sprintf("http://%s:%s", host, port2.Port())},
+		Addresses:            []string{endpoint},
 		EnableRetryOnTimeout: true,
 	})
 	if err != nil {
