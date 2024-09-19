@@ -46,11 +46,10 @@ func (assert *assertOutput) Assert() error {
 				if assert.expected[i] == nil && reflect.ValueOf(assert.output[i]).IsNil() {
 					// added to check for nil proto message, as proto.Equal does not work for nil proto messages
 					continue
-				} else {
-					exp, _ := assert.expected[i].(proto.Message)
-					if !proto.Equal(out, exp) {
-						return fmt.Errorf("invalid proto message value at index=%v, got=%v, want=%v", i, assert.output[i], assert.expected[i])
-					}
+				}
+				exp, _ := assert.expected[i].(proto.Message)
+				if !proto.Equal(out, exp) {
+					return fmt.Errorf("invalid proto message value at index=%v, got=%v, want=%v", i, assert.output[i], assert.expected[i])
 				}
 			} else {
 				if !reflect.DeepEqual(assert.output[i], assert.expected[i]) {
