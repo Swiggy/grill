@@ -49,7 +49,7 @@ func (gd *Dynamo) AssertItem(input *dynamodb.GetItemInput, expected interface{})
 	})
 }
 
-func (gd *Dynamo) AssertQueryCount(input *dynamodb.QueryInput, expectedCount int) grill.Assertion {
+func (gd *Dynamo) AssertQueryItemCount(input *dynamodb.QueryInput, expectedCount int) grill.Assertion {
 	return grill.AssertionFunc(func() error {
 		output, err := gd.dynamo.Client.Query(input)
 		if err != nil {
