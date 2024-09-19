@@ -48,3 +48,16 @@ func (gd *Dynamo) AssertItem(input *dynamodb.GetItemInput, expected interface{})
 		return nil
 	})
 }
+
+func (gd *Dynamo) AssertQueryCount(input *dynamodb.QueryInput, expectedCount int) grill.Assertion {
+	return grill.AssertionFunc(func() error {
+		output, err := gd.dynamo.Client.Query(input)
+		if err != nil {
+			return err
+		}
+		if len(output.Items) != expectedCount {
+			return fmt.Errorf("invalid number of items, got=%v, want=%v", len(output.Items), expectedCount)
+		}
+		return nil
+	})
+}
