@@ -33,7 +33,7 @@ type SQS struct {
 func NewSQS(ctx context.Context) (*SQS, error) {
 	os.Setenv("TC_HOST", "localhost")
 	req := testcontainers.ContainerRequest{
-		Image:        getEnvString("SQS_CONTAINER_IMAGE", "softwaremill/elasticmq-native:1.3.14"),
+		Image:        getEnvString("SQS_CONTAINER_IMAGE", "softwaremill/elasticmq-native:1.5.8"),
 		ExposedPorts: []string{"9324/tcp"},
 		WaitingFor:   wait.ForListeningPort("9324"),
 		AutoRemove:   true,
