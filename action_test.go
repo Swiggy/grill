@@ -3,6 +3,8 @@ package grill
 import (
 	"reflect"
 	"testing"
+
+	"github.com/golang/protobuf/ptypes/wrappers"
 )
 
 func TestMultiOutput(t *testing.T) {
@@ -46,6 +48,8 @@ func TestAssertOutput(t *testing.T) {
 		{"Composite-Failure", []interface{}{1, "1", &custom{1}}, []interface{}{1, "1", &custom{2}}, true},
 		{"Composite-Success", []interface{}{1, "1", &custom{1}}, []interface{}{1, "1", &custom{1}}, false},
 		{"Composite-Any", []interface{}{1, "1", &custom{1}}, []interface{}{1, "1", Any}, false},
+		{"NilProtoMessage-Success", []interface{}{getNilProtoMessage(), "1"}, []interface{}{nil, "1"}, false},
+		{"NilError-Success", []interface{}{2, getNilError()}, []interface{}{2, nil}, false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -56,4 +60,12 @@ func TestAssertOutput(t *testing.T) {
 			}
 		})
 	}
+}
+
+func getNilProtoMessage() *wrappers.StringValue {
+	return nil
+}
+
+func getNilError() error {
+	return nil
 }
