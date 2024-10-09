@@ -30,7 +30,7 @@ func (gh *HTTP) AssertCount(request *Request, expectedCount int) grill.Assertion
 		}
 
 		if output.Count != expectedCount {
-			return fmt.Errorf("invalid number of requests, got=%v, want=%v", output.Count, expectedCount)
+			return fmt.Errorf("invalid number of requests, got=%v, want=%v for method=%x", output.Count, expectedCount, request.Url)
 		}
 
 		return nil
