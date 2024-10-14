@@ -34,9 +34,9 @@ func NewMinio(ctx context.Context) (*Minio, error) {
 
 	req := testcontainers.ContainerRequest{
 		Image:        getEnvString("MINIO_CONTAINER_IMAGE", "minio/minio:RELEASE.2023-05-18T00-05-36Z"),
-		ExposedPorts: []string{"9000/tcp"},
+		ExposedPorts: []string{"9000/tcp", "9001/tcp"},
 		WaitingFor:   wait.ForListeningPort("9000/tcp"),
-		Cmd:          []string{"server", "/data"},
+		Cmd:          []string{"server", "/data", "--console-address", ":9001"},
 		Env: map[string]string{
 			"MINIO_ROOT_USER":     accessKey,
 			"MINIO_ROOT_PASSWORD": secretKey,
