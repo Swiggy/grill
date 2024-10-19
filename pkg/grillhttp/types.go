@@ -22,6 +22,7 @@ type Request struct {
 	Cookies              map[string]MatchCondition   `json:"cookies,omitempty"`
 	BodyPatterns         []map[string]MatchCondition `json:"bodyPatterns,omitempty"`
 	BasicAuthCredentials *BasicAuthCredentials       `json:"basicAuthCredentials,omitempty"`
+	FormParameters       map[string]MatchCondition   `json:"formParameters,omitempty"` //https://wiremock.org/docs/request-matching/#request-with-form-parameters
 }
 
 type Response struct {
