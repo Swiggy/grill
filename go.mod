@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/aws/aws-sdk-go v1.32.6
 	github.com/confluentinc/confluent-kafka-go v1.9.2
-	github.com/docker/docker v25.0.3+incompatible
+	github.com/docker/docker v27.1.1
 	github.com/docker/go-connections v0.5.0
 	github.com/elastic/go-elasticsearch/v7 v7.13.0
 	github.com/go-redis/redis/v8 v8.11.5
