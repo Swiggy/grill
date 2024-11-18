@@ -32,7 +32,7 @@ type Kafka struct {
 func NewKafka(ctx context.Context) (*Kafka, error) {
 	os.Setenv("TC_HOST", "localhost")
 
-	kafkaContainer, err := kafka.RunContainer(ctx, testcontainers.CustomizeRequestOption(kafkaTestContainerProvider))
+	kafkaContainer, err := kafka.RunContainer(ctx, &KafkaTestContainerCustomizer{})
 	if err != nil {
 		return nil, err
 	}
@@ -69,6 +69,9 @@ func NewKafka(ctx context.Context) (*Kafka, error) {
 	}, nil
 }
 
-func kafkaTestContainerProvider(req *testcontainers.GenericContainerRequest) {
+type KafkaTestContainerCustomizer struct{}
+
+func (k *KafkaTestContainerCustomizer) Customize(req *testcontainers.GenericContainerRequest) error {
 	req.ProviderType = testContainerProvider()
+	return nil
 }

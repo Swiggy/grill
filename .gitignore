@@ -2,6 +2,6 @@
 .idea/
 .DS_Store
 
-coverage-*.out
+coverage*.out
 coverage-*.html
 
