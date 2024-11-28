@@ -22,10 +22,13 @@ type ElasticSearch struct {
 func NewElasticSearch(ctx context.Context) (*ElasticSearch, error) {
 	_ = os.Setenv("TC_HOST", "localhost")
 	req := testcontainers.ContainerRequest{
-		Image: getEnvString("ES_CONTAINER_IMAGE", "elasticsearch:7.17.9"),
+		Image: getEnvString("ES_CONTAINER_IMAGE", "elasticsearch:7.0.0"),
 		Env: map[string]string{
-			"discovery.type": "single-node"},
-		ExposedPorts: []string{"9200/tcp"},
+			"discovery.type":    "single-node",
+			"network.host":      "0.0.0.0",
+			"network.bind_host": "0.0.0.0",
+		},
+		ExposedPorts: []string{"9200/tcp", "9300/tcp"},
 		WaitingFor:   wait.ForListeningPort("9200").WithStartupTimeout(time.Minute * 3), // Default timeout is 1 minute
 		RegistryCred: getBasicAuth(),
 		SkipReaper:   skipReaper(),
@@ -40,15 +43,15 @@ func NewElasticSearch(ctx context.Context) (*ElasticSearch, error) {
 	}
 	host, _ := container.Host(ctx)
 	port, _ := container.MappedPort(ctx, "9200")
-	endpoint, err := container.Endpoint(ctx, "")
-	endpoint = fmt.Sprintf("http://%s", endpoint)
+	endpoint := fmt.Sprintf("http://%s:%s", host, port.Port())
 
 	if err != nil {
 		return nil, err
 	}
 
 	client, err := elasticsearch.NewClient(elasticsearch.Config{
-		Addresses: []string{endpoint},
+		Addresses:            []string{endpoint},
+		EnableRetryOnTimeout: true,
 	})
 	if err != nil {
 		return nil, err
