@@ -20,7 +20,7 @@ func RunParallel(t *testing.T, testCases []TestCase) {
 		go func(tt TestCase, wg *sync.WaitGroup) {
 			defer wg.Done()
 
-			testCase.Run(t)
+			tt.Run(t)
 		}(testCase, wg)
 	}
 
