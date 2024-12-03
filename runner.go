@@ -16,7 +16,6 @@ func RunParallel(t *testing.T, testCases []TestCase) {
 	wg.Add(len(testCases))
 
 	for _, testCase := range testCases {
-		testCase := testCase
 		go func(tt TestCase, wg *sync.WaitGroup) {
 			defer wg.Done()
 
