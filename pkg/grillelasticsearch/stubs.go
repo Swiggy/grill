@@ -12,8 +12,10 @@ import (
 func (ge *ElasticSearch) CreateIndex(index string, mapping string) grill.Stub {
 	return grill.StubFunc(func() error {
 		req := esapi.IndicesCreateRequest{
-			Index: index,
-			Body:  strings.NewReader(mapping),
+			Index:         index,
+			MasterTimeout: 3000,
+			Timeout:       3000,
+			Body:          strings.NewReader(mapping),
 		}
 		res, err := req.Do(context.Background(), ge.elasticSearch.Client)
 		if err != nil {
