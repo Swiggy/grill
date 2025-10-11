@@ -20,7 +20,7 @@ type tryAssertion struct {
 }
 
 func (assert *tryAssertion) Assert() error {
-	checkC := time.Tick(assert.deadline / time.Duration(assert.minSuccess*3+3))
+	checkC := time.Tick(500 * time.Millisecond)
 	quitC := time.Tick(assert.deadline)
 	var successCount = 0
 	var errors []string
