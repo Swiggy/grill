@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/Swiggy/grill"
+	"github.com/singh-jatin28/grill"
 )
 
 const createTaskTableQuery = `CREATE TABLE task (

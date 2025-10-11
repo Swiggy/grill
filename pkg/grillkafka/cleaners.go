@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/Swiggy/grill"
 	confluent "github.com/confluentinc/confluent-kafka-go/kafka"
+	"github.com/singh-jatin28/grill"
 )
 
 func (gk *Kafka) DeleteTopics(topics ...string) grill.Cleaner {

@@ -3,7 +3,7 @@ package grillmysql
 import (
 	"context"
 	"database/sql"
-	"github.com/Swiggy/grill/canned"
+	"github.com/singh-jatin28/grill/canned"
 )
 
 type Mysql struct {

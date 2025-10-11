@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/Swiggy/grill"
+	"github.com/singh-jatin28/grill"
 )
 
 func Test_GrillS3(t *testing.T) {

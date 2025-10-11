@@ -5,10 +5,10 @@ import (
 	"encoding/json"
 	"os"
 
-	"github.com/Swiggy/grill"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
+	"github.com/singh-jatin28/grill"
 )
 
 func (gd *Dynamo) CreateTable(req *dynamodb.CreateTableInput) grill.Stub {
@@ -32,9 +32,9 @@ func (gd *Dynamo) PutItem(tableName string, item map[string]*dynamodb.AttributeV
 // Each Line represents a new item
 //
 // Args -
-//		tableName  - table to put data
-//		filePath - absolute file path.
 //
+//	tableName  - table to put data
+//	filePath - absolute file path.
 func (gd *Dynamo) SeedDataFromFile(tableName string, filePath string) grill.Stub {
 	return grill.StubFunc(func() error {
 		file, err := os.Open(filePath)

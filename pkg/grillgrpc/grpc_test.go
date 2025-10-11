@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/Swiggy/grill/pkg/grillgrpc/hello"
+	"github.com/singh-jatin28/grill/pkg/grillgrpc/hello"
 
-	"github.com/Swiggy/grill"
+	"github.com/singh-jatin28/grill"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

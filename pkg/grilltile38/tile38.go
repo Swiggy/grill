@@ -2,7 +2,7 @@ package grilltile38
 
 import (
 	"context"
-	"github.com/Swiggy/grill/canned"
+	"github.com/singh-jatin28/grill/canned"
 
 	"github.com/gomodule/redigo/redis"
 )

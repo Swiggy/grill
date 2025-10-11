@@ -6,7 +6,7 @@ This decouples the test from the actual system and allows us to change the imple
 
 All tests, be it unit tests, service level tests or end to end integration tests, should follow the same methodology, only the SUT changes in all cases.
 
-![test](https://github.com/Swiggy/grill/blob/media/testing.png?raw=true)
+![test](https://github.com/singh-jatin28/grill/blob/media/testing.png?raw=true)
 
 ## Motivation
 With rapid adoption of microservices architecture at Swiggy, we realized the limitation of unit tests. Especially for I/O bound microservice which 
@@ -71,7 +71,7 @@ It uses testcontainers-go underneath for dockers.
 | ES              | CreateIndex, PutItem                   | AssertItemsCount        | DeleteIndices, DeleteItem    | 
 
 ## Getting Started
-Check the [Wiki page](https://github.com/Swiggy/grill/wiki) for getting started with Grill
+Check the [Wiki page](https://github.com/singh-jatin28/grill/wiki) for getting started with Grill
 
 ## Why write functional tests at all ??
 * * *

@@ -2,8 +2,8 @@ package grillelasticsearch
 
 import (
 	"context"
-	"github.com/Swiggy/grill"
 	"github.com/elastic/go-elasticsearch/v7/esapi"
+	"github.com/singh-jatin28/grill"
 )
 
 func (ge *ElasticSearch) DeleteIndices(indices ...string) grill.Cleaner {

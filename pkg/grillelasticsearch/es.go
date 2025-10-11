@@ -2,8 +2,8 @@ package grillelasticsearch
 
 import (
 	"context"
-	"github.com/Swiggy/grill/canned"
 	"github.com/elastic/go-elasticsearch/v7"
+	"github.com/singh-jatin28/grill/canned"
 )
 
 type ElasticSearch struct {

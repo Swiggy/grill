@@ -1,8 +1,8 @@
 package grillsqs
 
 import (
-	"github.com/Swiggy/grill"
 	"github.com/aws/aws-sdk-go/service/sqs"
+	"github.com/singh-jatin28/grill"
 )
 
 func (gs *SQS) CreateQueue(createQueueInput *sqs.CreateQueueInput) grill.Stub {

@@ -3,7 +3,7 @@ package grillclusterredis
 import (
 	"context"
 	"fmt"
-	"github.com/Swiggy/grill"
+	"github.com/singh-jatin28/grill"
 )
 
 func (gr *ClusteredRedis) AssertValue(key, expected string) grill.Assertion {

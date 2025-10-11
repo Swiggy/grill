@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/Swiggy/grill"
+	"github.com/singh-jatin28/grill"
 	"testing"
 	"time"
 )

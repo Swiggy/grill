@@ -1,6 +1,6 @@
 package grilltile38
 
-import "github.com/Swiggy/grill"
+import "github.com/singh-jatin28/grill"
 
 func (gt *Tile38) FlushDB() grill.Cleaner {
 	return grill.CleanerFunc(func() error {

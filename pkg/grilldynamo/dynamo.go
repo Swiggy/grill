@@ -2,7 +2,7 @@ package grilldynamo
 
 import (
 	"context"
-	"github.com/Swiggy/grill/canned"
+	"github.com/singh-jatin28/grill/canned"
 
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
 )
