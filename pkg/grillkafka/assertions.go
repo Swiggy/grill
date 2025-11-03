@@ -6,13 +6,13 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/Swiggy/grill"
+	"github.com/singh-jatin28/grill"
 )
 
 func (gk *Kafka) AssertCount(topicName string, expectedCount int) grill.Assertion {
 	return grill.AssertionFunc(func() error {
 		group := fmt.Sprintf("%s_%d_%s", "oh_my_test_helper", rand.Intn(1000), time.Now())
-		consumer, err := gk.NewConsumer(group, topicName, time.Second*5)
+		consumer, err := gk.NewConsumer(group, topicName, time.Second)
 		if err != nil {
 			return err
 		}
@@ -33,7 +33,7 @@ func (gk *Kafka) AssertCount(topicName string, expectedCount int) grill.Assertio
 func (gk *Kafka) AssertMessageCount(topic string, message Message, expectedCount int) grill.Assertion {
 	return grill.AssertionFunc(func() error {
 		group := fmt.Sprintf("%s_%d_%s", "oh_my_test_helper", rand.Intn(1000), time.Now())
-		consumer, err := gk.NewConsumer(group, topic, time.Second*5)
+		consumer, err := gk.NewConsumer(group, topic, time.Second)
 		if err != nil {
 			return err
 		}

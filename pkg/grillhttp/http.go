@@ -2,7 +2,7 @@ package grillhttp
 
 import (
 	"context"
-	"github.com/Swiggy/grill/canned"
+	"github.com/singh-jatin28/grill/canned"
 )
 
 type HTTP struct {

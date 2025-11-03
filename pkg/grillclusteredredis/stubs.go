@@ -2,7 +2,7 @@ package grillclusterredis
 
 import (
 	"context"
-	"github.com/Swiggy/grill"
+	"github.com/singh-jatin28/grill"
 	"time"
 )
 

@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/Swiggy/grill"
 	"github.com/elastic/go-elasticsearch/v7/esapi"
+	"github.com/singh-jatin28/grill"
 	"strings"
 )
 

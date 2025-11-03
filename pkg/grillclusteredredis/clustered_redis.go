@@ -2,8 +2,8 @@ package grillclusterredis
 
 import (
 	"context"
-	"github.com/Swiggy/grill/canned"
 	"github.com/go-redis/redis/v8"
+	"github.com/singh-jatin28/grill/canned"
 )
 
 type ClusteredRedis struct {
