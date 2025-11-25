@@ -5,7 +5,7 @@ import (
 	"github.com/Swiggy/grill/canned"
 	"time"
 
-	confluent "github.com/confluentinc/confluent-kafka-go/kafka"
+	confluent "github.com/confluentinc/confluent-kafka-go/v2/kafka"
 )
 
 type Kafka struct {

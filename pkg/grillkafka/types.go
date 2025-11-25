@@ -1,7 +1,7 @@
 package grillkafka
 
 import (
-	confluent "github.com/confluentinc/confluent-kafka-go/kafka"
+	confluent "github.com/confluentinc/confluent-kafka-go/v2/kafka"
 )
 
 type Message struct {
