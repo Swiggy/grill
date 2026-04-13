@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/Swiggy/grill"
-	confluent "github.com/confluentinc/confluent-kafka-go/kafka"
+	confluent "github.com/confluentinc/confluent-kafka-go/v2/kafka"
 )
 
 func (gk *Kafka) CreateTopics(topics ...string) grill.Stub {

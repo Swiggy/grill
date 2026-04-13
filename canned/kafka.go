@@ -7,7 +7,7 @@ import (
 	"github.com/testcontainers/testcontainers-go/modules/kafka"
 	"os"
 
-	confluent "github.com/confluentinc/confluent-kafka-go/kafka"
+	confluent "github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	"github.com/docker/docker/client"
 	"github.com/docker/go-connections/nat"
 )
