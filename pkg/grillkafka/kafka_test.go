@@ -52,7 +52,7 @@ func Test_GrillKafka(t *testing.T) {
 		},
 		Assertions: []grill.Assertion{
 			grill.AssertOutput(true),
-			grill.Try(time.Second*30, 3, helper.AssertCount("test_topic", 1)),
+			grill.Try(time.Second*30, 3, helper.AssertCount("test_topic", 1), grill.WithCheckFrequency(1*time.Second)),
 			grill.Try(time.Second*30, 3, helper.AssertMessageCount("test_topic_error", testMessage, 1)),
 		},
 		Cleaners: []grill.Cleaner{

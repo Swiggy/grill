@@ -5,22 +5,38 @@ import (
 	"time"
 )
 
-func Try(deadline time.Duration, minSuccess int, assertion Assertion) Assertion {
-	return &tryAssertion{
-		assertion:  assertion,
-		deadline:   deadline,
-		minSuccess: minSuccess,
+type TryOption func(*tryAssertion)
+
+// WithCheckFrequency sets a custom frequency for assertion checks.
+// If not set, frequency is derived from deadline and minSuccess.
+func WithCheckFrequency(frequency time.Duration) TryOption {
+	return func(t *tryAssertion) {
+		t.checkFrequency = frequency
 	}
 }
 
+func Try(deadline time.Duration, minSuccess int, assertion Assertion, options ...TryOption) Assertion {
+	t := &tryAssertion{
+		assertion:      assertion,
+		deadline:       deadline,
+		minSuccess:     minSuccess,
+		checkFrequency: deadline / time.Duration(minSuccess*3+3),
+	}
+	for _, opt := range options {
+		opt(t)
+	}
+	return t
+}
+
 type tryAssertion struct {
-	assertion  Assertion
-	deadline   time.Duration
-	minSuccess int
+	assertion      Assertion
+	deadline       time.Duration
+	minSuccess     int
+	checkFrequency time.Duration
 }
 
 func (assert *tryAssertion) Assert() error {
-	checkC := time.Tick(assert.deadline / time.Duration(assert.minSuccess*3+3))
+	checkC := time.Tick(assert.checkFrequency)
 	quitC := time.Tick(assert.deadline)
 	var successCount = 0
 	var errors []string
